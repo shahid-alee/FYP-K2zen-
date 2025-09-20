@@ -1,0 +1,142 @@
+.packages-section {
+  padding: 50px 8%;
+  background: #f9fbff;
+}
+
+.section-title {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #3d668f;
+
+  &.honeymoon {
+    margin-top: 60px;
+    color: #d63384;
+  }
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto 30px;
+
+  &.honeymoon-text {
+    color: #a61e64;
+  }
+}
+
+.package-card {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  height: 260px;
+  width: 300px;
+  border-radius: 14px !important;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.honeymoon-card {
+  border: 1px solid #d63384;
+}
+
+.package-image {
+  width: 40%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.package-content {
+  width: 60%;
+  padding: 15px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.package-title {
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+  margin-bottom: 10px;
+  color: #0077ff;
+}
+
+.package-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+
+  li {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 3px 0;
+  }
+}
+
+.package-days {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.package-btn {
+  background-color: #0077ff !important;
+  color: #fff !important;
+  padding: 6px 16px !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+
+  &:hover {
+    background-color: #0056cc !important;
+  }
+
+  &.honeymoon-btn {
+    background-color: #d63384 !important;
+
+    &:hover {
+      background-color: #a61e64 !important;
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .package-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .package-image {
+    width: 100%;
+    height: 180px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .package-content {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,87 @@
+.booknow-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1);
+  margin-top: 10%;
+}
+
+.booknow-title {
+  text-align: left;
+  margin-bottom: 50px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.booknow-form {
+    margin-top: 3%;
+  .MuiTextField-root {
+    background: #f7f9fc;
+    border-radius: 8px;
+
+    .MuiOutlinedInput-root {
+      fieldset {
+        border-color: #d1d5db;
+      }
+      &:hover fieldset {
+        border-color: #0077ff;
+      }
+      &.Mui-focused fieldset {
+        border-color: #0077ff;
+        box-shadow: 0 0 8px rgba(0, 119, 255, 0.2);
+      }
+    }
+  }
+
+  .booknow-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+
+    .booknow-submit {
+      background: linear-gradient(135deg, #0077ff, #0056cc);
+      color: #ffffff;
+      padding: 10px 25px;
+      border-radius: 10px;
+      text-transform: none;
+      font-weight: 600;
+
+      &:hover {
+        background: linear-gradient(135deg, #0056cc, #0041a3);
+      }
+    }
+
+    .booknow-cancel {
+      color: #555;
+      padding: 10px 25px;
+      border-radius: 10px;
+      text-transform: none;
+      border: 2px solid #ccc;
+
+      &:hover {
+        border-color: #0077ff;
+        color: #0077ff;
+      }
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .booknow-container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .booknow-buttons {
+    flex-direction: column;
+
+    .booknow-submit,
+    .booknow-cancel {
+      width: 100%;
+    }
+  }
+}

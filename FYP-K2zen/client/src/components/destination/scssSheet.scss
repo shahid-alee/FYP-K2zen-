@@ -1,0 +1,137 @@
+/* ===== Section Wrapper ===== */
+.pack-section {
+  padding: 60px 20px;
+  background-color: #f5f5f5;
+}
+
+/* ===== Section Title ===== */
+.pack-title {
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+/* ===== Cards Container ===== */
+.cardContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;   /* 👈 row me wrap hone dena */
+  justify-content: space-around;
+  gap: 24px;
+}
+.cardContainer .card{
+  width: 47%;
+}
+
+/* ===== Individual Card ===== */
+.tour-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-radius: 12px !important;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+
+  min-height: 300px;   /* 👈 sab cards ka height fix */
+  height: 100%;        /* 👈 equal height maintain */
+}
+
+/* ===== Left Side Image ===== */
+.card-media {
+  /* Note: exact width is controlled via MUI sx in JSX (responsive).
+     This css is fallback so browser doesn't force full width */
+  display: block;
+  object-fit: cover;
+  height: 100%;
+}
+
+/* ===== Right Side Details ===== */
+.card-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* ===== Card Title ===== */
+.card-title {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 6px;
+  color: #1976d2;
+}
+
+/* ===== Duration ===== */
+.duration {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+/* ===== Places List ===== */
+.place-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+
+  li {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 4px 0;
+    position: relative;
+    padding-left: 18px;
+
+    &::before {
+      content: '•';
+      color: #1976d2;
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1rem;
+    }
+  }
+}
+
+/* ===== Book Now Button ===== */
+.tour-btn {
+  background-color: #1976d2 !important;
+  color: #fff !important;
+  text-transform: none !important;
+  border-radius: 6px !important;
+  padding: 10px 18px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  align-self: flex-start;
+}
+
+/* ===== Hover effect ===== */
+.tour-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .tour-card {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .card-media {
+    width: 100% !important;
+    height: 220px !important;
+  }
+
+  .card-details {
+    padding: 16px;
+  }
+
+  .tour-btn {
+    width: 100% !important;
+    align-self: stretch;
+  }
+}

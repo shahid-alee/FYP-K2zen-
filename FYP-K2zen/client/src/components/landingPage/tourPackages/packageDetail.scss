@@ -1,0 +1,51 @@
+.details-container {
+  margin: 40px auto;
+  padding: 20px;
+  margin-top: 15%;
+  border-radius: 16px;
+  background: #fff;
+  text-align: center;
+}
+
+.details-banner {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 20px;
+
+  .banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.details-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.details-description {
+  color: #555;
+  line-height: 1.6;
+}
+
+.details-places {
+  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.place-chip {
+  font-weight: 500;
+}
+
+.details-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
