@@ -52,7 +52,7 @@ export default function NavBar() {
                   )}
                 </li>
 
-                <li
+                {/* <li
                   className="dropdown-wrapper"
                   onMouseEnter={() => setOpenMenu("tour")}
                   onMouseLeave={() => setOpenMenu(null)}
@@ -66,7 +66,7 @@ export default function NavBar() {
                       <Link to="/tours/seven-days" className="dropdown-item">Seven Days</Link>
                     </Box>
                   )}
-                </li>
+                </li> */}
 
                 <li>
                   <Link to="/gallery" className="navbar-link">Gallery</Link>

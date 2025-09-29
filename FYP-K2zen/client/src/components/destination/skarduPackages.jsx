@@ -24,7 +24,7 @@ export default function SkarduPackages() {
 
   return (
     <Box className="pack-section">
-      <Typography sx={{marginTop:'5%' , marginBottom:'5%'}} variant="h4" className="pack-title">Skardu Tour Packages</Typography>
+      <Typography sx={{marginTop:'5%' , marginBottom:'5%'}} className="pack-title">Skardu Tour Packages</Typography>
 
       <Grid container spacing={4} className="cardContainer">
         {skarduPackages.map((pkg, idx) => (

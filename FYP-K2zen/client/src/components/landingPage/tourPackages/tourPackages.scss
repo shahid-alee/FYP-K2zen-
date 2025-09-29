@@ -1,19 +1,50 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B; /* Extra light */
+  --primary-xxlight: #91E7AD;/* Super light */
+}
 .packages-section {
   padding: 50px 8%;
-  background: #f9fbff;
 }
 
-.section-title {
-  text-align: center;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #3d668f;
+ .section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+    position: relative;
+    z-index: 1;
 
-  &.honeymoon {
-    margin-top: 60px;
-    color: #d63384;
-  }
+    .section-title {
+      font-weight: 800;
+      font-size: 2.4rem;
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
 }
+
+ .section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+    position: relative;
+    z-index: 1;
+    margin-top: 5%;
+
+    .section-title-honeymoon{
+      font-weight: 800;
+      font-size: 2.4rem;
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+      margin-top:5%;
+      letter-spacing: 0.5px;
+    }
+}
+
+
 
 .section-subtitle {
   text-align: center;
@@ -23,7 +54,7 @@
   margin: 0 auto 30px;
 
   &.honeymoon-text {
-    color: #a61e64;
+    color: var(--primary);
   }
 }
 
@@ -46,7 +77,7 @@
 }
 
 .honeymoon-card {
-  border: 1px solid #d63384;
+  border: 1px solid var(--primary);
 }
 
 .package-image {
@@ -73,7 +104,7 @@
   font-weight: 600 !important;
   font-size: 1.1rem !important;
   margin-bottom: 10px;
-  color: #0077ff;
+  color: var(--primary);
 }
 
 .package-list {
@@ -90,13 +121,13 @@
 
 .package-days {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--primary);
   margin-bottom: 12px;
   font-size: 0.95rem;
 }
 
 .package-btn {
-  background-color: #0077ff !important;
+  background-color: var(--primary) !important;
   color: #fff !important;
   padding: 6px 16px !important;
   border-radius: 8px !important;
@@ -105,14 +136,14 @@
   font-size: 0.85rem !important;
 
   &:hover {
-    background-color: #0056cc !important;
+    background-color: var(--primary-dark) !important;
   }
 
   &.honeymoon-btn {
-    background-color: #d63384 !important;
+    background-color: var(--primary) !important;
 
     &:hover {
-      background-color: #a61e64 !important;
+      background-color: var(--primary-dark) !important;
     }
   }
 }

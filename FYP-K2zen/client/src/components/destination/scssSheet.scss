@@ -1,15 +1,21 @@
-/* ===== Section Wrapper ===== */
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B; 
+  --primary-xxlight: #91E7AD;
+}
 .pack-section {
   padding: 60px 20px;
   background-color: #f5f5f5;
 }
 
-/* ===== Section Title ===== */
 .pack-title {
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 40px;
   text-align: center;
-  color: #2c3e50;
+  color: var(--primary-dark);
   font-size: 2rem;
 }
 
@@ -36,14 +42,13 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   transition: transform 0.28s ease, box-shadow 0.28s ease;
 
-  min-height: 300px;   /* 👈 sab cards ka height fix */
-  height: 100%;        /* 👈 equal height maintain */
+  min-height: 300px;  
+  height: 100%;        
 }
 
 /* ===== Left Side Image ===== */
 .card-media {
-  /* Note: exact width is controlled via MUI sx in JSX (responsive).
-     This css is fallback so browser doesn't force full width */
+ 
   display: block;
   object-fit: cover;
   height: 100%;
@@ -62,13 +67,13 @@
   font-size: 1.25rem !important;
   font-weight: 700 !important;
   margin-bottom: 6px;
-  color: #1976d2;
+  color: var(--primary);
 }
 
 /* ===== Duration ===== */
 .duration {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--primary-dark);
   margin-bottom: 12px;
 }
 
@@ -87,7 +92,7 @@
 
     &::before {
       content: '•';
-      color: #1976d2;
+      color: var(--primary-light);
       position: absolute;
       left: 0;
       top: 0;
@@ -98,7 +103,7 @@
 
 /* ===== Book Now Button ===== */
 .tour-btn {
-  background-color: #1976d2 !important;
+  background-color: var(--primary) !important;
   color: #fff !important;
   text-transform: none !important;
   border-radius: 6px !important;
@@ -106,6 +111,10 @@
   font-size: 0.95rem !important;
   font-weight: 600 !important;
   align-self: flex-start;
+}
+.tour-btn:hover{
+    background-color: var(--primary-dark) !important;
+
 }
 
 /* ===== Hover effect ===== */

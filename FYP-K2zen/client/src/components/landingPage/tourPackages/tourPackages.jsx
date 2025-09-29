@@ -109,9 +109,11 @@ export default function PopularPackages() {
 
   return (
     <Box className="packages-section">
-      <Typography variant="h4" className="section-title">
+      <div className="section-header">
+      <Typography variant="h3" className="section-title">
         Popular Tour Packages
       </Typography>
+      </div>
       <Grid container spacing={3} justifyContent="center">
         {packages.slice(0, 6).map((pkg) => (
           <Grid item xs={12} sm={6} md={5} key={pkg.id}>
@@ -140,10 +142,11 @@ export default function PopularPackages() {
           </Grid>
         ))}
       </Grid>
-
+      <div className="section-header">
       <Typography variant="h4" className="section-title honeymoon">
         Honeymoon Packages
       </Typography>
+      </div>
       <Grid container spacing={3} justifyContent="center">
         {packages.slice(6).map((pkg) => (
           <Grid item xs={12} sm={6} md={5} key={pkg.id}>

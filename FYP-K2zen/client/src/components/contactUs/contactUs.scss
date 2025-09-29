@@ -1,3 +1,12 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B; /* Extra light */
+  --primary-xxlight: #91E7AD;/* Super light */
+}
+
 .contactus-section {
   padding: 70px 8%;
   background: #f9fbff;
@@ -5,9 +14,10 @@
 
   .contact-heading {
     text-align: center;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 10px;
-    color: #2c3e50;
+    font-size: 38px;
+    color: var(--primary-dark);
   }
 
   .contact-subheading {
@@ -47,17 +57,17 @@
       font-weight: bold;
       border-radius: 10px;
       text-transform: none;
-      background: linear-gradient(135deg, #0077ff, #0056cc);
+      background: linear-gradient(135deg, var(--primary), var(--primary));
 
       &:hover {
-        background: linear-gradient(135deg, #0056cc, #0041a3);
+        background: linear-gradient(135deg, var(--primary-light), var(--primary-light));
       }
     }
   }
 
   /* Contact Info */
   .contact-info {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, var(--primary), var(--primary));
     color: #fff;
     padding: 35px;
     border-radius: 16px;
@@ -78,7 +88,7 @@
       .info-icon {
         font-size: 22px;
         margin-right: 12px;
-        color: #f1c40f;
+        color: var(--primary-xxlight);
       }
     }
 

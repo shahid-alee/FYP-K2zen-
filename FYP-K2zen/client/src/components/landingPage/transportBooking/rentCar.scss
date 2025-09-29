@@ -1,3 +1,13 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B; /* Extra light */
+  --primary-xxlight: #91E7AD;/* Super light */
+}
+
+
 .transport-section {
   padding: 100px 8%;
   background: linear-gradient(to bottom, #f9fbff, #eef3f9);
@@ -13,9 +23,10 @@
     .section-title {
       font-weight: 800;
       font-size: 2.4rem;
-      color: #0b3d91;
+      color: var(--primary-dark);
       margin-bottom: 16px;
       letter-spacing: 0.5px;
+  
     }
 
     .section-subtitle {
@@ -84,7 +95,7 @@
     font-weight: 700 !important;
     font-size: 1.2rem !important;
     margin-bottom: 8px;
-    color: #1272d1;
+    color: var(--primary);
   }
 
   .car-details {
@@ -101,7 +112,7 @@
   }
 
   .car-btn {
-    background: linear-gradient(135deg, #1272d1, #0b5cb8) !important;
+    background: var(--primary) !important;
     color: #fff !important;
     padding: 10px 22px !important;
     border-radius: 12px !important;
@@ -111,7 +122,7 @@
     transition: all 0.3s ease;
 
     &:hover {
-      background: linear-gradient(135deg, #0b5cb8, #083d82) !important;
+      background: var(--primary-dark) !important;
       transform: translateY(-2px);
     }
   }

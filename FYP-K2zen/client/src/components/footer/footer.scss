@@ -1,3 +1,13 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B;
+  --primary-xxlight: #91E7AD;
+}
+
+
 .site-footer {
   background: #1e2a38;
   color: #f1f1f1;
@@ -16,7 +26,7 @@
 
     .logo {
       font-weight: 700;
-      color: #ffd600;
+      color: var(--primary-xxlight);
     }
     .tagline {
       margin-top: 8px;
@@ -36,7 +46,7 @@
       font-size: 0.9rem;
 
       &:hover {
-        color: #ffd600;
+        color: var(--primary);
       }
     }
     .subtitle1 {
@@ -66,14 +76,14 @@
         font-size: 1.3rem;
 
         &:hover {
-          color: #ffd600;
+          color: var(--primary-dark);
         }
       }
     }
   }
 
   .footer-bottom {
-    border-top: 1px solid #3a4a5a;
+    border-top: 1px solid var(--primary);
     padding-top: 20px;
     display: flex;
     justify-content: space-between;
@@ -85,7 +95,7 @@
       font-size: 0.8rem;
 
       &:hover {
-        color: #ffd600;
+        color: var(--primary-dark);
       }
     }
   }

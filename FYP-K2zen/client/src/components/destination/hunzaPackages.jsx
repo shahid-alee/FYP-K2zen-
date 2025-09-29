@@ -79,7 +79,7 @@ export default function HunzaPackages() {
                     width: { xs: '100%', md: 'auto' },
                     alignSelf: { xs: 'stretch', md: 'flex-start' },
                   }}
-                  onClick={() => handleBookNow(pkg)} // 👈 navigate to BookNow
+                  onClick={() => handleBookNow(pkg)} 
                 >
                   Book Now
                 </Button>

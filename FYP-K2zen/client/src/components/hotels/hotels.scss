@@ -1,15 +1,34 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B; /* Extra light */
+  --primary-xxlight: #91E7AD;/* Super light */
+}
+
 .hotels-section {
   padding: 60px 8%;
   background-color: #f0f6ff; // light blue background
 }
 
-  .section-title {
-      font-weight: 1000;
+.section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+    position: relative;
+    z-index: 1;
+
+    .section-title {
+      font-weight: 800;
       font-size: 2.4rem;
-      color: #0b3d91;
+      color: var(--primary-dark);
       margin-bottom: 16px;
       letter-spacing: 0.5px;
+          margin-top: 6%;
+
     }
+}
 
 .hotel-grid-item {
   display: flex;
@@ -48,7 +67,7 @@
 .hotel-name {
   font-weight: 600;
   margin-bottom: 10px;
-  color: #2c3e50;
+  color: var(--primary);
   font-size: 1.05rem;
 }
 
@@ -66,7 +85,7 @@
 
 .hotel-btn {
   margin-top: auto;
-  background-color: #1976d2 !important; // blue button
+  background-color: var(--primary) !important; // blue button
   color: #fff !important;
   padding: 8px 16px !important;
   text-transform: none !important;
@@ -74,6 +93,6 @@
   font-weight: 600 !important;
 
   &:hover {
-    background-color: #0d47a1 !important; // darker blue hover
+    background-color: var(--primary-dark) !important; // darker blue hover
   }
 }

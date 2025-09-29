@@ -13,10 +13,10 @@ export default function ContactUs() {
         borderColor: "#d1d9e6",
       },
       "&:hover fieldset": {
-        borderColor: "#0077ff",
+        borderColor: "#2DB564",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "#0056cc",
+        borderColor: "#2DB564",
         borderWidth: "2px",
       },
     },
@@ -25,7 +25,7 @@ export default function ContactUs() {
       fontWeight: "500",
     },
     "& .MuiInputLabel-root.Mui-focused": {
-      color: "#0056cc",
+      color: "#2DB564",
     },
   };
 

@@ -20,7 +20,6 @@ export default function Reviews() {
   const [reviews, setReviews] = useState([
     {
       name: "Ali Khan",
-      location: "Lahore, Pakistan",
       avatar: "/images/review1.jpg",
       rating: 5,
       message:
@@ -28,15 +27,6 @@ export default function Reviews() {
     },
     {
       name: "Sarah Ahmed",
-      location: "Karachi, Pakistan",
-      avatar: "/images/review2.jpg",
-      rating: 4,
-      message:
-        "Beautiful experience in Hunza! Everything was well organized, and the hotel stays were very comfortable.",
-    },
-    {
-      name: "Sarah Ahmed",
-      location: "Karachi, Pakistan",
       avatar: "/images/review2.jpg",
       rating: 4,
       message:
@@ -44,7 +34,6 @@ export default function Reviews() {
     },
     {
       name: "John Smith",
-      location: "London, UK",
       avatar: "/images/review3.jpg",
       rating: 5,
       message:
@@ -54,7 +43,6 @@ export default function Reviews() {
 
   const [formData, setFormData] = useState({
     name: "",
-    location: "",
     rating: 0,
     message: "",
   });
@@ -69,26 +57,23 @@ export default function Reviews() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      !formData.name ||
-      !formData.location ||
-      !formData.rating ||
-      !formData.message
-    ) {
+    if (!formData.name || !formData.rating || !formData.message) {
       alert("Please fill all fields");
       return;
     }
 
     setReviews([{ ...formData, avatar: "/images/default-avatar.png" }, ...reviews]);
-    setFormData({ name: "", location: "", rating: 0, message: "" });
+    setFormData({ name: "", rating: 0, message: "" });
   };
 
   return (
     <Box className="reviews-section">
       {/* Title */}
-      <Typography variant="h4" className="reviews-title" gutterBottom>
-        Traveler Reviews
-      </Typography>
+      <div className="section-header">
+        <Typography variant="h4" className="reviews-title" gutterBottom>
+          Traveler Reviews
+        </Typography>
+      </div>
 
       {/* Review Form */}
       <Paper elevation={4} className="review-form">
@@ -97,21 +82,12 @@ export default function Reviews() {
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 label="Your Name"
                 name="name"
                 fullWidth
                 value={formData.name}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Location"
-                name="location"
-                fullWidth
-                value={formData.location}
                 onChange={handleChange}
               />
             </Grid>
@@ -134,8 +110,8 @@ export default function Reviews() {
                 onChange={handleRatingChange}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Grid item xs={12} className= "review-button">
+              <Button type="submit" variant="contained"  fullWidth className="review-button">
                 Submit Review
               </Button>
             </Grid>
@@ -167,9 +143,6 @@ export default function Reviews() {
                 />
                 <Typography variant="h6" className="review-name">
                   {review.name}
-                </Typography>
-                <Typography variant="subtitle2" color="text.secondary">
-                  {review.location}
                 </Typography>
                 <Rating value={review.rating} readOnly size="small" />
                 <Typography variant="body2" className="review-message">
