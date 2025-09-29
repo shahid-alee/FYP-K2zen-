@@ -1,3 +1,12 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B;
+  --primary-xxlight: #91E7AD;
+}
+
 .booknow-container {
   max-width: 600px;
   margin: 40px auto;
@@ -9,10 +18,11 @@
 }
 
 .booknow-title {
-  text-align: left;
+  text-align: center;
   margin-bottom: 50px;
-  font-weight: 600;
-  color: #2c3e50;
+  font-weight: 700;
+  color:var(--primary-dark);
+
 }
 
 .booknow-form {
@@ -26,11 +36,11 @@
         border-color: #d1d5db;
       }
       &:hover fieldset {
-        border-color: #0077ff;
+        border-color: var(--primary-light);
       }
       &.Mui-focused fieldset {
-        border-color: #0077ff;
-        box-shadow: 0 0 8px rgba(0, 119, 255, 0.2);
+        border-color: var(--primary-light);
+        box-shadow: 0 0 8px var(--primary-dark);
       }
     }
   }
@@ -42,7 +52,7 @@
     margin-top: 25px;
 
     .booknow-submit {
-      background: linear-gradient(135deg, #0077ff, #0056cc);
+      background: linear-gradient(135deg, var(--primary));
       color: #ffffff;
       padding: 10px 25px;
       border-radius: 10px;
@@ -50,7 +60,7 @@
       font-weight: 600;
 
       &:hover {
-        background: linear-gradient(135deg, #0056cc, #0041a3);
+        background: linear-gradient(135deg, var(--primary-dark));
       }
     }
 
@@ -62,8 +72,8 @@
       border: 2px solid #ccc;
 
       &:hover {
-        border-color: #0077ff;
-        color: #0077ff;
+        border-color: var(--primary);
+        color: var(--primary);
       }
     }
   }
