@@ -1,21 +1,21 @@
-/* eslint-disable prettier/prettier */
+
 import { lazy } from 'react';
 
-// project-imports
+
 import MainLayout from 'layout/Dashboard/index';
 import Loadable from 'components/Loadable';
 
-// render - data display components
+
 const Dashboard = Loadable(lazy(() => import('pages/dashboard/default')));
 const Users = Loadable(lazy(() => import('pages/users/AddUser')));
 const Settings = Loadable(lazy(() => import('pages/setting/Setting')));
 const Invoice = Loadable(lazy(() => import('pages/Invoice/Invoice')));
 const Tours = Loadable(lazy(() => import('pages/tours/tours')));
-// const Products = Loadable(lazy(() => import('pages/Products/Products')));
-// const Buyer = Loadable(lazy(() => import('pages/Buyer/Buyer')));
+const RentCar = Loadable(lazy(() => import('pages/rentCar/rentCar')));
+const Hotels = Loadable(lazy(() => import('pages/hotels/hotels')));
 const Customers = Loadable(lazy(() => import('pages/Customers/Customers')));
 
-// ==============================|| COMPONENTS ROUTES ||============================== //
+
 
 const ComponentsRoutes = {
   path: '/',
@@ -29,16 +29,16 @@ const ComponentsRoutes = {
       path: 'tours',
       element: <Tours />
     },
-    // {
-    //   path: 'products',
-    //   element: <Products />
-    // },
-    // {
-    //   path: 'buyer',
-    //   element: <Buyer />
-    // },
     {
-      path: 'customers',
+      path: 'RentCar',
+      element: <RentCar />
+    },
+    {
+      path: 'hotel',
+      element: <Hotels />
+    },
+    {
+      path: 'Customers',
       element: <Customers />
     },
     {

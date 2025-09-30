@@ -12,8 +12,8 @@ const Users = Loadable(lazy(() => import('pages/users/AddUser')));
 const Settings = Loadable(lazy(() => import('pages/setting/Setting')));
 const Invoice = Loadable(lazy(() => import('pages/Invoice/Invoice')));
 const Tours = Loadable(lazy(() => import('pages/tours/tours')));
-// const Products = Loadable(lazy(() => import('pages/Products/Products')));
-// const Buyer = Loadable(lazy(() => import('pages/Buyer/Buyer')));
+const RentCar = Loadable(lazy(() => import('pages/rentCar/rentCar')));
+const Hotels = Loadable(lazy(() => import('pages/hotels/hotels')));
 const Customers = Loadable(lazy(() => import('pages/Customers/Customers')));
 
 // ==============================|| COMPONENTS ROUTES ||============================== //
@@ -30,14 +30,14 @@ const ComponentsRoutes = {
       path: 'tours',
       element: <Tours/>
     },
-    // {
-    //   path: 'RentCar',
-    //   element: < />
-    // },
-    // {
-    //   path: 'buyer',
-    //   element: <Buyer />
-    // },
+    {
+      path: 'RentCar',
+      element: <RentCar />
+    },
+    {
+      path: 'hotels',
+      element: <Hotels />
+    },
     {
       path: 'customers',
       element: <Customers />
