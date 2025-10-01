@@ -1,0 +1,110 @@
+import {
+  Home3,
+  HomeTrendUp,
+  Box,
+  Archive,
+  User,
+  Setting2,
+  ShoppingCart,
+  Bag2,
+  UserSquare,
+  ReceiptItem,
+  Box2,
+  Building,
+  Car
+} from "iconsax-react";  
+import { Map } from "immutable";
+
+const icons = {
+  navigation: Home3,
+  dashboard: HomeTrendUp,
+  artifacts: Box,
+  stockRegistering: Archive,
+  users: User,
+  settings: Setting2,
+  orders: ShoppingCart,
+  products: Bag2,
+  buyer: UserSquare,
+  customers: User,
+  invoices: ReceiptItem,
+  tours: Box2,
+  hotels: Building,     
+  rentCar: Car          
+};
+
+// ==============================|| MENU ITEMS - DASHBOARD ||============================== //
+
+const UpdatedMenu = {
+  id: 'group-dashboard',
+  title: 'Navigation',
+  icon: icons.navigation,
+  type: 'group',
+  children: [
+    {
+      id: 'dashboard',
+      title: 'Dashboard',
+      type: 'item',
+      url: '/dashboard',
+      icon: icons.dashboard,
+      breadcrumbs: false
+    },
+    {
+      id: 'tours',
+      title: 'Tours',
+      type: 'item',
+      url: '/tours',
+      icon: icons.tours,
+      breadcrumbs: false
+    },
+    {
+      id: 'RentCar',
+      title: 'Rent A Car',
+      type: 'item',
+      url: '/rentCar',
+      icon: icons.rentCar,
+      breadcrumbs: false
+    },
+    {
+      id: 'hotel',
+      title: 'Hotel',
+      type: 'item',
+      url: '/hotel',
+      icon: icons.hotels,
+      breadcrumbs: false
+    },
+    {
+      id: 'customers',
+      title: 'Customers',
+      type: 'item',
+      url: '/customers',
+      icon: icons.customers,
+      breadcrumbs: false
+    },
+    {
+      id: 'invoices',
+      title: 'Invoices',
+      type: 'item',
+      url: '/invoices',
+      icon: icons.invoices,
+      breadcrumbs: false
+    },
+    {
+      id: 'users',
+      title: 'Users',
+      type: 'item',
+      url: '/users',
+      icon: icons.users,
+      breadcrumbs: false
+    },
+    {
+      id: 'settings',
+      title: 'Settings',
+      type: 'item',
+      url: '/settings',
+      icon: icons.settings,
+      breadcrumbs: false
+    }
+  ]
+};
+
+export default UpdatedMenu;
