@@ -1,0 +1,36 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin-top: 60px;
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+}
+
+.register-box {
+  width: 500px;
+  padding: 30px;
+  margin: 50px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.register-title {
+  text-align: center;
+  margin-bottom: 20px !important;
+  font-weight: bold !important;
+  color: #333;
+}
+
+.register-btn {
+  margin-top: 20px !important;
+  padding: 12px !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.register-footer {
+  margin-top: 15px !important;
+  color: #555;
+}
