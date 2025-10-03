@@ -1,10 +1,18 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B;
+  --primary-xxlight: #91E7AD;
+}
+
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   margin-top: 60px;
-  background: linear-gradient(135deg, #007bff, #00d4ff);
 }
 
 .register-box {
@@ -21,6 +29,9 @@
   margin-bottom: 20px !important;
   font-weight: bold !important;
   color: #333;
+}
+.textfield:hover{
+ outline: 1px var();
 }
 
 .register-btn {

@@ -111,7 +111,7 @@ export default function Reviews() {
               />
             </Grid>
             <Grid item xs={12} className= "review-button">
-              <Button type="submit" variant="contained"  fullWidth className="review-button">
+              <Button type="submit" variant="contained" color="success"  fullWidth className="review-button">
                 Submit Review
               </Button>
             </Grid>

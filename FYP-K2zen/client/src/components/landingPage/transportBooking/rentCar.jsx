@@ -28,13 +28,16 @@ export default function TransportBooking() {
         </Typography>
       </div>
 
-      {/* Flex Row of Cars */}
+      {/* Car Cards Row */}
       <div className="car-row">
         {transportOptions.map((car, index) => (
           <Card className="transport-card" key={index}>
+            {/* Left: Car Image */}
             <div className="car-image">
               <img src={car.image} alt={car.type} />
             </div>
+
+            {/* Right: Car Details */}
             <CardContent className="car-content">
               <Typography variant="h6" className="car-title">
                 {car.type}

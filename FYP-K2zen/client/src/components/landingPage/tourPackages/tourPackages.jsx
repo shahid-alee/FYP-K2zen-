@@ -143,7 +143,7 @@ export default function PopularPackages() {
         ))}
       </Grid>
       <div className="section-header">
-      <Typography variant="h4" className="section-title honeymoon">
+      <Typography variant="h4" className="section-title-honeymoon">
         Honeymoon Packages
       </Typography>
       </div>

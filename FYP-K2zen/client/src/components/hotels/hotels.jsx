@@ -59,22 +59,23 @@ export default function Hotels() {
 
   return (
     <Box className="hotels-section">
-      
-     <div className="section-header">
-           <Typography variant="h3" className="section-title">
-             Featured Hotels
-           </Typography>
-           </div>
+      <div className="section-header">
+        <Typography variant="h3" className="section-title">
+          Featured Hotels
+        </Typography>
+      </div>
+
       <Grid container spacing={4}>
         {hotels.map((hotel) => (
-          <Grid item xs={12} sm={6} md={4} key={hotel.id} className="hotel-grid-item">
+          <Grid item xs={12} md={6} key={hotel.id} className="hotel-grid-item">
             <Card className="hotel-card">
-              <CardMedia
-                component="img"
-                image={hotel.image}
-                alt={hotel.name}
-                className="hotel-image"
-              />
+              <div className="hotel-image">
+                <CardMedia
+                  component="img"
+                  image={hotel.image}
+                  alt={hotel.name}
+                />
+              </div>
               <CardContent className="hotel-content">
                 <Typography variant="h6" className="hotel-name">
                   {hotel.name}
