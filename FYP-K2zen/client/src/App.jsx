@@ -14,6 +14,8 @@ import Review from "./components/landingPage/review/review.jsx";
 import ContactUs from "./components/contactUs/contactUs.jsx";
 import BookNow from "./components/destination/bookNow.jsx";
 import HotelBooking from "./components/hotels/hotelBooking.jsx";
+import Login from "./components/auth/login.jsx";
+import Signup from "./components/auth/register.jsx";
 
 
 
@@ -50,6 +52,8 @@ function App() {
         <Route path="/hotelBooking" element={<HotelBooking />} />
         <Route path="/aboutUs" element={<AboutUs />} />
         <Route path="/contactUs" element={<ContactUs />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signUp" element={<Signup />} />
       </Routes>
       <Footer/>
     </Router>
