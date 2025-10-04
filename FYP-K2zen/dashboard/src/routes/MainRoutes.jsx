@@ -7,7 +7,7 @@ import Loadable from 'components/Loadable';
 
 
 const Dashboard = Loadable(lazy(() => import('pages/dashboard/default')));
-const Users = Loadable(lazy(() => import('pages/users/AddUser')));
+const Users = Loadable(lazy(() => import('pages/user/user')));
 const Settings = Loadable(lazy(() => import('pages/setting/Setting')));
 const Invoice = Loadable(lazy(() => import('pages/Invoice/Invoice')));
 const Tours = Loadable(lazy(() => import('pages/tours/tours')));

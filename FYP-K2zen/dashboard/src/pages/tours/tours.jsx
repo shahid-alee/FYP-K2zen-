@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -20,26 +20,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const ToursTableWithForm = () => {
-  const [tours, setTours] = useState([
-    {
-      _id: 1,
-      name: "Hunza Valley Tour",
-      location: "Hunza",
-      description: "A breathtaking trip to Hunza Valley.",
-      image: "https://via.placeholder.com/100",
-      status: "Available",
-    },
-    {
-      _id: 2,
-      name: "Skardu Adventure",
-      location: "Skardu",
-      description: "Adventure in Skardu mountains.",
-      image: "https://via.placeholder.com/100",
-      status: "Booked",
-    },
-  ]);
+  // ✅ define tours state
+  const [tours, setTours] = useState([]);
 
   const [open, setOpen] = useState(false);
 
@@ -61,16 +46,31 @@ const ToursTableWithForm = () => {
     image: null,
   };
 
-  const onSubmit = (values, { resetForm }) => {
-    const newTour = {
-      _id: Date.now(),
-      ...values,
-      image: URL.createObjectURL(values.image),
-    };
-    setTours([...tours, newTour]);
-    resetForm();
-    setOpen(false);
+  const onSubmit = async (values, { resetForm }) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/tours", {
+        name: values.name,
+        location: values.location,
+        description: values.description,
+        status: values.status,
+        image: URL.createObjectURL(values.image), // demo purpose only
+      });
+
+      // ✅ update state
+      setTours([...tours, response.data]);
+      resetForm();
+      setOpen(false);
+    } catch (error) {
+      console.error("Error adding tour:", error);
+    }
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/tours")
+      .then((res) => setTours(res.data))
+      .catch((err) => console.error(err));
+  }, []);
 
   const handleDelete = (tour) => {
     setTours(tours.filter((t) => t._id !== tour._id));
@@ -96,24 +96,12 @@ const ToursTableWithForm = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <b>Tour Name</b>
-              </TableCell>
-              <TableCell>
-                <b>Location</b>
-              </TableCell>
-              <TableCell>
-                <b>Description</b>
-              </TableCell>
-              <TableCell>
-                <b>Image</b>
-              </TableCell>
-              <TableCell>
-                <b>Status</b>
-              </TableCell>
-              <TableCell align="center">
-                <b>Action</b>
-              </TableCell>
+              <TableCell><b>Tour Name</b></TableCell>
+              <TableCell><b>Location</b></TableCell>
+              <TableCell><b>Description</b></TableCell>
+              <TableCell><b>Image</b></TableCell>
+              <TableCell><b>Status</b></TableCell>
+              <TableCell align="center"><b>Action</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -139,10 +127,7 @@ const ToursTableWithForm = () => {
                     <IconButton color="secondary">
                       <EditIcon />
                     </IconButton>
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDelete(tour)}
-                    >
+                    <IconButton color="error" onClick={() => handleDelete(tour)}>
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -179,9 +164,7 @@ const ToursTableWithForm = () => {
               >
                 {/* Tour Name */}
                 <div>
-                  <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
-                  >
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Tour Name
                   </label>
                   <Field
@@ -194,18 +177,12 @@ const ToursTableWithForm = () => {
                       border: "1px solid #ccc",
                     }}
                   />
-                  <ErrorMessage
-                    name="name"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
+                  <ErrorMessage name="name" component="div" style={{ color: "red", fontSize: "13px" }} />
                 </div>
 
                 {/* Location */}
                 <div>
-                  <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
-                  >
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Location
                   </label>
                   <Field
@@ -218,18 +195,12 @@ const ToursTableWithForm = () => {
                       border: "1px solid #ccc",
                     }}
                   />
-                  <ErrorMessage
-                    name="location"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
+                  <ErrorMessage name="location" component="div" style={{ color: "red", fontSize: "13px" }} />
                 </div>
 
                 {/* Description */}
                 <div>
-                  <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
-                  >
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Description
                   </label>
                   <Field
@@ -244,18 +215,12 @@ const ToursTableWithForm = () => {
                       resize: "none",
                     }}
                   />
-                  <ErrorMessage
-                    name="description"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
+                  <ErrorMessage name="description" component="div" style={{ color: "red", fontSize: "13px" }} />
                 </div>
 
                 {/* Status */}
                 <div>
-                  <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
-                  >
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Status
                   </label>
                   <Field
@@ -272,18 +237,12 @@ const ToursTableWithForm = () => {
                     <option value="Available">Available</option>
                     <option value="Booked">Booked</option>
                   </Field>
-                  <ErrorMessage
-                    name="status"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
+                  <ErrorMessage name="status" component="div" style={{ color: "red", fontSize: "13px" }} />
                 </div>
 
                 {/* Image */}
                 <div>
-                  <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
-                  >
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Image
                   </label>
                   <input
@@ -298,11 +257,7 @@ const ToursTableWithForm = () => {
                       background: "#f9f9f9",
                     }}
                   />
-                  <ErrorMessage
-                    name="image"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
+                  <ErrorMessage name="image" component="div" style={{ color: "red", fontSize: "13px" }} />
                 </div>
 
                 {/* Submit */}
