@@ -1,41 +1,133 @@
 import React, { useState } from "react";
-import { Grid, Box, TextField, Button, Typography, Link, Alert } from "@mui/material";
+import {
+  Grid,
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  Avatar,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import axios from "axios";
+import "./register.scss"; // ✅ Same style as Signup for consistency
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const handleLogin = async () => {
+    setErrorMessage("");
+    if (!formData.email || !formData.password) {
+      setErrorMessage("Please fill in all fields.");
+      return;
+    }
+
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", { email, password });
+      setLoading(true);
+      const res = await axios.post("http://localhost:8000/api/auth/login", formData);
+
       if (res.data.status) {
         localStorage.setItem("token", res.data.token);
-        alert("Login successful!");
-        navigate("/home");
+        navigate("/");
       } else {
-        setErrorMessage(res.data.message || "Login failed");
+        setErrorMessage(res.data.message || "Invalid credentials");
       }
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || "Something went wrong");
+      console.error("Login error:", err);
+      const serverMessage =
+        err.response?.data?.message || "Server not responding. Please try again later.";
+      setErrorMessage(serverMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: "100vh" }}>
-      <Grid item xs={12} sm={8} md={4}>
-        <Box p={4} boxShadow={3} borderRadius={2} bgcolor="background.paper">
-          <Typography variant="h5" component="h1" gutterBottom>Login</Typography>
-          <TextField label="Email" fullWidth margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <TextField label="Password" type="password" fullWidth margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
-          {errorMessage && <Alert severity="error" sx={{ mt: 2 }}>{errorMessage}</Alert>}
-          <Button variant="contained" color="success" fullWidth sx={{ mt: 2 }} onClick={handleLogin}>Login</Button>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      className="register-container"
+      style={{ minHeight: "100vh" }}
+    >
+      {/* Left side image section (optional) */}
+      <Grid
+        item
+        xs={false}
+        sm={6}
+        md={6}
+        sx={{
+          backgroundImage: "url('/assets/login-bg.jpg')", // replace with your image path
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          display: { xs: "none", sm: "block" },
+        }}
+      />
+
+      {/* Right side form */}
+      <Grid item xs={12} sm={6} md={4}>
+        <Box className="register-box" p={4} boxShadow={3} borderRadius={3}>
+          <Box display="flex" justifyContent="center" mb={2}>
+            <Avatar sx={{ bgcolor: "green", width: 56, height: 56 }}>
+              <LockOpenIcon fontSize="large" />
+            </Avatar>
+          </Box>
+
+          <Typography variant="h5" align="center" gutterBottom>
+            Login to Your Account
+          </Typography>
+
+          {errorMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errorMessage}
+            </Alert>
+          )}
+
+          <TextField
+            label="Email"
+            name="email"
+            type="email"
+            fullWidth
+            margin="normal"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            fullWidth
+            margin="normal"
+            value={formData.password}
+            onChange={handleChange}
+          />
+
+          <Button
+            variant="contained"
+            color="success"
+            fullWidth
+            sx={{ mt: 2 }}
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={22} /> : "Login"}
+          </Button>
+
           <Typography variant="body2" align="center" sx={{ mt: 2 }}>
             Don’t have an account?{" "}
-            <Link component={RouterLink} to="/register" sx={{ color: "green" }}>Sign Up</Link>
+            <Link component={RouterLink} to="/register" underline="hover" sx={{ color: "green" }}>
+              Sign Up
+            </Link>
           </Typography>
         </Box>
       </Grid>

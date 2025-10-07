@@ -85,11 +85,7 @@ const Signup = () => {
             Create Account
           </Typography>
 
-          {errorMessage && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {errorMessage}
-            </Alert>
-          )}
+         
           {successMessage && (
             <Alert severity="success" sx={{ mb: 2 }}>
               {successMessage}
@@ -122,6 +118,11 @@ const Signup = () => {
             value={formData.password}
             onChange={handleChange}
           />
+           {errorMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errorMessage}
+            </Alert>
+          )}
 
           <Button
             variant="contained"
