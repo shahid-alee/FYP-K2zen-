@@ -10,97 +10,82 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./tourPackages.scss";
 
-import skardu1 from "../../../assets/heroSection/bg.jpeg";
-import skardu2 from "../../../assets/heroSection/bg2.jpeg";
-import skardu3 from "../../../assets/heroSection/bg3.jpeg";
-import hunza1 from "../../../assets/heroSection/bg.jpeg";
-import hunza2 from "../../../assets/heroSection/bg2.jpeg";
+import skarduImg from "../../../assets/heroSection/bg.jpeg";
+import hunzaImg from "../../../assets/heroSection/bg2.jpeg";
+import gilgitImg from "../../../assets/heroSection/bg3.jpeg";
+import ghancheImg from "../../../assets/heroSection/bg2.jpeg";
+import deosaiImg from "../../../assets/heroSection/bg3.jpeg";
+import diamerImg from "../../../assets/heroSection/bg.jpeg";
 import honeymoon1 from "../../../assets/heroSection/bg3.jpeg";
 import honeymoon2 from "../../../assets/heroSection/bg2.jpeg";
 import honeymoon3 from "../../../assets/heroSection/bg3.jpeg";
-import honeymoon4 from "../../../assets/heroSection/bg.jpeg";
 
 export const packages = [
+  // ====== Popular Packages ======
   {
     id: 1,
     title: "3 Days Skardu Adventure",
-    places: ["Deosai", "Upper Kachura"],
+    places: ["Upper Kachura", "Shangrila Resort"],
     days: 3,
-    image: skardu1,
-    description:
-      "Explore Skardu’s breathtaking landscapes including Deosai Plains and Upper Kachura Lake. Perfect short trip for adventure lovers.",
+    image: skarduImg,
   },
   {
     id: 2,
-    title: "5 Days Skardu Tour",
-    places: ["Shangrila", "Shigar Fort", "Khaplu"],
+    title: "5 Days Hunza & Khunjerab",
+    places: ["Attabad Lake", "Altit Fort", "Khunjerab Pass"],
     days: 5,
-    image: skardu2,
-    description:
-      "Experience the beauty of Skardu with historic forts, Shangrila resort, and the majestic Khaplu valley.",
+    image: hunzaImg,
   },
   {
     id: 3,
-    title: "7 Days Skardu & Hunza",
-    places: ["Deosai", "Attabad", "Baltit", "Khunjerab"],
+    title: "7 Days Gilgit–Deosai Expedition",
+    places: ["Deosai Plains", "Naltar Valley", "Satrangi Lake"],
     days: 7,
-    image: skardu3,
-    description:
-      "A complete package to explore both Skardu & Hunza valleys with their lakes, forts, and Khunjerab Pass.",
+    image: gilgitImg,
   },
   {
     id: 4,
-    title: "3 Days Hunza Escape",
-    places: ["Eagle’s Nest", "Altit Fort", "Attabad"],
+    title: "3 Days Ghanche Discovery",
+    places: ["Khaplu Fort", "Chaqchan Mosque", "Saling Valley"],
     days: 3,
-    image: hunza1,
-    description:
-      "A quick getaway to Hunza’s scenic Eagle’s Nest viewpoint, Attabad Lake, and the historic Altit Fort.",
+    image: ghancheImg,
   },
   {
     id: 5,
-    title: "5 Days Hunza & Khunjerab",
-    places: ["Passu Cones", "Attabad", "Khunjerab"],
+    title: "5 Days Diamer & Fairy Meadows",
+    places: ["Chilas", "Babusar Pass", "Fairy Meadows"],
     days: 5,
-    image: hunza2,
-    description:
-      "Discover Hunza valley’s Passu Cones, beautiful Attabad Lake, and journey to the Khunjerab border.",
+    image: diamerImg,
   },
   {
     id: 6,
-    title: "7 Days Skardu Honeymoon",
-    places: ["Deosai", "Blind Lake", "Upper Kachura"],
+    title: "7 Days Deosai & Skardu Explorer",
+    places: ["Deosai Plains", "Blind Lake", "Shigar Fort"],
     days: 7,
-    image: honeymoon1,
-    description:
-      "Romantic honeymoon in Skardu with lake views, cozy nights, and adventures in Deosai.",
+    image: deosaiImg,
   },
+
+  // ====== Honeymoon Packages ======
   {
     id: 7,
-    title: "Honeymoon Special",
-    places: ["Candlelight Dinner", "Decorated Room"],
-    days: 4,
-    image: honeymoon2,
-    description:
-      "Romantic honeymoon package with decorated rooms and candlelight dinner in the heart of nature.",
+    title: "3 Days Romantic Skardu Escape",
+    places: ["Upper Kachura", "Blind Lake"],
+    days: 3,
+    image: honeymoon1,
   },
   {
     id: 8,
-    title: "Romantic Hunza Escape",
-    places: ["Attabad", "Altit", "Couple Setup"],
+    title: "5 Days Hunza Bliss Honeymoon",
+    places: ["Attabad Lake", "Altit Fort", "Eagle’s Nest"],
     days: 5,
-    image: honeymoon3,
-    description:
-      "A couple’s favorite: romantic setup at Attabad Lake, historic Altit Fort, and scenic spots in Hunza.",
+    image: honeymoon2,
   },
   {
     id: 9,
-    title: "Deosai Bliss Honeymoon",
-    places: ["Deosai Night Sky", "Luxury Camp", "Couple Bonfire"],
-    days: 4,
-    image: honeymoon4,
-    description:
-      "Romantic nights under Deosai’s starlit sky with bonfire and luxury camping.",
+    title: "7 Days Skardu–Deosai Romance",
+    places: ["Deosai Night Sky", "Shangrila Resort", "Couple Bonfire"],
+    days: 7,
+    image: honeymoon3,
   },
 ];
 
@@ -109,11 +94,13 @@ export default function PopularPackages() {
 
   return (
     <Box className="packages-section">
+      {/* ===== Popular Section ===== */}
       <div className="section-header">
-      <Typography variant="h3" className="section-title">
-        Popular Tour Packages
-      </Typography>
+        <Typography variant="h3" className="section-title">
+          Popular Tour Packages
+        </Typography>
       </div>
+
       <Grid container spacing={3} justifyContent="center">
         {packages.slice(0, 6).map((pkg) => (
           <Grid item xs={12} sm={6} md={5} key={pkg.id}>
@@ -133,7 +120,9 @@ export default function PopularPackages() {
                 <Typography className="package-days">{pkg.days} Days</Typography>
                 <Button
                   className="package-btn"
-                  onClick={() => navigate(`/packageDetail/${pkg.id}`, { state: pkg })}
+                  onClick={() =>
+                    navigate(`/packageDetail/${pkg.id}`, { state: pkg })
+                  }
                 >
                   Book Now
                 </Button>
@@ -142,11 +131,14 @@ export default function PopularPackages() {
           </Grid>
         ))}
       </Grid>
+
+      {/* ===== Honeymoon Section ===== */}
       <div className="section-header">
-      <Typography variant="h4" className="section-title-honeymoon">
-        Honeymoon Packages
-      </Typography>
+        <Typography variant="h4" className="section-title-honeymoon">
+          Honeymoon Packages
+        </Typography>
       </div>
+
       <Grid container spacing={3} justifyContent="center">
         {packages.slice(6).map((pkg) => (
           <Grid item xs={12} sm={6} md={5} key={pkg.id}>
@@ -166,7 +158,9 @@ export default function PopularPackages() {
                 <Typography className="package-days">{pkg.days} Days</Typography>
                 <Button
                   className="package-btn honeymoon-btn"
-                  onClick={() => navigate(`/packageDetail/${pkg.id}`, { state: pkg })}
+                  onClick={() =>
+                    navigate(`/packageDetail/${pkg.id}`, { state: pkg })
+                  }
                 >
                   Book Now
                 </Button>

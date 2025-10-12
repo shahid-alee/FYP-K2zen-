@@ -87,11 +87,7 @@ const Login = () => {
             Login to Your Account
           </Typography>
 
-          {errorMessage && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {errorMessage}
-            </Alert>
-          )}
+         
 
           <TextField
             label="Email"
@@ -111,6 +107,12 @@ const Login = () => {
             value={formData.password}
             onChange={handleChange}
           />
+
+           {errorMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errorMessage}
+            </Alert>
+          )}
 
           <Button
             variant="contained"

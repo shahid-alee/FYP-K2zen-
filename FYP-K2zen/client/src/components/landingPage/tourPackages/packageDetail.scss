@@ -1,58 +1,157 @@
 :root {
-  --primary: #239753;   
-  --primary-dark: #1C7942;
-  --primary-light: #2DB564;
+  --primary: #239753;
+  --primary-dark: #1c7942;
+  --primary-light: #2db564;
   --white: #ffffff;
+  --bg-light: #f7fdf9;
+  --text-dark: #333;
 }
 
-.details-container {
-  margin: 40px auto;
-  padding: 20px;
-  margin-top: 15%;
-  border-radius: 16px;
-  background: #fff;
-  text-align: center;
-}
-
-.details-banner {
+/* Overall Page */
+.details-page {
+  padding-top: 120px;
+  padding-bottom: 60px;
   width: 100%;
-  height: 300px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Container */
+.details-container {
+  border-radius: 18px;
+  width: 60%;
   overflow: hidden;
-  border-radius: 12px;
-  margin-bottom: 20px;
+  background: var(--white);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+
+  &:hover {
+    box-shadow: 0 15px 35px rgba(35, 151, 83, 0.25);
+  }
+}
+
+/* Banner Section */
+.details-banner {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
 
   .banner-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: brightness(80%);
+    transition: transform 0.4s ease;
+  }
+
+  &:hover .banner-img {
+    transform: scale(1.05);
+  }
+
+  .banner-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--white);
+  }
+
+  .banner-title {
+    font-weight: 700;
+    font-size: 2rem;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
   }
 }
 
-.details-title {
-  font-weight: 700;
-  margin-bottom: 10px;
+/* Content Section */
+.details-content {
+  padding: 30px 40px;
+
+  .duration {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .details-description {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .details-subtitle {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 15px;
+  }
 }
 
-.details-description {
-  color: #555;
-  line-height: 1.6;
-}
-
+/* Places Covered Chips */
 .details-places {
-  margin: 15px 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
   justify-content: center;
+  gap: 10px;
+
+  .place-chip {
+    background-color: var(--primary);
+    color: var(--white);
+    font-weight: 500;
+    border-radius: 6px;
+  }
 }
 
-.place-chip {
-  font-weight: 500;
-}
-
+/* Buttons */
 .details-actions {
-  margin-top: 25px;
+  margin-top: 30px;
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 20px;
+
+  .book-btn {
+    background-color: var(--primary);
+    color: var(--white);
+    font-weight: 600;
+    padding: 10px 30px;
+    border-radius: 10px;
+    text-transform: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: var(--primary-dark);
+    }
+  }
+
+  .back-btn {
+    color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 600;
+    text-transform: none;
+
+    &:hover {
+      background-color: var(--primary-light);
+      color: var(--white);
+      border-color: var(--primary-light);
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .details-banner {
+    height: 250px;
+  }
+
+  .banner-title {
+    font-size: 1.6rem;
+  }
+
+  .details-content {
+    padding: 20px;
+  }
 }

@@ -1,0 +1,173 @@
+:root {
+  --primary: #239753;   
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+  --primary-xlight: #4BBF7B; 
+  --primary-xxlight: #91E7AD;
+}
+
+/* ===== Section Wrapper ===== */
+.pack-section {
+  padding: 80px 5%;
+  background-color: #f8f9f9;
+  min-height: 100vh;
+}
+
+/* ===== Section Title ===== */
+.pack-title {
+  font-weight: 800;
+  margin-bottom: 60px;
+  text-align: center;
+  color: var(--primary-dark);
+  font-size: 2.4rem;
+  letter-spacing: 0.5px;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-light);
+    margin: 12px auto 0;
+    border-radius: 2px;
+  }
+}
+
+/* ===== Cards Container ===== */
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+/* ===== Individual Card ===== */
+.tour-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-radius: 16px !important;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 320px;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ===== Left Side Image ===== */
+.card-media {
+  width: 45% !important;
+  object-fit: cover;
+  filter: brightness(0.95);
+  transition: filter 0.4s ease;
+
+  &:hover {
+    filter: brightness(1);
+  }
+}
+
+/* ===== Right Side Content ===== */
+.card-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 36px;
+  width: 55%;
+
+  @media (max-width: 900px) {
+    padding: 24px;
+  }
+}
+
+/* ===== Card Title ===== */
+.card-title {
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+}
+
+/* ===== Card Description ===== */
+.card-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* ===== Place List (optional for future use) ===== */
+.place-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+
+  li {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 4px 0;
+    position: relative;
+    padding-left: 18px;
+
+    &::before {
+      content: '•';
+      color: var(--primary-light);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1rem;
+    }
+  }
+}
+
+/* ===== Button Styling ===== */
+.tour-btn {
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  padding: 12px 26px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  align-self: flex-start;
+  box-shadow: 0 4px 10px rgba(35, 151, 83, 0.2);
+  transition: all 0.25s ease;
+
+  &:hover {
+    background-color: var(--primary-dark) !important;
+    box-shadow: 0 6px 14px rgba(28, 121, 66, 0.3);
+    transform: translateY(-2px);
+  }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 900px) {
+  .tour-card {
+    flex-direction: column;
+  }
+
+  .card-media {
+    width: 100% !important;
+    height: 240px !important;
+  }
+
+  .card-details {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .tour-btn {
+    width: 100% !important;
+    align-self: stretch;
+  }
+
+  .pack-title {
+    font-size: 1.8rem;
+  }
+}

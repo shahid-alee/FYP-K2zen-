@@ -5,17 +5,14 @@ import {
   Toolbar,
   Typography,
   Grid,
-  Box,
   Container,
   IconButton,
 } from "@mui/material";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt"; // Signup Icon
 import "./navBar.scss";
 
 export default function NavBar() {
-  const [openMenu, setOpenMenu] = useState(null);
-
   return (
     <AppBar position="fixed" className="navbar" elevation={0}>
       <Container maxWidth={false} disableGutters>
@@ -25,7 +22,7 @@ export default function NavBar() {
             alignItems="center"
             justifyContent="space-between"
             wrap="nowrap"
-             className="container"
+            className="container"
           >
             {/* Logo and Title */}
             <Grid item className="navbar-logo">
@@ -38,24 +35,9 @@ export default function NavBar() {
             {/* Menu */}
             <Grid item className="navbar-right">
               <ul className="navbar-menu">
-                <li>
-                  <Link to="/" className="navbar-link">Home</Link>
-                </li>
-
-                <li
-                  className="dropdown-wrapper"
-                  onMouseEnter={() => setOpenMenu("destination")}
-                  onMouseLeave={() => setOpenMenu(null)}
-                >
-                  <span className="navbar-link">Destination ▾</span>
-                  {openMenu === "destination" && (
-                    <Box className="dropdown-menu">
-                      <Link to="../destination/skarduPackages" className="dropdown-item">Skardu</Link>
-                      <Link to="/destination/hunzaPackages" className="dropdown-item">Hunza</Link>
-                    </Box>
-                  )}
-                </li>
-
+                <li><Link to="/" className="navbar-link">Home</Link></li>
+                <li><Link to="/destination" className="navbar-link">Destinaion</Link></li>
+                <li><Link to="/customizePackage" className="navbar-link">Customize Package</Link></li>
                 <li><Link to="/gallery" className="navbar-link">Gallery</Link></li>
                 <li><Link to="/rentCar" className="navbar-link">Rent a Car</Link></li>
                 <li><Link to="/hotels" className="navbar-link">Hotels</Link></li>
@@ -64,7 +46,9 @@ export default function NavBar() {
 
                 {/* Enquire Now Button */}
                 <li>
-                  <Link to="/enquire" ><button className="enquire-btn">Enquire Now</button></Link>
+                  <Link to="/enquire">
+                    <button className="enquire-btn">Enquire Now</button>
+                  </Link>
                 </li>
               </ul>
             </Grid>

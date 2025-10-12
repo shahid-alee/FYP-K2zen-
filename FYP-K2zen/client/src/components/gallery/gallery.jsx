@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./gallery.scss";
 
-// Local images import karein
+// Local images
 import mountain1 from "../../assets/heroSection/bgimg.jpg";
 import mountain2 from "../../assets/heroSection/bg2.jpg";
 import lake1 from "../../assets/heroSection/bg1.jpg";
@@ -53,10 +53,12 @@ export default function Gallery() {
 
   return (
     <section className="gallery-section">
-      <h2 className="gallery-title">Explore Our Gallery</h2>
-      <p className="gallery-subtitle">
-        Click on a category to view breathtaking moments of Gilgit-Baltistan
-      </p>
+      <div className="gallery-header">
+        <h2 className="gallery-title">Explore Our Gallery</h2>
+        <p className="gallery-subtitle">
+          Discover the beauty of Gilgit-Baltistan — mountains, lakes, rivers, and vibrant culture.
+        </p>
+      </div>
 
       {/* Category Tabs */}
       <div className="gallery-categories">
@@ -73,11 +75,11 @@ export default function Gallery() {
         ))}
       </div>
 
-      {/* Images Grid */}
+      {/* Image Grid */}
       <div className="gallery-grid">
         {categories[selectedCategory].map((img, i) => (
           <div key={i} className="gallery-card">
-            <img src={img.src} alt={img.title} />
+            <img src={img.src} alt={img.title} loading="lazy" />
             <div className="gallery-overlay">
               <h3>{img.title}</h3>
             </div>

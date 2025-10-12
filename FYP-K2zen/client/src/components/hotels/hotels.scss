@@ -6,8 +6,8 @@
 }
 
 .hotels-section {
-  width: 100%;  
-  padding: 80px 8%;
+  width: 85%;  
+  padding: 93px 8%;
   background: linear-gradient(to bottom, #f9fbff, #eef3f9);
 }
 
@@ -28,7 +28,8 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+
+  
 }
 
 .hotel-card {
@@ -40,7 +41,7 @@
   background: #fff;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   transition: all 0.35s ease;
-  width: 45%;
+  width: 100%;
   min-height: 250px;
 
   &:hover {

@@ -1,0 +1,62 @@
+:root {
+  --primary: #239753;
+  --primary-dark: #1C7942;
+  --white: #ffffff;
+}
+
+.booknow-page {
+  padding: 80px 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.booknow-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.package-summary {
+  background-color: var(--white);
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  & > * {
+    margin-bottom: 8px;
+  }
+}
+
+.booknow-form {
+  background-color: var(--white);
+  padding: 32px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  .MuiTextField-root {
+    margin-bottom: 20px;
+  }
+
+  .booknow-btn {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 12px 24px;
+    text-transform: none;
+    font-weight: 600;
+    border-radius: 8px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--primary-dark);
+    }
+  }
+}

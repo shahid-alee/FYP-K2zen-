@@ -23,7 +23,7 @@ export default function HotelBooking() {
 
   return (
     <Box className="hotelbooking-section">
-      {/* Hotel Header */}
+      {/* Header */}
       <Box className="hotel-header">
         <img src={hotel.image} alt={hotel.name} className="hotel-banner" />
         <Typography variant="h3" className="hotel-title">
@@ -31,8 +31,9 @@ export default function HotelBooking() {
         </Typography>
       </Box>
 
-      {/* Hotel Features */}
+      {/* Hotel Details */}
       <Grid container spacing={4} className="hotel-details">
+        {/* Hotel Info */}
         <Grid item xs={12} md={8}>
           <Paper elevation={3} className="hotel-info">
             <Typography variant="h5" className="section-heading">
@@ -44,10 +45,10 @@ export default function HotelBooking() {
               ))}
             </ul>
             <Typography variant="body1" className="hotel-desc">
-              Experience luxury and comfort at {hotel.name}. Enjoy breathtaking
-              views, world-class facilities, and unforgettable hospitality.
-              Whether you're on vacation or business, this hotel provides the
-              perfect blend of tradition and modern comfort.
+              Experience comfort and luxury at <strong>{hotel.name}</strong>,
+              surrounded by the breathtaking landscapes of Gilgit-Baltistan.
+              Whether you’re planning a romantic getaway or a family trip, this
+              hotel ensures a stay that’s both relaxing and memorable.
             </Typography>
           </Paper>
         </Grid>
