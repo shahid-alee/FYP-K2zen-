@@ -1,0 +1,115 @@
+:root {
+  --primary: #239753;
+  --primary-dark: #1C7942;
+  --primary-light: #2DB564;
+  --white: #ffffff;
+}
+
+.destination-page {
+  padding: 120px 40px 60px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 40px;
+
+  .section-title {
+    font-weight: 800;
+    font-size: 2.4rem;
+    color: var(--primary-dark);
+    margin-bottom: 16px;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: #444;
+    line-height: 1.7;
+  }
+}
+
+.destination-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  width: 100%;
+  margin-top: 5%;
+}
+
+.destination-card {
+  display: flex;
+  flex-direction: row; /* ✅ Image Left, Content Right */
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 1000px;
+  background-color: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(35, 151, 83, 0.25);
+  }
+
+  .destination-image {
+    width: 45%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .destination-content {
+    flex: 1;
+    text-align: left;
+    padding: 30px;
+
+    .destination-name {
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .destination-description {
+      color: #555;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .view-btn {
+      background-color: var(--primary);
+      color: var(--white);
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 8px 20px;
+      text-transform: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: var(--primary-dark);
+      }
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .destination-card {
+    flex-direction: column;
+    width: 90%;
+
+    .destination-image {
+      width: 100%;
+      height: 220px;
+    }
+
+    .destination-content {
+      text-align: center;
+    }
+  }
+}

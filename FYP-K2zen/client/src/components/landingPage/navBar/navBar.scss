@@ -31,7 +31,7 @@
     font-weight: 700;
     font-size: 18px;
     color: var(--primary-light); 
-    margin-right: 100px;
+    margin-right: 50px;
     letter-spacing: 0.5px;
   }
 }
@@ -52,13 +52,13 @@
   align-items: center;
   margin: 0;
   padding: 2%;
-  gap: 9
+  gap: 5
 }
 
 .navbar-link {
   text-decoration: none;
   color: #333; 
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   white-space: nowrap;
   transition: all 0.3s ease;

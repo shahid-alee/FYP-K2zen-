@@ -79,20 +79,20 @@
 
     .car-title {
       font-weight: 700 !important;
-      font-size: 1.3rem !important;
+      font-size: 1rem !important;
       margin-bottom: 8px;
       color: var(--primary);
     }
 
     .car-details {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #555;
       margin-bottom: 8px;
     }
 
     .car-price {
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       color: #2c3e50;
       margin-bottom: 16px;
     }
@@ -101,11 +101,12 @@
       background: var(--primary) !important;
       color: #fff !important;
       padding: 10px 22px !important;
-      border-radius: 12px !important;
+      border-radius: 8px !important;
       text-transform: none !important;
       font-weight: 600 !important;
       font-size: 1rem !important;
       transition: all 0.3s ease;
+      height: 33px;
 
       &:hover {
         background: var(--primary-dark) !important;

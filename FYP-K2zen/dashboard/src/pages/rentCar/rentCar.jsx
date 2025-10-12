@@ -1,122 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Typography,
-  Avatar,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Paper, IconButton, Typography, Avatar, Button, Dialog, DialogTitle,
+  DialogContent, CircularProgress
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const RentCar = () => {
-  const [cars, setCars] = useState([
-    {
-      _id: 1,
-      carName: "Toyota Corolla",
-      model: "2020",
-      description: "Comfortable sedan for family trips.",
-      driverName: "Ali Khan",
-      location: "Islamabad",
-      image: "https://via.placeholder.com/100",
-      status: "Available",
-    },
-    {
-      _id: 2,
-      carName: "Honda Civic",
-      model: "2019",
-      description: "Stylish car with smooth drive.",
-      driverName: "Ahmed Raza",
-      location: "Lahore",
-      image: "https://via.placeholder.com/100",
-      status: "Booked",
-    },
-  ]);
-
+  const [cars, setCars] = useState([]);
   const [openForm, setOpenForm] = useState(false);
   const [openView, setOpenView] = useState(false);
   const [editingCar, setEditingCar] = useState(null);
   const [viewingCar, setViewingCar] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  const API_URL = "http://localhost:8000/api/rentcar";
+
+  const fetchCars = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(API_URL);
+      setCars(res.data);
+    } catch (err) {
+      console.error("Error fetching cars:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCars();
+  }, []);
+
+  // ✅ Validation schema based on your backend
   const validationSchema = Yup.object({
     carName: Yup.string().required("Car name is required"),
-    model: Yup.string().required("Model is required"),
-    description: Yup.string().required("Description is required"),
-    driverName: Yup.string().required("Driver name is required"),
+    modelYear: Yup.number().required("Model year is required"),
+    pricePerDay: Yup.number().required("Price per day is required"),
+    seats: Yup.number().required("Seats are required"),
     location: Yup.string().required("Location is required"),
-    status: Yup.string()
-      .oneOf(["Available", "Booked"], "Invalid status")
-      .required("Status is required"),
+    status: Yup.string().required("Status is required"),
+    description: Yup.string().required("Description is required"),
     image: Yup.mixed().required("Image is required"),
   });
 
-  const initialValues = {
-    carName: "",
-    model: "",
-    description: "",
-    driverName: "",
-    location: "",
-    status: "",
-    image: null,
-  };
+  const onSubmit = async (values, { resetForm }) => {
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
 
-  const onSubmit = (values, { resetForm }) => {
-    if (editingCar) {
-      // Update car
-      const updatedCars = cars.map((car) =>
-        car._id === editingCar._id
-          ? {
-              ...editingCar,
-              ...values,
-              image: values.image instanceof File ? URL.createObjectURL(values.image) : editingCar.image,
-            }
-          : car
-      );
-      setCars(updatedCars);
+    try {
+      if (editingCar) {
+        await axios.put(`${API_URL}/${editingCar._id}`, formData);
+      } else {
+        await axios.post(`${API_URL}/add`, formData);
+      }
+      fetchCars();
+      resetForm();
+      setOpenForm(false);
       setEditingCar(null);
-    } else {
-      // Add new car
-      const newCar = {
-        _id: Date.now(),
-        ...values,
-        image: URL.createObjectURL(values.image),
-      };
-      setCars([...cars, newCar]);
+    } catch (err) {
+      console.error("Error saving car:", err);
     }
-    resetForm();
-    setOpenForm(false);
   };
 
-  const handleDelete = (car) => {
-    setCars(cars.filter((c) => c._id !== car._id));
-  };
-
-  const handleEdit = (car) => {
-    setEditingCar(car);
-    setOpenForm(true);
-  };
-
-  const handleView = (car) => {
-    setViewingCar(car);
-    setOpenView(true);
+  const handleDelete = async (car) => {
+    try {
+      await axios.delete(`${API_URL}/${car._id}`);
+      fetchCars();
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
   };
 
   return (
     <div style={{ padding: "20px" }}>
       <Typography variant="h5" gutterBottom>
-        Rent Car List
+        Rent Car Management
       </Typography>
 
       <Button
@@ -131,192 +97,119 @@ const RentCar = () => {
         Add New Car
       </Button>
 
-      {/* Table */}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><b>Car Name</b></TableCell>
-              <TableCell><b>Model</b></TableCell>
-              <TableCell><b>Description</b></TableCell>
-              <TableCell><b>Driver Name</b></TableCell>
-              <TableCell><b>Location</b></TableCell>
-              <TableCell><b>Image</b></TableCell>
-              <TableCell><b>Status</b></TableCell>
-              <TableCell align="center"><b>Action</b></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {cars.length > 0 ? (
-              cars.map((car) => (
-                <TableRow key={car._id}>
-                  <TableCell>{car.carName}</TableCell>
-                  <TableCell>{car.model}</TableCell>
-                  <TableCell>{car.description}</TableCell>
-                  <TableCell>{car.driverName}</TableCell>
-                  <TableCell>{car.location}</TableCell>
-                  <TableCell>
-                    <Avatar
-                      src={car.image}
-                      alt={car.carName}
-                      variant="rounded"
-                      sx={{ width: 56, height: 56 }}
-                    />
-                  </TableCell>
-                  <TableCell>{car.status}</TableCell>
-                  <TableCell align="center">
-                    <IconButton color="primary" onClick={() => handleView(car)}>
-                      <VisibilityIcon />
-                    </IconButton>
-                    <IconButton color="secondary" onClick={() => handleEdit(car)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(car)}>
-                      <DeleteIcon />
-                    </IconButton>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell><b>Car Name</b></TableCell>
+                <TableCell><b>Model Year</b></TableCell>
+                <TableCell><b>Price / Day</b></TableCell>
+                <TableCell><b>Seats</b></TableCell>
+                <TableCell><b>Location</b></TableCell>
+                <TableCell><b>Status</b></TableCell>
+                <TableCell><b>Image</b></TableCell>
+                <TableCell><b>Actions</b></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cars.length > 0 ? (
+                cars.map((car) => (
+                  <TableRow key={car._id}>
+                    <TableCell>{car.carName}</TableCell>
+                    <TableCell>{car.modelYear}</TableCell>
+                    <TableCell>{car.pricePerDay}</TableCell>
+                    <TableCell>{car.seats}</TableCell>
+                    <TableCell>{car.location}</TableCell>
+                    <TableCell>{car.status}</TableCell>
+                    <TableCell>
+                      <Avatar
+                        src={`http://localhost:8000/${car.image.replace(/\\/g, "/")}`}
+                        alt={car.carName}
+                        variant="rounded"
+                        sx={{ width: 56, height: 56 }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton color="primary" onClick={() => { setViewingCar(car); setOpenView(true); }}>
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton color="secondary" onClick={() => { setEditingCar(car); setOpenForm(true); }}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton color="error" onClick={() => handleDelete(car)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={8} align="center">
+                    No Cars Available
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={8} align="center">
-                  No Cars Available
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
 
-      {/* Add/Edit Car Dialog */}
+      {/* Form Dialog */}
       <Dialog open={openForm} onClose={() => setOpenForm(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{editingCar ? "Edit Car" : "Add New Car"}</DialogTitle>
         <DialogContent>
           <Formik
-            initialValues={editingCar || initialValues}
+            initialValues={editingCar || {
+              carName: "",
+              modelYear: "",
+              pricePerDay: "",
+              seats: "",
+              location: "",
+              status: "",
+              description: "",
+              image: null,
+            }}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
             enableReinitialize
           >
             {({ setFieldValue, isSubmitting }) => (
-              <Form
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "15px",
-                  marginTop: "10px",
-                }}
-              >
-                {["carName", "model", "driverName", "location"].map((field) => (
-                  <div key={field}>
-                    <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                      {field.replace(/([A-Z])/g, " $1")}
-                    </label>
-                    <Field
-                      name={field}
-                      type="text"
-                      style={{
-                        width: "100%",
-                        padding: "10px",
-                        borderRadius: "6px",
-                        border: "1px solid #ccc",
-                      }}
-                    />
-                    <ErrorMessage
-                      name={field}
-                      component="div"
-                      style={{ color: "red", fontSize: "13px" }}
-                    />
-                  </div>
-                ))}
+              <Form style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                <Field name="carName" type="text" placeholder="Car Name" />
+                <ErrorMessage name="carName" component="div" style={{ color: "red" }} />
 
-                {/* Description */}
+                <Field name="modelYear" type="number" placeholder="Model Year" />
+                <ErrorMessage name="modelYear" component="div" style={{ color: "red" }} />
+
+                <Field name="pricePerDay" type="number" placeholder="Price per Day" />
+                <ErrorMessage name="pricePerDay" component="div" style={{ color: "red" }} />
+
+                <Field name="seats" type="number" placeholder="Seats" />
+                <ErrorMessage name="seats" component="div" style={{ color: "red" }} />
+
+                <Field name="location" type="text" placeholder="Location" />
+                <ErrorMessage name="location" component="div" style={{ color: "red" }} />
+
+                <Field name="status" as="select">
+                  <option value="">Select Status</option>
+                  <option value="Available">Available</option>
+                  <option value="Booked">Booked</option>
+                  <option value="Maintenance">Maintenance</option>
+                </Field>
+                <ErrorMessage name="status" component="div" style={{ color: "red" }} />
+
+                <Field name="description" as="textarea" rows="3" placeholder="Description" />
+                <ErrorMessage name="description" component="div" style={{ color: "red" }} />
+
                 <div>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Description
-                  </label>
-                  <Field
-                    name="description"
-                    as="textarea"
-                    rows="3"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                      resize: "none",
-                    }}
-                  />
-                  <ErrorMessage
-                    name="description"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
+                  <label><b>Image</b></label>
+                  <input type="file" onChange={(e) => setFieldValue("image", e.target.files[0])} />
                 </div>
 
-                {/* Status */}
-                <div>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Status
-                  </label>
-                  <Field
-                    name="status"
-                    as="select"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                    }}
-                  >
-                    <option value="">Select status</option>
-                    <option value="Available">Available</option>
-                    <option value="Booked">Booked</option>
-                  </Field>
-                  <ErrorMessage
-                    name="status"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
-                </div>
-
-                {/* Image */}
-                <div>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Image
-                  </label>
-                  <input
-                    name="image"
-                    type="file"
-                    onChange={(e) => setFieldValue("image", e.target.files[0])}
-                    style={{
-                      width: "100%",
-                      padding: "8px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                      background: "#f9f9f9",
-                    }}
-                  />
-                  <ErrorMessage
-                    name="image"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
-                </div>
-
-                {/* Submit */}
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={isSubmitting}
-                  style={{
-                    marginTop: "10px",
-                    padding: "12px",
-                    borderRadius: "6px",
-                    fontWeight: "bold",
-                  }}
-                >
+                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                   {editingCar ? "Update Car" : "Add Car"}
                 </Button>
               </Form>
@@ -325,23 +218,22 @@ const RentCar = () => {
         </DialogContent>
       </Dialog>
 
-      {/* View Car Dialog */}
+      {/* View Dialog */}
       <Dialog open={openView} onClose={() => setOpenView(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Car Details</DialogTitle>
         <DialogContent>
           {viewingCar && (
             <div style={{ padding: "10px", lineHeight: "1.8" }}>
               <p><b>Car Name:</b> {viewingCar.carName}</p>
-              <p><b>Model:</b> {viewingCar.model}</p>
-              <p><b>Description:</b> {viewingCar.description}</p>
-              <p><b>Driver Name:</b> {viewingCar.driverName}</p>
+              <p><b>Model Year:</b> {viewingCar.modelYear}</p>
+              <p><b>Price per Day:</b> {viewingCar.pricePerDay}</p>
+              <p><b>Seats:</b> {viewingCar.seats}</p>
               <p><b>Location:</b> {viewingCar.location}</p>
               <p><b>Status:</b> {viewingCar.status}</p>
+              <p><b>Description:</b> {viewingCar.description}</p>
               <Avatar
-                src={viewingCar.image}
-                alt={viewingCar.carName}
-                variant="rounded"
-                sx={{ width: 100, height: 100, marginTop: "10px" }}
+                src={`http://localhost:8000/${viewingCar.image.replace(/\\/g, "/")}`}
+                sx={{ width: 100, height: 100 }}
               />
             </div>
           )}

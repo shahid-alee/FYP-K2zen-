@@ -1,6 +1,14 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Box, Typography, Button, Chip, Container, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Chip,
+  Container,
+  Paper,
+  Divider,
+} from "@mui/material";
 import "./packageDetail.scss";
 
 export default function PackageDetails() {
@@ -15,7 +23,12 @@ export default function PackageDetails() {
           <Typography variant="h5" color="error" gutterBottom>
             Package not found
           </Typography>
-          <Button variant="contained" color="primary" onClick={() => navigate("/")}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/")}
+            sx={{ mt: 2 }}
+          >
             Go Back
           </Button>
         </Box>
@@ -24,51 +37,61 @@ export default function PackageDetails() {
   }
 
   return (
-    <Container maxWidth="md">
-      <Paper elevation={4} className="details-container">
-        {/* Banner Image */}
+    <Container maxWidth="md" className="details-page">
+      <Paper elevation={6} className="details-container">
+        {/* Banner */}
         <Box className="details-banner">
           <img src={pkg.image} alt={pkg.title} className="banner-img" />
+          <Box className="banner-overlay">
+            <Typography variant="h4" className="banner-title">
+              {pkg.title}
+            </Typography>
+          </Box>
         </Box>
 
-        {/* Title */}
-        <Typography variant="h4" className="details-title" gutterBottom>
-          {pkg.title}
-        </Typography>
+        {/* Info Section */}
+        <Box className="details-content">
+          <Typography variant="subtitle1" className="duration">
+            Duration: <strong>{pkg.days} Days</strong>
+          </Typography>
 
-        {/* Duration */}
-        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-          Duration: <strong>{pkg.days} Days</strong>
-        </Typography>
+          {pkg.description && (
+            <Typography variant="body1" className="details-description" paragraph>
+              {pkg.description}
+            </Typography>
+          )}
 
-        {/* Description */}
-        <Typography variant="body1" className="details-description" paragraph>
-          {pkg.description}
-        </Typography>
+          <Divider sx={{ my: 3 }} />
 
-        {/* Places */}
-        <Typography variant="h6" className="details-subtitle" gutterBottom>
-          Places Covered:
-        </Typography>
-        <Box className="details-places">
-          {pkg.places.map((place, i) => (
-            <Chip
-              key={i}
-              label={place}
-              color="primary"
-              className="place-chip"
-            />
-          ))}
-        </Box>
+          {/* Places */}
+          <Typography variant="h6" className="details-subtitle" gutterBottom>
+            Places Covered
+          </Typography>
+          <Box className="details-places">
+            {pkg.places.map((place, i) => (
+              <Chip key={i} label={place} color="primary" className="place-chip" />
+            ))}
+          </Box>
 
-        {/* Actions */}
-        <Box className="details-actions">
-          <Button variant="contained" color="primary" size="large">
-            Proceed to Booking
-          </Button>
-          <Button variant="outlined" size="large" onClick={() => navigate(-1)}>
-            Back
-          </Button>
+          {/* Actions */}
+          <Box className="details-actions">
+            <Button
+              variant="contained"
+              size="large"
+              className="book-btn"
+              onClick={() => navigate("/bookNow", { state: { pkg } })}
+            >
+              Proceed to Booking
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              className="back-btn"
+              onClick={() => navigate(-1)}
+            >
+              Back
+            </Button>
+          </Box>
         </Box>
       </Paper>
     </Container>
