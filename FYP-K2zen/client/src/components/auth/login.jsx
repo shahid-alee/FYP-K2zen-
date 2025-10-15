@@ -74,7 +74,7 @@ const Login = () => {
         }}
       />
 
-      {/* Right side form */}
+      
       <Grid item xs={12} sm={6} md={4}>
         <Box className="register-box" p={4} boxShadow={3} borderRadius={3}>
           <Box display="flex" justifyContent="center" mb={2}>

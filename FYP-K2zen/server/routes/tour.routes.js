@@ -1,11 +1,11 @@
 import express from "express";
-import { getTours, createTour, deleteTour, updateTour } from "../controllers/tourController.js";
+import { getTours, createTour, deleteTour, updateTour } from "../controllers/tour.controller.js";
 
 const router = express.Router();
 
-router.get("/", getTours);       // GET all tours
-router.post("/", createTour);    // Create new tour
-router.delete("/:id", deleteTour); // Delete a tour
-router.put("/:id", updateTour);    // Update a tour
+router.get("/", getTours);      
+router.post("/", createTour);    
+router.delete("/:id", deleteTour); 
+router.put("/:id", updateTour);    
 
 export default router;

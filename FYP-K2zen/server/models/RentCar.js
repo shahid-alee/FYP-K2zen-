@@ -2,16 +2,24 @@ import mongoose from "mongoose";
 
 const rentCarSchema = new mongoose.Schema(
   {
-    carName: { type: String, required: true }, // e.g. Corolla Altis
-    modelYear: { type: Number, required: true }, // e.g. 2023
-    pricePerDay: { type: Number, required: true }, // daily rent
-    seats: { type: Number, required: true }, // number of seats
-    image: { type: String, required: true }, // image path from multer
-    location: { type: String, required: true }, // pickup or available location
-    status: { type: String, enum: ["Available", "Booked", "Maintenance"], default: "Available" },
-    description: { type: String }, // short description of the car
+    carName: { type: String, required: true },
+    modelYear: { type: Number, required: true },
+    pricePerDay: { type: Number, required: true },
+    seats: { type: Number, required: true },
+    location: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["Available", "Booked", "Maintenance"],
+      default: "Available",
+    },
+    description: { type: String, required: true },
+    image: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("RentCar", rentCarSchema);
+// Prevent OverwriteModelError in dev
+const RentCar =
+  mongoose.models.RentCar || mongoose.model("RentCar", rentCarSchema);
+
+export default RentCar;

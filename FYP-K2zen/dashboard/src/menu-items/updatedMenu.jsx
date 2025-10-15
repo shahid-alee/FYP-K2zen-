@@ -48,11 +48,19 @@ const UpdatedMenu = {
       icon: icons.dashboard,
       breadcrumbs: false
     },
-    {
-      id: 'tours',
-      title: 'Tours',
+     {
+      id: 'Destinations',
+      title: 'Destinations',
       type: 'item',
-      url: '/tours',
+      url: '/destinations',
+      icon: icons.tours,
+      breadcrumbs: false
+    },
+    {
+      id: 'pakages',
+      title: 'Packages',
+      type: 'item',
+      url: '/packages',
       icon: icons.tours,
       breadcrumbs: false
     },
@@ -93,6 +101,38 @@ const UpdatedMenu = {
       title: 'Users',
       type: 'item',
       url: '/users',
+      icon: icons.users,
+      breadcrumbs: false
+    },
+      {
+      id: 'hotelBookings',
+      title: 'hotelBookings',
+      type: 'item',
+      url: '/hotelbookings',
+      icon: icons.users,
+      breadcrumbs: false
+    },
+     {
+      id: 'carBookings',
+      title: 'carBookings',
+      type: 'item',
+      url: '/carbookings',
+      icon: icons.users,
+      breadcrumbs: false
+    },
+     {
+      id: 'customizePackages',
+      title: 'customizePackages',
+      type: 'item',
+      url: '/customizePackages',
+      icon: icons.users,
+      breadcrumbs: false
+    },
+     {
+      id: 'reviews',
+      title: 'reviews',
+      type: 'item',
+      url: '/reviews',
       icon: icons.users,
       breadcrumbs: false
     },
