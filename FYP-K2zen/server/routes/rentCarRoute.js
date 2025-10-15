@@ -1,56 +1,26 @@
 import express from "express";
 import multer from "multer";
-import path from "path";
-import RentCar from "../models/RentCar.js";
+import {
+  addRentCar,
+  getAllRentCars,
+  deleteRentCar,
+  updateRentCar,
+} from "../controllers/rentCarController.js";
 
 const router = express.Router();
 
-// ✅ Multer setup for image upload
+// Multer setup
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // uploads folder must exist
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) =>
+    cb(null, Date.now() + "-" + file.originalname.replace(/\s+/g, "_")),
 });
-
 const upload = multer({ storage });
 
-// ✅ Add new car
-router.post("/add", upload.single("image"), async (req, res) => {
-  try {
-    const { carName, model, description, driverName, location, status } = req.body;
-
-    // Check if file is uploaded
-    const image = req.file ? req.file.path : null;
-
-    const newCar = new RentCar({
-      carName,
-      model,
-      description,
-      driverName,
-      location,
-      status,
-      image,
-    });
-
-    await newCar.save();
-    res.status(201).json({ message: "Car added successfully!", car: newCar });
-  } catch (err) {
-    console.error("Error saving car:", err);
-    res.status(500).json({ message: "Error saving car", error: err.message });
-  }
-});
-
-// ✅ Fetch all cars
-router.get("/", async (req, res) => {
-  try {
-    const cars = await RentCar.find();
-    res.status(200).json(cars);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+// Routes
+router.get("/", getAllRentCars);
+router.post("/add", upload.single("image"), addRentCar);
+router.delete("/:id", deleteRentCar);
+router.put("/:id", upload.single("image"), updateRentCar);
 
 export default router;

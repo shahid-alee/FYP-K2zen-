@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import "./customizePackage.scss";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function CustomizePackage() {
   const navigate = useNavigate();
@@ -36,16 +37,8 @@ export default function CustomizePackage() {
   const [errors, setErrors] = useState({});
 
   const placesOptions = [
-    "Skardu",
-    "Hunza",
-    "Gilgit",
-    "Astore",
-    "Diamer",
-    "Shiger",
-    "Ghanche",
-    "Kharmang",
-    "Ghizer",
-    "Nagar",
+    "Skardu", "Hunza", "Gilgit", "Astore", "Diamer",
+    "Shiger", "Ghanche", "Kharmang", "Ghizer", "Nagar",
   ];
 
   const accommodationOptions = ["Budget", "Standard", "Deluxe"];
@@ -71,21 +64,46 @@ export default function CustomizePackage() {
     else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = "Email is invalid";
     if (!form.phone.trim()) newErrors.phone = "Phone number is required";
     if (!form.durationDays) newErrors.durationDays = "Duration is required";
-    if (form.destinationPlaces.length === 0)
-      newErrors.destinationPlaces = "Select at least one destination";
-    if (!form.accommodationType)
-      newErrors.accommodationType = "Select accommodation type";
+    if (form.destinationPlaces.length === 0) newErrors.destinationPlaces = "Select at least one destination";
+    if (!form.accommodationType) newErrors.accommodationType = "Select accommodation type";
     if (!form.transportType) newErrors.transportType = "Select transport type";
     if (!form.startDate) newErrors.startDate = "Start date is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    console.log("Customized Package Request:", form);
-    navigate("/customizeSummary", { state: { form } });
+
+    try {
+      // Prepare data for backend
+      const packageData = {
+        fullName: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        numberOfPeople: form.numberOfPeople,
+        durationDays: form.durationDays,
+        destinationPlaces: form.destinationPlaces,
+        accommodationType: form.accommodationType,
+        transportType: form.transportType,
+        startDate: form.startDate,
+        mealsIncluded: form.mealsIncluded,
+        specialRequests: form.specialRequests,
+        status: "Pending", // optional for backend tracking
+      };
+
+      console.log("Sending package data:", packageData);
+
+      await axios.post("http://localhost:8000/api/customizePackage", packageData);
+
+      alert("✅ Your custom package request has been submitted!");
+      navigate("/customizeSummary", { state: { form: packageData } });
+
+    } catch (error) {
+      console.error("❌ Submission failed:", error.response || error);
+      alert("❌ Submission failed. Please try again.");
+    }
   };
 
   return (

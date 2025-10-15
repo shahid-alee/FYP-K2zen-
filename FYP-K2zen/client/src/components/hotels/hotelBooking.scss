@@ -96,6 +96,31 @@
         text-align: center;
         margin-bottom: 25px;
       }
+      .price-range {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+
+  label {
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: #00796b;
+      box-shadow: 0 0 5px rgba(0, 121, 107, 0.3);
+    }
+  }
+}
+
 
       form {
         display: flex;

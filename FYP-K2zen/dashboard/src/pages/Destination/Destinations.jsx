@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -20,66 +20,79 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
-const ToursTableWithForm = () => {
-  const [tours, setTours] = useState([
-    {
-      _id: 1,
-      name: "Hunza Valley Tour",
-      location: "Hunza",
-      description: "A breathtaking trip to Hunza Valley.",
-      image: "https://via.placeholder.com/100",
-      status: "Available",
-    },
-    {
-      _id: 2,
-      name: "Skardu Adventure",
-      location: "Skardu",
-      description: "Adventure in Skardu mountains.",
-      image: "https://via.placeholder.com/100",
-      status: "Booked",
-    },
-  ]);
-
+const DestinationForm = () => {
+  const [destinations, setDestinations] = useState([]);
   const [open, setOpen] = useState(false);
 
+  // Fetch all destinations
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/destinations");
+        setDestinations(res.data);
+      } catch (error) {
+        console.error("Error fetching destinations:", error);
+      }
+    };
+    fetchDestinations();
+  }, []);
+
+  // Validation Schema
   const validationSchema = Yup.object({
-    name: Yup.string().required("Tour name is required"),
-    location: Yup.string().required("Location is required"),
+    name: Yup.string().required("Destination name is required"),
     description: Yup.string().required("Description is required"),
-    status: Yup.string()
-      .oneOf(["Available", "Booked"], "Invalid status")
-      .required("Status is required"),
     image: Yup.mixed().required("Image is required"),
   });
 
   const initialValues = {
     name: "",
-    location: "",
     description: "",
-    status: "",
     image: null,
   };
 
-  const onSubmit = (values, { resetForm }) => {
-    const newTour = {
-      _id: Date.now(),
-      ...values,
-      image: URL.createObjectURL(values.image),
-    };
-    setTours([...tours, newTour]);
-    resetForm();
-    setOpen(false);
+  // Submit Handler
+  const onSubmit = async (values, { resetForm }) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("description", values.description);
+      formData.append("image", values.image);
+
+      const res = await axios.post(
+        "http://localhost:8000/api/destinations",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      // Update both frontend table and dashboard instantly
+      setDestinations([...destinations, res.data]);
+      resetForm();
+      setOpen(false);
+    } catch (error) {
+      console.error("Error adding destination:", error);
+    }
   };
 
-  const handleDelete = (tour) => {
-    setTours(tours.filter((t) => t._id !== tour._id));
+  // Delete destination
+  const handleDelete = async (destination) => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/destinations/${destination._id}`
+      );
+      setDestinations(destinations.filter((d) => d._id !== destination._id));
+    } catch (error) {
+      console.error("Error deleting destination:", error);
+    }
   };
 
   return (
     <div style={{ padding: "20px" }}>
       <Typography variant="h5" gutterBottom>
-        Tours List
+        Destinations List
       </Typography>
 
       <Button
@@ -88,7 +101,7 @@ const ToursTableWithForm = () => {
         onClick={() => setOpen(true)}
         style={{ marginBottom: "20px" }}
       >
-        Add New Tour
+        Add New Destination
       </Button>
 
       {/* Table */}
@@ -97,10 +110,7 @@ const ToursTableWithForm = () => {
           <TableHead>
             <TableRow>
               <TableCell>
-                <b>Tour Name</b>
-              </TableCell>
-              <TableCell>
-                <b>Location</b>
+                <b>Destination Name</b>
               </TableCell>
               <TableCell>
                 <b>Description</b>
@@ -108,30 +118,32 @@ const ToursTableWithForm = () => {
               <TableCell>
                 <b>Image</b>
               </TableCell>
-              <TableCell>
-                <b>Status</b>
-              </TableCell>
               <TableCell align="center">
                 <b>Action</b>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {tours.length > 0 ? (
-              tours.map((tour) => (
-                <TableRow key={tour._id}>
-                  <TableCell>{tour.name}</TableCell>
-                  <TableCell>{tour.location}</TableCell>
-                  <TableCell>{tour.description}</TableCell>
+            {destinations.length > 0 ? (
+              destinations.map((destination) => (
+                <TableRow key={destination._id}>
+                  <TableCell>{destination.name}</TableCell>
+                  <TableCell>{destination.description}</TableCell>
                   <TableCell>
                     <Avatar
-                      src={tour.image}
-                      alt={tour.name}
+                      src={
+                        destination.image?.startsWith("http")
+                          ? destination.image
+                          : `http://localhost:8000/${destination.image?.replace(
+                              /\\/g,
+                              "/"
+                            )}`
+                      }
+                      alt={destination.name}
                       variant="rounded"
                       sx={{ width: 56, height: 56 }}
                     />
                   </TableCell>
-                  <TableCell>{tour.status}</TableCell>
                   <TableCell align="center">
                     <IconButton color="primary">
                       <VisibilityIcon />
@@ -141,7 +153,7 @@ const ToursTableWithForm = () => {
                     </IconButton>
                     <IconButton
                       color="error"
-                      onClick={() => handleDelete(tour)}
+                      onClick={() => handleDelete(destination)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -150,8 +162,8 @@ const ToursTableWithForm = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={6} align="center">
-                  No Tours Available
+                <TableCell colSpan={4} align="center">
+                  No Destinations Available
                 </TableCell>
               </TableRow>
             )}
@@ -161,7 +173,7 @@ const ToursTableWithForm = () => {
 
       {/* Dialog Form */}
       <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Add New Tour</DialogTitle>
+        <DialogTitle>Add New Destination</DialogTitle>
         <DialogContent>
           <Formik
             initialValues={initialValues}
@@ -177,12 +189,16 @@ const ToursTableWithForm = () => {
                   marginTop: "10px",
                 }}
               >
-                {/* Tour Name */}
+                {/* Destination Name */}
                 <div>
                   <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
+                    style={{
+                      display: "block",
+                      marginBottom: "5px",
+                      fontWeight: "bold",
+                    }}
                   >
-                    Tour Name
+                    Destination Name
                   </label>
                   <Field
                     name="name"
@@ -196,30 +212,6 @@ const ToursTableWithForm = () => {
                   />
                   <ErrorMessage
                     name="name"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
-                </div>
-
-                {/* Location */}
-                <div>
-                  <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
-                  >
-                    Location
-                  </label>
-                  <Field
-                    name="location"
-                    type="text"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                    }}
-                  />
-                  <ErrorMessage
-                    name="location"
                     component="div"
                     style={{ color: "red", fontSize: "13px" }}
                   />
@@ -228,7 +220,11 @@ const ToursTableWithForm = () => {
                 {/* Description */}
                 <div>
                   <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
+                    style={{
+                      display: "block",
+                      marginBottom: "5px",
+                      fontWeight: "bold",
+                    }}
                   >
                     Description
                   </label>
@@ -251,38 +247,14 @@ const ToursTableWithForm = () => {
                   />
                 </div>
 
-                {/* Status */}
-                <div>
-                  <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
-                  >
-                    Status
-                  </label>
-                  <Field
-                    name="status"
-                    as="select"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                    }}
-                  >
-                    <option value="">Select status</option>
-                    <option value="Available">Available</option>
-                    <option value="Booked">Booked</option>
-                  </Field>
-                  <ErrorMessage
-                    name="status"
-                    component="div"
-                    style={{ color: "red", fontSize: "13px" }}
-                  />
-                </div>
-
                 {/* Image */}
                 <div>
                   <label
-                    style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
+                    style={{
+                      display: "block",
+                      marginBottom: "5px",
+                      fontWeight: "bold",
+                    }}
                   >
                     Image
                   </label>
@@ -318,7 +290,7 @@ const ToursTableWithForm = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  Add Tour
+                  Add Destination
                 </Button>
               </Form>
             )}
@@ -329,4 +301,4 @@ const ToursTableWithForm = () => {
   );
 };
 
-export default ToursTableWithForm;
+export default DestinationForm;
