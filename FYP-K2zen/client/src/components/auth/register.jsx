@@ -1,262 +1,143 @@
-import React, { useState } from 'react';
-import { Grid, Box, TextField, Button, Typography, Link } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import "./Register.scss"
+import React, { useState } from "react";
+import {
+  Grid,
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  Avatar,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import axios from "axios";
+import "./register.scss";
+
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    address: {
-      street: '',
-      city: '',
-      state: '',
-      postalCode: '',
-      country: '',
-    },
-    phone: '',
-    dateOfBirth: '',
+    username: "",
+    email: "",
+    password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleAddressChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      address: {
-        ...prevState.address,
-        [name]: value,
-      },
-    }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSignup = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", formData);
+    setErrorMessage("");
+    setSuccessMessage("");
 
-      if (response.data.status === true) {
-        console.log("✅ Registration successful:", response.data);
-        navigate("/login"); // redirect after signup
+    // Client-side validation
+    if (!formData.username || !formData.email || !formData.password) {
+      setErrorMessage("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await axios.post("http://localhost:8000/api/auth/register", formData, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("REGISTER RESPONSE:", res.data);
+
+      if (res.data.status) {
+        setSuccessMessage(res.data.message);
+        setTimeout(() => navigate("/login"), 1500);
       } else {
-        alert("Registration failed");
+        setErrorMessage(res.data.message || "Registration failed. Try again.");
       }
-    } catch (error) {
-      console.error("Signup error:", error.response?.data || error.message);
-      alert("Error registering user");
+    } catch (err) {
+      console.error("Signup error:", err);
+      const serverMessage =
+        err.response?.data?.message || "Server not responding. Please try later.";
+      setErrorMessage(serverMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      className="register-container"
+      style={{ minHeight: "100vh" }}
+    >
       <Grid item xs={12} sm={8} md={4}>
-        <Box p={4} boxShadow={3} borderRadius={2} bgcolor="background.paper">
-          <Typography variant="h5" component="h1" gutterBottom>
-            Sign Up
+        <Box className="register-box" p={4} boxShadow={3} borderRadius={3}>
+          <Box display="flex" justifyContent="center" mb={2}>
+            <Avatar sx={{ bgcolor: "green", width: 56, height: 56 }}>
+              <PersonAddAltIcon fontSize="large" />
+            </Avatar>
+          </Box>
+
+          <Typography variant="h5" align="center" gutterBottom>
+            Create Account
           </Typography>
+
+         
+          {successMessage && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {successMessage}
+            </Alert>
+          )}
+
           <TextField
             label="Username"
             name="username"
-            variant="outlined"
             fullWidth
             margin="normal"
             value={formData.username}
             onChange={handleChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
           />
           <TextField
             label="Email"
             name="email"
-            variant="outlined"
+            type="email"
             fullWidth
             margin="normal"
             value={formData.email}
             onChange={handleChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
           />
           <TextField
             label="Password"
             name="password"
             type="password"
-            variant="outlined"
             fullWidth
             margin="normal"
             value={formData.password}
             onChange={handleChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
           />
-          <TextField
-            label="First Name"
-            name="firstName"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.firstName}
-            onChange={handleChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="Last Name"
-            name="lastName"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.lastName}
-            onChange={handleChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="Street"
-            name="street"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.address.street}
-            onChange={handleAddressChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="City"
-            name="city"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.address.city}
-            onChange={handleAddressChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="State"
-            name="state"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.address.state}
-            onChange={handleAddressChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="Postal Code"
-            name="postalCode"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.address.postalCode}
-            onChange={handleAddressChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="Country"
-            name="country"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.address.country}
-            onChange={handleAddressChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="Phone"
-            name="phone"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.phone}
-            onChange={handleChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
-          <TextField
-            label="Date of Birth"
-            name="dateOfBirth"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-            sx={{
-    input: {
-      position: "relative",
-      zIndex: 1,
-    }
-  }}
-          />
+           {errorMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errorMessage}
+            </Alert>
+          )}
+
           <Button
             variant="contained"
-            color="primary"
+            color="success"
             fullWidth
-            style={{ marginTop: '1rem' }}
+            sx={{ mt: 2 }}
             onClick={handleSignup}
+            disabled={loading}
           >
-            Sign Up
+            {loading ? <CircularProgress size={22} /> : "Sign Up"}
           </Button>
-          <Typography variant="body2" align="center" style={{ marginTop: '1rem' }}>
-            Already have an account?{' '}
-            <Link component={RouterLink} to="/login">
+
+          <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+            Already have an account?{" "}
+            <Link component={RouterLink} to="/login" underline="hover" sx={{ color: "green" }}>
               Login
             </Link>
           </Typography>

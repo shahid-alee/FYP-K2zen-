@@ -10,7 +10,8 @@ const Dashboard = Loadable(lazy(() => import('pages/dashboard/default')));
 const Users = Loadable(lazy(() => import('pages/user/user')));
 const Settings = Loadable(lazy(() => import('pages/setting/Setting')));
 const Invoice = Loadable(lazy(() => import('pages/Invoice/Invoice')));
-const Tours = Loadable(lazy(() => import('pages/tours/tours')));
+const Packages = Loadable(lazy(() => import('pages/packages/packages')));
+const Destinations = Loadable(lazy(() => import('pages/Destination/Destinations')));
 const RentCar = Loadable(lazy(() => import('pages/rentCar/rentCar')));
 const Hotels = Loadable(lazy(() => import('pages/hotels/hotels')));
 const Customers = Loadable(lazy(() => import('pages/Customers/Customers')));
@@ -26,8 +27,12 @@ const ComponentsRoutes = {
       element: <Dashboard />
     },
     {
-      path: 'tours',
-      element: <Tours />
+      path: 'packages',
+      element: <Packages />
+    },
+     {
+      path: 'destinations',
+      element: <Destinations />
     },
     {
       path: 'RentCar',

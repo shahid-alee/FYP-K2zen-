@@ -37,7 +37,7 @@ export default function Footer() {
           <Typography variant="subtitle1">Subscribe</Typography>
           <Box className="newsletter-form">
             <TextField placeholder="Your email" variant="filled" size="small" />
-            <Button variant="contained">Subscribe</Button>
+            <Button variant="contained" color='success'>Subscribe</Button>
           </Box>
           <Box className="social-icons">
             <a href="#"><FaFacebookF /></a>

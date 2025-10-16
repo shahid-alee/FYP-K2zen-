@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -15,34 +15,17 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  MenuItem,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddIcon from "@mui/icons-material/Add";
+import axios from "axios";
 
 const Hotels = () => {
-  // Dummy data
-  const [hotels, setHotels] = useState([
-    {
-      id: 1,
-      name: "Grand Palace Hotel",
-      description: "Luxury hotel in the city center",
-      location: "Karachi, Pakistan",
-      image: "",
-      status: "Available",
-    },
-    {
-      id: 2,
-      name: "Mountain View Inn",
-      description: "Cozy hotel near the mountains",
-      location: "Murree, Pakistan",
-      image: "",
-      status: "Booked",
-    },
-  ]);
-
+  const [hotels, setHotels] = useState([]);
   const [openView, setOpenView] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
@@ -51,9 +34,25 @@ const Hotels = () => {
     name: "",
     description: "",
     location: "",
-    image: "",
-    status: "",
+    image: null,
+    status: "Available",
   });
+
+  const API_URL = "http://localhost:8000/api/hotels"; // ✅ backend URL
+
+  // Fetch hotels from backend
+  useEffect(() => {
+    fetchHotels();
+  }, []);
+
+  const fetchHotels = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      setHotels(response.data);
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+    }
+  };
 
   // Handlers
   const handleView = (hotel) => {
@@ -63,7 +62,13 @@ const Hotels = () => {
 
   const handleEdit = (hotel) => {
     setSelectedHotel(hotel);
-    setFormData(hotel);
+    setFormData({
+      name: hotel.name,
+      description: hotel.description,
+      location: hotel.location,
+      image: null,
+      status: hotel.status,
+    });
     setOpenEdit(true);
   };
 
@@ -72,27 +77,63 @@ const Hotels = () => {
       name: "",
       description: "",
       location: "",
-      image: "",
-      status: "",
+      image: null,
+      status: "Available",
     });
     setOpenAdd(true);
   };
 
-  const handleSaveEdit = () => {
-    setHotels(
-      hotels.map((h) => (h.id === selectedHotel.id ? { ...formData, id: h.id } : h))
-    );
-    setOpenEdit(false);
+  const handleImageChange = (e) => {
+    setFormData({ ...formData, image: e.target.files[0] });
   };
 
-  const handleSaveAdd = () => {
-    const newHotel = { ...formData, id: hotels.length + 1 };
-    setHotels([...hotels, newHotel]);
-    setOpenAdd(false);
+  const handleSaveAdd = async () => {
+    try {
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("location", formData.location);
+      data.append("status", formData.status);
+      if (formData.image) data.append("image", formData.image);
+
+      await axios.post(API_URL, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      fetchHotels();
+      setOpenAdd(false);
+    } catch (error) {
+      console.error("Error adding hotel:", error);
+    }
   };
 
-  const handleDelete = (hotel) => {
-    setHotels(hotels.filter((h) => h.id !== hotel.id));
+  const handleSaveEdit = async () => {
+    try {
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("location", formData.location);
+      data.append("status", formData.status);
+      if (formData.image) data.append("image", formData.image);
+
+      await axios.put(`${API_URL}/${selectedHotel._id}`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      fetchHotels();
+      setOpenEdit(false);
+    } catch (error) {
+      console.error("Error updating hotel:", error);
+    }
+  };
+
+  const handleDelete = async (hotel) => {
+    try {
+      await axios.delete(`${API_URL}/${hotel._id}`);
+      fetchHotels();
+    } catch (error) {
+      console.error("Error deleting hotel:", error);
+    }
   };
 
   return (
@@ -126,13 +167,13 @@ const Hotels = () => {
           <TableBody>
             {hotels.length > 0 ? (
               hotels.map((hotel) => (
-                <TableRow key={hotel.id}>
+                <TableRow key={hotel._id}>
                   <TableCell>{hotel.name}</TableCell>
                   <TableCell>{hotel.description}</TableCell>
                   <TableCell>{hotel.location}</TableCell>
                   <TableCell>
                     <Avatar
-                      src={hotel.image}
+                      src={`http://localhost:8000/${hotel.image}`}
                       alt={hotel.name}
                       variant="rounded"
                       sx={{ width: 56, height: 56 }}
@@ -174,7 +215,7 @@ const Hotels = () => {
               <p><b>Location:</b> {selectedHotel.location}</p>
               <p><b>Status:</b> {selectedHotel.status}</p>
               <Avatar
-                src={selectedHotel.image}
+                src={`http://localhost:8000/${selectedHotel.image}`}
                 alt={selectedHotel.name}
                 variant="rounded"
                 sx={{ width: 100, height: 100 }}
@@ -187,9 +228,9 @@ const Hotels = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Edit Modal */}
-      <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
-        <DialogTitle>Edit Hotel</DialogTitle>
+      {/* Add / Edit Dialog (shared UI) */}
+      <Dialog open={openAdd || openEdit} onClose={() => { setOpenAdd(false); setOpenEdit(false); }}>
+        <DialogTitle>{openAdd ? "Add New Hotel" : "Edit Hotel"}</DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
@@ -203,90 +244,48 @@ const Hotels = () => {
             label="Description"
             fullWidth
             value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           />
           <TextField
             margin="dense"
             label="Location"
             fullWidth
             value={formData.location}
-            onChange={(e) =>
-              setFormData({ ...formData, location: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
           />
-          <TextField
-            margin="dense"
-            label="Image URL"
-            fullWidth
-            value={formData.image}
-            onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Status"
-            fullWidth
-            value={formData.status}
-            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
-          <Button onClick={handleSaveEdit} variant="contained" color="primary">
-            Save
+          <Button
+            variant="contained"
+            component="label"
+            sx={{ mt: 2, mb: 1 }}
+          >
+            Upload Image
+            <input
+              type="file"
+              hidden
+              accept="image/*"
+              onChange={handleImageChange}
+            />
           </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Add Modal */}
-      <Dialog open={openAdd} onClose={() => setOpenAdd(false)}>
-        <DialogTitle>Add New Hotel</DialogTitle>
-        <DialogContent>
           <TextField
             margin="dense"
-            label="Hotel Name"
-            fullWidth
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Description"
-            fullWidth
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Location"
-            fullWidth
-            value={formData.location}
-            onChange={(e) =>
-              setFormData({ ...formData, location: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Image URL"
-            fullWidth
-            value={formData.image}
-            onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-          />
-          <TextField
-            margin="dense"
+            select
             label="Status"
             fullWidth
             value={formData.status}
             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-          />
+          >
+            <MenuItem value="Available">Available</MenuItem>
+            <MenuItem value="Booked">Booked</MenuItem>
+          </TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenAdd(false)}>Cancel</Button>
-          <Button onClick={handleSaveAdd} variant="contained" color="primary">
-            Add
+          <Button onClick={() => { setOpenAdd(false); setOpenEdit(false); }}>Cancel</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={openAdd ? handleSaveAdd : handleSaveEdit}
+          >
+            {openAdd ? "Add" : "Save"}
           </Button>
         </DialogActions>
       </Dialog>
