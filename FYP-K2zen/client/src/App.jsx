@@ -11,7 +11,7 @@ import Footer from "./components/footer/footer.jsx";
 import Hotels from "./components/hotels/hotels.jsx";
 import Review from "./components/landingPage/review/review.jsx";
 import ContactUs from "./components/contactUs/contactUs.jsx";
-import BookNow from "./components/destination/viewDestination/bookNow.jsx";
+// import BookNow from "./components/destination/viewDestination/bookNow.jsx";
 import HotelBooking from "./components/hotels/hotelBooking.jsx";
 import ThankCard from "./components/hotels/thankCard.jsx";
 import CarBooking from "./components/landingPage/transportBooking/carBooking.jsx";
@@ -22,7 +22,11 @@ import Login from "./components/auth/login.jsx";
 import Destination from "./components/destination/destination.jsx";
 import Packages from "./components/destination/viewDestination/Packages.jsx";
 
-import CustomizePackage from "./components/customizePackage/customizePackage.jsx";
+import CustomizePackage from "./components/customizePackage/CustomizeYourPakage/customizePackage.jsx";
+import CustomizeSummary from "./components/customizePackage/summary/customizeSummary.jsx";
+import ThankYou from "./components/customizePackage/summary/thankCard/thankyou.jsx";
+import ViewDetails from "./components/destination/viewDestination/viewDetails/viewDetails.jsx";
+import PackageByBudget from "./components/customizePackage/PackageByBudget/PackageByBudget.jsx";
 
 
 
@@ -50,10 +54,15 @@ function App() {
 
         <Route path="/destination" element={<Destination />} />
         <Route path="/viewDestination/Packages" element={<Packages />} />
+        <Route path="viewDetails" element={<ViewDetails />} />
        
 
-        <Route path="/bookNow" element={<BookNow />} />
+        {/* <Route path="/bookNow" element={<BookNow />} /> */}
         <Route path="/customizePackage" element={<CustomizePackage/>} />
+        <Route path="/customizeSummary" element={<CustomizeSummary/>} />
+        <Route path="/thankyou" element={<ThankYou/>} />
+        <Route path="/PackageByBudget" element={<PackageByBudget/>} />
+
 
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/rentCar" element={<RentCar />} />

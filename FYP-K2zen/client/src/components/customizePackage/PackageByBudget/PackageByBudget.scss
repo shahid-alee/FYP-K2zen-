@@ -1,0 +1,159 @@
+.budget-container {
+  background-color: #f9fafc;
+  min-height: 100vh;
+  padding: 50px 30px;
+  margin-top: 5%;
+}
+
+.budget-title {
+  text-align: center;
+  color: #1c7942;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.budget-subtext {
+  text-align: center;
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.budget-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+  gap: 10px;
+}
+
+.budget-input {
+  width: 300px;
+  background: #fff;
+  border-radius: 8px;
+
+  input {
+    padding: 12px;
+    color: #333;
+    font-weight: 500;
+  }
+
+  // ✅ Focus outline same green color
+  .MuiOutlinedInput-root {
+    fieldset {
+      border-color: #ccc;
+      transition: border-color 0.3s ease;
+    }
+    &:hover fieldset {
+      border-color: #1c7942;
+    }
+    &.Mui-focused fieldset {
+      border-color: #1c7942;
+      box-shadow: 0 0 6px rgba(28, 121, 66, 0.4);
+    }
+  }
+}
+
+.search-btn {
+  background-color: #239753 !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 10px 30px !important;
+  &:hover {
+    background-color: #1c7942 !important;
+  }
+}
+
+/* ✅ Cards Styling (same as ViewDestination) */
+.package-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+}
+
+.package-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.package-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: left;
+  width: 98%;
+}
+
+.package-title {
+  color: #1c7942;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.package-description {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  text-align: left;
+  width: 90%;
+}
+
+.package-duration {
+  color: #239753;
+  font-weight: 500;
+  margin-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.package-price {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.package-places {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.view-details-btn {
+  background-color: #239753 !important;
+  color: white !important;
+  border: none;
+  padding: 10px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 90%;
+  text-align: center;
+  &:hover {
+    background-color: #1c7942 !important;
+  }
+}
+
+.no-packages {
+  text-align: center;
+  color: #777;
+  font-size: 1.1rem;
+  margin-top: 50px;
+}
