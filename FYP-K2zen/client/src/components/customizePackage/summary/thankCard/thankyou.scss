@@ -1,0 +1,108 @@
+:root {
+  --primary: #239753;
+  --primary-dark: #1c7942;
+  --primary-light: #2db564;
+  --white: #ffffff;
+}
+
+.thankyou-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background: linear-gradient(135deg, var(--primary-light));
+  padding: 2rem;
+}
+
+.thankyou-card {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.checkmark-container {
+  width: 90px;
+  height: 90px;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: popIn 0.8s ease;
+}
+
+.checkmark {
+  color: var(--white);
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.thankyou-title {
+  color: var(--primary-dark);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.thankyou-message {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.thankyou-footer {
+  p {
+    color: var(--primary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .home-btn {
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 30px;
+    padding: 0.8rem 1.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: var(--primary-dark);
+      box-shadow: 0 6px 14px rgba(28, 121, 66, 0.5);
+    }
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

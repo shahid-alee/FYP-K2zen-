@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./gallery.scss";
 
-// Local images
 import mountain1 from "../../assets/heroSection/bgimg.jpg";
 import mountain2 from "../../assets/heroSection/bg2.jpg";
 import lake1 from "../../assets/heroSection/bg1.jpg";
@@ -60,7 +59,6 @@ export default function Gallery() {
         </p>
       </div>
 
-      {/* Category Tabs */}
       <div className="gallery-categories">
         {Object.keys(categories).map((cat) => (
           <span
@@ -75,7 +73,6 @@ export default function Gallery() {
         ))}
       </div>
 
-      {/* Image Grid */}
       <div className="gallery-grid">
         {categories[selectedCategory].map((img, i) => (
           <div key={i} className="gallery-card">

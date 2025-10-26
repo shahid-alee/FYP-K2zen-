@@ -136,6 +136,14 @@ const UpdatedMenu = {
       icon: icons.users,
       breadcrumbs: false
     },
+     {
+      id: 'contactUs',
+      title: 'contactUs',
+      type: 'item',
+      url: '/contactUs',
+      icon: icons.users,
+      breadcrumbs: false
+    },
     {
       id: 'settings',
       title: 'Settings',

@@ -1,147 +1,115 @@
 :root {
-  --primary: #239753;         /* Main theme green */
-  --primary-dark: #1C7942;    
-  --primary-light: #2DB564;
-  --primary-xlight: #4BBF7B;
-  --primary-xxlight: #91E7AD;
+  --primary: #239753;
+  --primary-dark: #1C7942;
   --white: #ffffff;
 }
 
-/* ========== GALLERY SECTION ========== */
 .gallery-section {
-  padding: 80px 6%;
-  background: linear-gradient(to bottom, #f9fbfa, #eef5ef);
+  padding: 80px 5%;
+  background-color: var(--white);
   text-align: center;
-  min-height: 100vh;
-}
+  font-family: "Poppins", sans-serif;
+  color: #333;
 
-/* ===== Section Header ===== */
-.gallery-header {
-  margin-bottom: 50px;
-  margin-top: 4%;
+  .gallery-header {
+    margin-bottom: 40px;
 
-  .gallery-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: var(--primary-dark);
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
-  }
-
-  .gallery-subtitle {
-    font-size: 1.05rem;
-    color: #555;
-    max-width: 650px;
-    margin: 0 auto;
-    line-height: 1.7;
-  }
-}
-
-/* ===== Category Tabs ===== */
-.gallery-categories {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
-  margin-bottom: 50px;
-
-  .gallery-category {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #444;
-    cursor: pointer;
-    position: relative;
-    padding-bottom: 5px;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: var(--primary);
+    .gallery-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
     }
 
-    &.active {
-      color: var(--primary-light);
+    .gallery-subtitle {
+      font-size: 1rem;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+  }
 
-      &::after {
-        content: "";
-        position: absolute;
-        bottom: -6px;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: var(--primary-light);
-        border-radius: 2px;
+  .gallery-categories {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+
+    .gallery-category {
+      padding: 10px 20px;
+      border: 2px solid var(--primary);
+      border-radius: 30px;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+
+      &:hover {
+        background-color: var(--primary);
+        color: var(--white);
+      }
+
+      &.active {
+        background-color: var(--primary-dark);
+        color: var(--white);
       }
     }
   }
-}
-
-/* ===== Gallery Grid ===== */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  justify-content: center;
-}
-
-/* ===== Individual Gallery Card ===== */
-.gallery-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 14px;
-  background: var(--white);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  transition: transform 0.4s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-
-    img {
-      transform: scale(1.1);
-      filter: brightness(0.9);
-    }
-  }
-
-  img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 14px;
-    transition: transform 0.4s ease, filter 0.4s ease;
-  }
-
-  .gallery-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 14px 16px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
-    color: #fff;
-    text-align: left;
-    border-radius: 0 0 14px 14px;
-    transition: background 0.3s ease;
-
-    h3 {
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-  }
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  .gallery-title {
-    font-size: 1.8rem;
-  }
-
-  .gallery-subtitle {
-    font-size: 0.95rem;
-  }
 
   .gallery-grid {
-    gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+
+    .gallery-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+      &:hover {
+        transform: scale(1.04);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+
+        img {
+          filter: brightness(80%);
+        }
+
+        .gallery-overlay {
+          opacity: 1;
+          bottom: 0;
+        }
+      }
+
+      img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: filter 0.3s ease;
+        border-radius: 15px;
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        bottom: -100%;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(180deg, transparent, rgba(35, 151, 83, 0.9));
+        color: var(--white);
+        opacity: 0;
+        transition: all 0.4s ease;
+        border-radius: 0 0 15px 15px;
+
+        h3 {
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
+      }
+    }
   }
 }

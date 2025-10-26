@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Grid,
+  Typography,
   Card,
   CardContent,
-  CardMedia,
-  Typography,
   Button,
   CircularProgress,
 } from "@mui/material";
@@ -14,22 +12,20 @@ import axios from "axios";
 import "./hotels.scss";
 
 export default function Hotels() {
-  const navigate = useNavigate();
   const [hotels, setHotels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const API_URL = "http://localhost:8000/api/hotels";
 
-  // ✅ Fetch hotels from backend
   useEffect(() => {
     const fetchHotels = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(API_URL);
         setHotels(res.data);
-      } catch (err) {
-        console.error("Error fetching hotels:", err);
-        setError("Failed to load hotels. Please try again later.");
+      } catch (error) {
+        console.error("Error fetching hotels:", error);
       } finally {
         setLoading(false);
       }
@@ -37,102 +33,71 @@ export default function Hotels() {
     fetchHotels();
   }, []);
 
-  const handleBookHotel = (hotel) => {
+  // ✅ Navigate to Hotel Booking Page
+  const handleBookNow = (hotel) => {
     navigate("/hotelbooking", { state: { hotel } });
   };
 
-  if (loading) {
-    return (
-      <Box className="loading-container">
-        <CircularProgress />
-        <Typography>Loading hotels...</Typography>
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box className="error-container">
-        <Typography color="error">{error}</Typography>
-      </Box>
-    );
-  }
-
   return (
     <Box className="hotels-section">
-      <Typography variant="h3" className="section-title" gutterBottom>
-        Featured Hotels
-      </Typography>
+      <div className="section-header">
+        <Typography variant="h3" className="section-title">
+          Hotel Booking
+        </Typography>
+        <Typography className="section-subtitle">
+          Discover comfort and luxury in the finest hotels across Gilgit-Baltistan.  
+          Book your stay with ease and enjoy your trip.
+        </Typography>
+      </div>
 
-      <Grid container spacing={4} className="card-container">
-        <div className="card-box">
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <div className="hotel-row">
           {hotels.length > 0 ? (
-            hotels.map((hotel, index) => (
-              <Grid item xs={12} key={hotel._id}>
-                <Card
-                  className={`hotel-card ${index % 2 === 0 ? "reverse" : ""}`}
-                >
-                  {/* Hotel Image */}
-                  <CardMedia
-                    component="img"
-                    image={`http://localhost:8000/${hotel.image?.replace(
-                      /\\/g,
-                      "/"
-                    )}`}
+            hotels.map((hotel) => (
+              <Card className="hotel-card" key={hotel._id}>
+                <div className="hotel-image">
+                  <img
+                    src={`http://localhost:8000/${hotel.image?.replace(/\\/g, "/")}`}
                     alt={hotel.name}
-                    className="hotel-image"
                   />
+                </div>
 
-                  {/* Hotel Details */}
-                  <CardContent className="hotel-content">
-                    <Typography variant="h5" className="hotel-name">
-                      {hotel.name}
-                    </Typography>
+                <CardContent className="hotel-content">
+                  <Typography variant="h6" className="hotel-title">
+                    {hotel.name}
+                  </Typography>
+                  <Typography className="hotel-details">
+                    Location: {hotel.location}
+                  </Typography>
+                  <Typography className="hotel-details">
+                    Status: {hotel.status}
+                  </Typography>
+                  <Typography className="hotel-price">
+                    💲 Price: {hotel.price || "20$ - 50$"}
+                  </Typography>
+                  <Typography className="hotel-desc">
+                    {hotel.description || "No description available."}
+                  </Typography>
 
-                    <Typography className="hotel-location">
-                      📍 {hotel.location}
-                    </Typography>
-
-                    <Typography className="hotel-description">
-                      {hotel.description || "No description available."}
-                    </Typography>
-
-                    {/* ✅ Hotel Price */}
-                    <Typography className="hotel-price">
-                      💲 Price: {hotel.price || "20$ - 50$"}
-                    </Typography>
-
-                    <Typography
-                      className={`hotel-status ${
-                        hotel.status === "Available"
-                          ? "available"
-                          : "unavailable"
-                      }`}
-                    >
-                      Status: {hotel.status}
-                    </Typography>
-
-                    <Button
-                      variant="contained"
-                      className="hotel-btn"
-                      onClick={() => handleBookHotel(hotel)}
-                      disabled={hotel.status !== "Available"}
-                    >
-                      {hotel.status === "Available"
-                        ? "Explore & Book"
-                        : "Not Available"}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
+                  <Button
+                    className="hotel-btn"
+                    onClick={() => handleBookNow(hotel)}
+                    disabled={hotel.status !== "Available"}
+                  >
+                    {hotel.status === "Available" ? "Book Now" : "Not Available"}
+                  </Button>
+                </CardContent>
+              </Card>
             ))
           ) : (
-            <Typography variant="h6" align="center" sx={{ width: "100%" }}>
-              No Hotels Available
+            <Typography align="center" variant="h6">
+              No hotels available.
             </Typography>
           )}
         </div>
-      </Grid>
+      )}
     </Box>
   );
 }

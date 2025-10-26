@@ -25,7 +25,7 @@ export const packages = [
   {
     id: 1,
     title: "3 Days Skardu Adventure",
-    places: ["Upper Kachura", "Shangrila Resort"],
+    places: ["Upper Kachura", "Shangrila Resort","Chunda Valley"],
     days: 3,
     image: skarduImg,
   },
@@ -69,7 +69,7 @@ export const packages = [
   {
     id: 7,
     title: "3 Days Romantic Skardu Escape",
-    places: ["Upper Kachura", "Blind Lake"],
+    places: ["Upper Kachura", "Blind Lake","Chunda Valley"],
     days: 3,
     image: honeymoon1,
   },

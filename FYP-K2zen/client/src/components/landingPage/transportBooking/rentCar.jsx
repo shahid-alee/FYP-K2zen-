@@ -4,7 +4,9 @@ import {
   Typography,
   Card,
   CardContent,
+  CardMedia,
   Button,
+  Grid,
   CircularProgress,
 } from "@mui/material";
 import axios from "axios";
@@ -33,56 +35,68 @@ export default function TransportBooking() {
     fetchCars();
   }, []);
 
-  // Navigate to Car Booking Page
   const handleBookNow = (car) => {
     navigate("/carbooking", { state: { car } });
   };
 
   return (
-    <Box className="transport-section">
-      <div className="section-header">
-        <Typography variant="h3" className="section-title">
+    <Box className="rentcar-page">
+      <Box className="section-header">
+        <Typography variant="h4" className="section-title">
           Transport Booking
         </Typography>
-        <Typography className="section-subtitle">
+        <Typography variant="body1" className="section-subtitle">
           Choose from our premium vehicles with professional drivers for a
           comfortable and safe journey across Gilgit-Baltistan.
         </Typography>
-      </div>
+      </Box>
 
       {loading ? (
-        <CircularProgress />
+        <Box className="loading-box">
+          <CircularProgress />
+        </Box>
       ) : (
-        <div className="car-row">
+        <Box className="rentcar-container">
           {cars.length > 0 ? (
-            cars.map((car) => (
-              <Card className="transport-card" key={car._id}>
-                <div className="car-image">
-                  <img
-                    src={`http://localhost:8000/${car.image.replace(/\\/g, "/")}`}
-                    alt={car.carName}
-                  />
-                </div>
+            cars.map((car, index) => (
+              <Card key={index} className="rentcar-card">
+                <CardMedia
+                  component="img"
+                  image={
+                    car.image
+                      ? `http://localhost:8000/${car.image.replace(/\\/g, "/")}`
+                      : "https://via.placeholder.com/300x200"
+                  }
+                  alt={car.carName}
+                  className="rentcar-image"
+                />
 
-                <CardContent className="car-content">
-                  <Typography variant="h6" className="car-title">
+                <CardContent className="rentcar-content">
+                  <Typography variant="h6" className="rentcar-name">
                     {car.carName} ({car.modelYear})
                   </Typography>
-                  <Typography className="car-details">
+
+                  <Typography variant="body2" className="rentcar-desc">
+                    {car.description || "No description available."}
+                  </Typography>
+
+                  <Typography variant="body2" className="rentcar-info">
                     Capacity: {car.seats} Persons
                   </Typography>
-                  <Typography className="car-details">
+                  <Typography variant="body2" className="rentcar-info">
                     Location: {car.location}
                   </Typography>
-                  <Typography className="car-details">
+                  <Typography variant="body2" className="rentcar-info">
                     Status: {car.status}
                   </Typography>
-                  <Typography className="car-price">
+
+                  <Typography variant="subtitle1" className="rentcar-price">
                     PKR {car.pricePerDay}/day
                   </Typography>
-                  <Typography className="car-desc">{car.description}</Typography>
+
                   <Button
-                    className="car-btn"
+                    variant="contained"
+                    className="rentcar-btn"
                     onClick={() => handleBookNow(car)}
                   >
                     Book Now
@@ -91,11 +105,11 @@ export default function TransportBooking() {
               </Card>
             ))
           ) : (
-            <Typography align="center" variant="h6">
+            <Typography align="center" className="no-data">
               No cars available.
             </Typography>
           )}
-        </div>
+        </Box>
       )}
     </Box>
   );

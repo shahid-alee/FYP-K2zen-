@@ -21,6 +21,7 @@ const HotelBookings = Loadable(lazy(() => import('pages/hotel booking/hotelBooki
 const CarBookings = Loadable(lazy(() => import('pages/carbooking/carBookings')));
 const CustomizePackages = Loadable(lazy(() => import('pages/customizePackage/customizePackage')));
 const Review = Loadable(lazy(() => import('pages/reviews/reviews')));
+const ContactUs = Loadable(lazy(() => import('pages/contactUs/contact')));
 
 
 
@@ -75,6 +76,10 @@ const ComponentsRoutes = {
       {
       path: 'reviews',
       element: <Review />
+    },
+     {
+      path: 'contactUs',
+      element: <ContactUs />
     },
     {
       path: 'settings',
