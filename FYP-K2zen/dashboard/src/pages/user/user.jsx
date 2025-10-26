@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
-import "./User.scss";
+
 
 const Users = () => {
   const [users, setUsers] = useState([]);

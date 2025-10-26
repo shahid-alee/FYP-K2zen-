@@ -7,7 +7,7 @@ import Loadable from 'components/Loadable';
 import { Reviews } from '@mui/icons-material';
 
 // render - data display components
-const Dashboard = Loadable(lazy(() => import('pages/dashboard/default')));
+// const Dashboard = Loadable(lazy(() => import('pages/dashboard/default')));
 const Users = Loadable(lazy(() => import('pages/users/AddUser')));
 const Settings = Loadable(lazy(() => import('pages/setting/Setting')));
 const Invoice = Loadable(lazy(() => import('pages/Invoice/Invoice')));
@@ -28,10 +28,10 @@ const ComponentsRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
-    {
-      path: 'dashboard',
-      element: <Dashboard />
-    },
+    // {
+    //   path: 'dashboard',
+    //   element: <Dashboard />
+    // },
     {
       path: 'packages',
       element: <Packages/>

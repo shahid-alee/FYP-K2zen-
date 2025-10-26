@@ -40,14 +40,14 @@ const UpdatedMenu = {
   icon: icons.navigation,
   type: 'group',
   children: [
-    {
-      id: 'dashboard',
-      title: 'Dashboard',
-      type: 'item',
-      url: '/dashboard',
-      icon: icons.dashboard,
-      breadcrumbs: false
-    },
+    // {
+    //   id: 'dashboard',
+    //   title: 'Dashboard',
+    //   type: 'item',
+    //   url: '/dashboard',
+    //   icon: icons.dashboard,
+    //   breadcrumbs: false
+    // },
      {
       id: 'Destinations',
       title: 'Destinations',
