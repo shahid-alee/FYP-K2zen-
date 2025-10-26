@@ -14,6 +14,7 @@ import hotelBookingRoutes from "./routes/hotelBookingRoutes.js";
 import carBookingRoutes from "./routes/carBookingRoutes.js";
 import customizePackageRoutes from "./routes/customizePackageRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 
 
@@ -53,6 +54,8 @@ app.use("/api/bookings", hotelBookingRoutes);
 app.use("/api/carBooking", carBookingRoutes);
 app.use("/api/customizePackages", customizePackageRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/contact", contactRoutes);
+
 
 
 

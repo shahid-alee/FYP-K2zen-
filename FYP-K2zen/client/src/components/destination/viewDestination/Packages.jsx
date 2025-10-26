@@ -1,143 +1,148 @@
-// src/components/Packages/Packages.jsx
 import React, { useEffect, useState } from "react";
+import { useLocation ,useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Box,
-  Grid,
+  Typography,
   Card,
   CardContent,
   CardMedia,
-  Typography,
   Button,
-  CircularProgress,
+  Grid,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "./scssSheet.scss";
 
-export default function Packages() {
-  const navigate = useNavigate();
+export default function ViewDestination() {
+  const location = useLocation();
+  const { destinationName } = location.state || {};
   const [packages, setPackages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  // ✅ Fetch all packages
+
   useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const res = await axios.get("http://localhost:8000/api/packages");
-        setPackages(res.data);
-      } catch (err) {
-        console.error("❌ Fetch packages error:", err);
-        setError("Failed to load packages. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPackages();
-  }, []);
-
-  const handleBookNow = (pkg) => {
-    navigate("/bookNow", { state: { pkg } });
-  };
-
-  if (loading)
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
-        <CircularProgress />
-      </Box>
-    );
-
-  if (error)
-    return (
-      <Typography color="error" textAlign="center" mt={5}>
-        {error}
-      </Typography>
-    );
-
-  if (packages.length === 0)
-    return (
-      <Typography textAlign="center" mt={5}>
-        No tour packages available yet.
-      </Typography>
-    );
+    if (destinationName) {
+      const fetchPackages = async () => {
+        try {
+          const res = await axios.get(
+            `http://localhost:8000/api/packages?destination=${destinationName}`
+          );
+          setPackages(res.data);
+        } catch (error) {
+          console.error("Error fetching packages:", error);
+        }
+      };
+      fetchPackages();
+    }
+  }, [destinationName]);
 
   return (
-    <Box className="pack-section">
-      <Typography sx={{ marginTop: "6%", marginBottom: "4%" }} className="pack-title">
-        Tour Packages
+    <Box
+      sx={{
+        py: 5,
+        px: { xs: 2, md: 6 },
+        backgroundColor: "#f9fafc",
+        minHeight: "100vh",
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          textAlign: "center",
+          fontWeight: "bold",
+          mb: 4,
+          color: "#1C7942",
+          marginTop: "5%"
+        }}
+      >
+        Packages in {destinationName || "Selected Destination"}
       </Typography>
 
-      {/* ✅ Group packages by destination */}
-      {Object.entries(
-        packages.reduce((acc, pkg) => {
-          const destination = pkg.destinationName || "Other";
-          if (!acc[destination]) acc[destination] = [];
-          acc[destination].push(pkg);
-          return acc;
-        }, {})
-      ).map(([destination, destPackages]) => (
-        <Box key={destination} sx={{ mb: 6 }}>
-          <Typography variant="h5" sx={{ mb: 3, ml: 2, color: "#1976d2" }}>
-            📍 {destination}
-          </Typography>
+      {packages.length > 0 ? (
+        <Grid container spacing={3}>
+          {packages.map((pkg, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card
+                sx={{
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                  "&:hover": { transform: "scale(1.02)", transition: "0.3s" },
+                }}
+              >
+                {/* Image */}
+                <CardMedia
+                  component="img"
+                  height="220"
+                  image={
+                    pkg.image
+                      ? `http://localhost:8000/${pkg.image.replace(/\\/g, "/")}`
+                      : "https://via.placeholder.com/300x200"
+                  }
+                  alt={pkg.title || "Package Image"}
+                />
 
-          <Grid container spacing={3} className="cardContainer">
-            {destPackages.map((pkg) => (
-              <Grid item xs={12} sm={6} md={4} key={pkg._id}>
-                <Card className="tour-card">
-                  <CardMedia
-                    component="img"
-                    image={
-                      pkg.image?.startsWith("http")
-                        ? pkg.image
-                        : `http://localhost:8000/${pkg.image?.replace(/\\/g, "/")}`
-                    }
-                    alt={pkg.title}
-                    className="card-media"
-                  />
-                  <CardContent className="card-details">
-                    <Typography variant="h6" className="card-title">
-                      {pkg.title}
-                    </Typography>
-                    <Typography variant="subtitle2" className="duration">
-                      Duration: {pkg.days} Days
-                    </Typography>
-                    <Typography variant="subtitle2" className="destination">
-                      Destination: {pkg.destinationName}
-                    </Typography>
-                    <Typography variant="subtitle2" className="location">
-                      Location: {pkg.location}
-                    </Typography>
-                    <Typography variant="subtitle2" className="price">
-                      Price: PKR {pkg.price}
-                    </Typography>
+                {/* Content */}
+                <CardContent>
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: "bold", color: "#1C7942" }}
+                  >
+                    {pkg.title || "Untitled Package"}
+                  </Typography>
 
-                    <Typography variant="body2" className="card-description">
-                      {pkg.description}
-                    </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "text.secondary", mb: 1.5 }}
+                  >
+                    {pkg.description || "No description available"}
+                  </Typography>
 
-                    {pkg.places && pkg.places.length > 0 && (
-                      <ul className="place-list">
-                        {pkg.places.map((place, i) => (
-                          <li key={i}>{place}</li>
-                        ))}
-                      </ul>
-                    )}
+                  <Typography variant="subtitle2" sx={{ color: "#239753" }}>
+                    Duration: {pkg.days} Days
+                  </Typography>
 
-                    <Button
-                      variant="contained"
-                      className="tour-btn"
-                      onClick={() => handleBookNow(pkg)}
+                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                    Price: PKR {pkg.price?.toLocaleString() || "N/A"}
+                  </Typography>
+
+                  {/* ✅ Show all places */}
+                  {pkg.places?.length > 0 && (
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        mt: 1,
+                        fontStyle: "italic",
+                        color: "#666",
+                      }}
                     >
-                      Book Now
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      ))}
+                      Places: {pkg.places.join(", ")}
+                    </Typography>
+                  )}
+
+                  <Button
+                    variant="contained"
+                    sx={{
+                      mt: 2,
+                      backgroundColor: "#239753",
+                      "&:hover": { backgroundColor: "#1C7942" },
+                      borderRadius: 2,
+                      width: "100%",
+                    }}
+                    onClick={() =>
+                      navigate("/viewDetails", { state: { id: pkg._id } })
+                    }
+                  >
+                    View Details
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography textAlign="center" color="text.secondary">
+          No packages found for {destinationName}.
+        </Typography>
+      )}
     </Box>
   );
 }

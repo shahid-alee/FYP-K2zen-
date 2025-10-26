@@ -1,130 +1,141 @@
 :root {
-  --primary: #239753;   
-  --primary-dark: #1c7942;
-  --primary-light: #2db564;
+  --primary: #239753;
+  --primary-dark: #1C7942;
   --white: #ffffff;
 }
 
-.transport-section {
-  padding: 100px 8%;
-  background: linear-gradient(to bottom, #f9fbff, #eef3f9);
+.rentcar-page {
+  padding: 80px 5%;
+  background-color: var(--white);
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  color: #333;
 
   .section-header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 60px;
+    margin-bottom: 40px;
+    margin-top: 3%;
 
     .section-title {
-      font-weight: 800;
-      font-size: 2.4rem;
+      font-size: 2.1rem;
+      font-weight: 700;
       color: var(--primary-dark);
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
     }
 
     .section-subtitle {
-      font-size: 1.1rem;
-      color: #444;
-      line-height: 1.7;
+      font-size: 1rem;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
   }
-}
 
-.car-row {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.transport-card {
-  display: flex;
-  flex-direction: row; /* image left, content right */
-  align-items: center;
-  border-radius: 18px !important;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.35s ease;
-  width: 45%;
-
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0px 14px 28px rgba(0, 0, 0, 0.15);
+  .loading-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
   }
 
-  .car-image {
-    flex: 1;
-    max-width: 45%;
-    height: 220px;
+  .rentcar-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .rentcar-card {
+    width: 340px;
+    border-radius: 15px;
     overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    &:hover img {
-      transform: scale(1.05);
-    }
-  }
-
-  .car-content {
-    flex: 1;
-    padding: 24px !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    background-color: var(--white);
     text-align: left;
 
-    .car-title {
-      font-weight: 700 !important;
-      font-size: 1rem !important;
-      margin-bottom: 8px;
-      color: var(--primary);
+    &:hover {
+      transform: scale(1.04);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+      .rentcar-image {
+        filter: brightness(85%);
+      }
     }
 
-    .car-details {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 8px;
+    .rentcar-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-bottom: 3px solid var(--primary);
+      transition: filter 0.3s ease;
     }
 
-    .car-price {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #2c3e50;
-      margin-bottom: 16px;
-    }
+    .rentcar-content {
+      padding: 20px;
 
-    .car-btn {
-      background: var(--primary) !important;
-      color: #fff !important;
-      padding: 10px 22px !important;
-      border-radius: 8px !important;
-      text-transform: none !important;
-      font-weight: 600 !important;
-      font-size: 1rem !important;
-      transition: all 0.3s ease;
-      height: 33px;
+      .rentcar-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 10px;
+      }
 
-      &:hover {
-        background: var(--primary-dark) !important;
-        transform: translateY(-2px);
+      .rentcar-desc {
+        font-size: 0.95rem;
+        color: #555;
+        margin-bottom: 10px;
+        min-height: 40px;
+      }
+
+      .rentcar-info {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 5px;
+      }
+
+      .rentcar-price {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--primary);
+        margin: 10px 0;
+      }
+
+      .rentcar-btn {
+        background-color: var(--primary);
+        color: var(--white);
+        border-radius: 30px;
+        padding: 8px 20px;
+        font-weight: 600;
+        text-transform: none;
+        width: 100%;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: var(--primary-dark);
+        }
       }
     }
   }
+
+  .no-data {
+    font-size: 1.1rem;
+    color: #777;
+    margin-top: 30px;
+  }
 }
 
-@media (max-width: 900px) {
-  .transport-card {
-    flex-direction: column; /* stack image & content */
-    .car-image {
-      max-width: 100%;
-      height: 180px;
-    }
-    .car-content {
-      text-align: center;
-    }
+@media (max-width: 768px) {
+  .rentcar-container {
+    gap: 20px;
+  }
+
+  .rentcar-card {
+    width: 100%;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
   }
 }
