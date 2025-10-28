@@ -1,8 +1,4 @@
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-import React, { useState, useEffect } from "react";
-=======
 import React, { useEffect, useState } from "react";
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
 import {
   Table,
   TableBody,
@@ -26,15 +22,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-const ToursTableWithForm = () => {
-  // ✅ define tours state
-  const [tours, setTours] = useState([]);
-
-=======
 const DestinationForm = () => {
   const [destinations, setDestinations] = useState([]);
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
   const [open, setOpen] = useState(false);
 
   // Fetch all destinations
@@ -63,36 +52,6 @@ const DestinationForm = () => {
     image: null,
   };
 
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-  const onSubmit = async (values, { resetForm }) => {
-    try {
-      const response = await axios.post("http://localhost:5000/api/tours", {
-        name: values.name,
-        location: values.location,
-        description: values.description,
-        status: values.status,
-        image: URL.createObjectURL(values.image), // demo purpose only
-      });
-
-      // ✅ update state
-      setTours([...tours, response.data]);
-      resetForm();
-      setOpen(false);
-    } catch (error) {
-      console.error("Error adding tour:", error);
-    }
-  };
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/tours")
-      .then((res) => setTours(res.data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  const handleDelete = (tour) => {
-    setTours(tours.filter((t) => t._id !== tour._id));
-=======
   // Submit Handler
   const onSubmit = async (values, { resetForm }) => {
     try {
@@ -119,17 +78,18 @@ const DestinationForm = () => {
   };
 
   // Delete destination
-  const handleDelete = async (destination) => {
-    try {
-      await axios.delete(
-        `http://localhost:8000/api/destinations/${destination._id}`
-      );
-      setDestinations(destinations.filter((d) => d._id !== destination._id));
-    } catch (error) {
-      console.error("Error deleting destination:", error);
-    }
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
-  };
+const handleDelete = async (destination) => {
+  try {
+    await axios.delete(
+      `http://localhost:8000/api/destinations/${destination._id}`
+    );
+
+    setDestinations(destinations.filter((d) => d._id !== destination._id));
+  } catch (error) {
+    console.error("Error deleting destination:", error);
+  }
+};
+
 
   return (
     <div style={{ padding: "20px" }}>
@@ -151,14 +111,6 @@ const DestinationForm = () => {
         <Table>
           <TableHead>
             <TableRow>
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-              <TableCell><b>Tour Name</b></TableCell>
-              <TableCell><b>Location</b></TableCell>
-              <TableCell><b>Description</b></TableCell>
-              <TableCell><b>Image</b></TableCell>
-              <TableCell><b>Status</b></TableCell>
-              <TableCell align="center"><b>Action</b></TableCell>
-=======
               <TableCell>
                 <b>Destination Name</b>
               </TableCell>
@@ -171,7 +123,6 @@ const DestinationForm = () => {
               <TableCell align="center">
                 <b>Action</b>
               </TableCell>
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
             </TableRow>
           </TableHead>
           <TableBody>
@@ -202,14 +153,10 @@ const DestinationForm = () => {
                     <IconButton color="secondary">
                       <EditIcon />
                     </IconButton>
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-                    <IconButton color="error" onClick={() => handleDelete(tour)}>
-=======
                     <IconButton
                       color="error"
                       onClick={() => handleDelete(destination)}
                     >
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -246,10 +193,6 @@ const DestinationForm = () => {
               >
                 {/* Destination Name */}
                 <div>
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Tour Name
-=======
                   <label
                     style={{
                       display: "block",
@@ -258,7 +201,6 @@ const DestinationForm = () => {
                     }}
                   >
                     Destination Name
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
                   </label>
                   <Field
                     name="name"
@@ -270,32 +212,13 @@ const DestinationForm = () => {
                       border: "1px solid #ccc",
                     }}
                   />
-                  <ErrorMessage name="name" component="div" style={{ color: "red", fontSize: "13px" }} />
-                </div>
-
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-                {/* Location */}
-                <div>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Location
-                  </label>
-                  <Field
-                    name="location"
-                    type="text"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                    }}
+                  <ErrorMessage
+                    name="name"
+                    component="div"
+                    style={{ color: "red", fontSize: "13px" }}
                   />
-                  <ErrorMessage name="location" component="div" style={{ color: "red", fontSize: "13px" }} />
                 </div>
 
-                {/* Description */}
-                <div>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-=======
                 {/* Description */}
                 <div>
                   <label
@@ -305,7 +228,6 @@ const DestinationForm = () => {
                       fontWeight: "bold",
                     }}
                   >
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
                     Description
                   </label>
                   <Field
@@ -320,36 +242,13 @@ const DestinationForm = () => {
                       resize: "none",
                     }}
                   />
-                  <ErrorMessage name="description" component="div" style={{ color: "red", fontSize: "13px" }} />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    style={{ color: "red", fontSize: "13px" }}
+                  />
                 </div>
 
-<<<<<<< HEAD:FYP-K2zen/dashboard/src/pages/tours/tours.jsx
-                {/* Status */}
-                <div>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Status
-                  </label>
-                  <Field
-                    name="status"
-                    as="select"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                    }}
-                  >
-                    <option value="">Select status</option>
-                    <option value="Available">Available</option>
-                    <option value="Booked">Booked</option>
-                  </Field>
-                  <ErrorMessage name="status" component="div" style={{ color: "red", fontSize: "13px" }} />
-                </div>
-
-                {/* Image */}
-                <div>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-=======
                 {/* Image */}
                 <div>
                   <label
@@ -359,7 +258,6 @@ const DestinationForm = () => {
                       fontWeight: "bold",
                     }}
                   >
->>>>>>> main:FYP-K2zen/dashboard/src/pages/Destination/Destinations.jsx
                     Image
                   </label>
                   <input
@@ -374,7 +272,11 @@ const DestinationForm = () => {
                       background: "#f9f9f9",
                     }}
                   />
-                  <ErrorMessage name="image" component="div" style={{ color: "red", fontSize: "13px" }} />
+                  <ErrorMessage
+                    name="image"
+                    component="div"
+                    style={{ color: "red", fontSize: "13px" }}
+                  />
                 </div>
 
                 {/* Submit */}
