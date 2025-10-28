@@ -4,14 +4,16 @@ import Package from "../models/package.js";
 
 const router = express.Router();
 
-// ✅ Multer config
+// ✅ Multer configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
   filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
 });
 const upload = multer({ storage });
 
-// ✅ Get all or by destination
+/* ---------------------------------------
+   📦 1. GET all packages OR filter by destination
+------------------------------------------ */
 router.get("/", async (req, res) => {
   try {
     const { destination } = req.query;
@@ -23,7 +25,24 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ Add new package
+/* ---------------------------------------
+   📦 2. GET single package by ID (✅ Added)
+------------------------------------------ */
+router.get("/:id", async (req, res) => {
+  try {
+    const pkg = await Package.findById(req.params.id);
+    if (!pkg) {
+      return res.status(404).json({ message: "Package not found" });
+    }
+    res.json(pkg);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* ---------------------------------------
+   📦 3. ADD new package (with image upload)
+------------------------------------------ */
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     const data = req.body;
@@ -48,7 +67,9 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-// ✅ Delete a package
+/* ---------------------------------------
+   📦 4. DELETE a package by ID
+------------------------------------------ */
 router.delete("/:id", async (req, res) => {
   try {
     await Package.findByIdAndDelete(req.params.id);

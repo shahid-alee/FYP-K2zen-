@@ -95,7 +95,7 @@ export default function TransportBooking() {
                   </Typography>
 
                   <Button
-                    variant="contained"
+                    variant="success"
                     className="rentcar-btn"
                     onClick={() => handleBookNow(car)}
                   >

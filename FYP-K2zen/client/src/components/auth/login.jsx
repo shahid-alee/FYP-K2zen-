@@ -13,10 +13,13 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import axios from "axios";
-import "./register.scss"; // ✅ Same style as Signup for consistency
+import "./login.scss";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -27,6 +30,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     setErrorMessage("");
+
     if (!formData.email || !formData.password) {
       setErrorMessage("Please fill in all fields.");
       return;
@@ -34,13 +38,17 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:8000/api/auth/login", formData);
+      const res = await axios.post("http://localhost:8000/api/auth/login", formData, {
+        headers: { "Content-Type": "application/json" },
+      });
 
       if (res.data.status) {
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        window.dispatchEvent(new Event("userChanged")); // 🔥 Notify NavBar
         navigate("/");
       } else {
-        setErrorMessage(res.data.message || "Invalid credentials");
+        setErrorMessage(res.data.message || "Invalid email or password.");
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -57,37 +65,30 @@ const Login = () => {
       container
       justifyContent="center"
       alignItems="center"
-      className="register-container"
+      className="login-container"
       style={{ minHeight: "100vh" }}
     >
-      {/* Left side image section (optional) */}
-      <Grid
-        item
-        xs={false}
-        sm={6}
-        md={6}
-        sx={{
-          backgroundImage: "url('/assets/login-bg.jpg')", // replace with your image path
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          display: { xs: "none", sm: "block" },
-        }}
-      />
-
-      
-      <Grid item xs={12} sm={6} md={4}>
-        <Box className="register-box" p={4} boxShadow={3} borderRadius={3}>
+      <Grid item xs={12} sm={8} md={4}>
+        <Box className="login-box" p={4} boxShadow={3} borderRadius={3}>
           <Box display="flex" justifyContent="center" mb={2}>
-            <Avatar sx={{ bgcolor: "green", width: 56, height: 56 }}>
+            <Avatar sx={{ bgcolor: "var(--primary)", width: 56, height: 56 }}>
               <LockOpenIcon fontSize="large" />
             </Avatar>
           </Box>
 
-          <Typography variant="h5" align="center" gutterBottom>
-            Login to Your Account
+          <Typography variant="h5" align="center" className="login-title">
+            Please login to continue
           </Typography>
+{/* 
+          <Typography variant="body2" align="center" className="login-subtitle">
+            Please login to continue
+          </Typography> */}
 
-         
+          {errorMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errorMessage}
+            </Alert>
+          )}
 
           <TextField
             label="Email"
@@ -98,6 +99,7 @@ const Login = () => {
             value={formData.email}
             onChange={handleChange}
           />
+
           <TextField
             label="Password"
             name="password"
@@ -108,12 +110,6 @@ const Login = () => {
             onChange={handleChange}
           />
 
-           {errorMessage && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {errorMessage}
-            </Alert>
-          )}
-
           <Button
             variant="contained"
             color="success"
@@ -121,13 +117,14 @@ const Login = () => {
             sx={{ mt: 2 }}
             onClick={handleLogin}
             disabled={loading}
+            className="login-btn"
           >
             {loading ? <CircularProgress size={22} /> : "Login"}
           </Button>
 
-          <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+          <Typography variant="body2" align="center" className="login-footer">
             Don’t have an account?{" "}
-            <Link component={RouterLink} to="/register" underline="hover" sx={{ color: "green" }}>
+            <Link component={RouterLink} to="/register" underline="hover" className="signup-link">
               Sign Up
             </Link>
           </Typography>

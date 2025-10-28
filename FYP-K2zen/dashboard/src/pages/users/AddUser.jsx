@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -15,57 +15,49 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import axios from "axios";
 
 const UsersTable = () => {
-  const [users, setUsers] = useState([
-    {
-      _id: 1,
-      name: "Ali Khan",
-      address: "Street 12, Lahore, Pakistan",
-      phone: "03001234567",
-      role: "Customer",
-    },
-    {
-      _id: 2,
-      name: "Sara Ahmed",
-      address: "Main Road, Karachi, Pakistan",
-      phone: "03119876543",
-      role: "Admin",
-    },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openView, setOpenView] = useState(false);
-  const [openAdd, setOpenAdd] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Handlers
-  const handleEdit = (user) => {
-    setSelectedUser(user);
-    setOpenEdit(true);
+  // ✅ Fetch users from backend
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get("http://localhost:8000/api/auth/all");
+      if (res.data.status) {
+        setUsers(res.data.users);
+      }
+    } catch (err) {
+      console.error("Error fetching users:", err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const handleView = (user) => {
     setSelectedUser(user);
     setOpenView(true);
   };
 
-  const handleDelete = (userId) => {
-    setUsers(users.filter((u) => u._id !== userId));
-  };
-
-  const handleSaveEdit = () => {
-    setUsers(users.map((u) => (u._id === selectedUser._id ? selectedUser : u)));
-    setOpenEdit(false);
-  };
-
-  const handleAddUser = () => {
-    setUsers([...users, { ...selectedUser, _id: Date.now() }]);
-    setOpenAdd(false);
+  const handleDelete = async (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      await axios.delete(`http://localhost:8000/api/auth/${userId}`);
+      fetchUsers();
+    }
   };
 
   return (
@@ -73,60 +65,46 @@ const UsersTable = () => {
       <Typography variant="h5" gutterBottom>
         Users List
       </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          setSelectedUser({ name: "", address: "", phone: "", role: "" });
-          setOpenAdd(true);
-        }}
-        style={{ marginBottom: "15px" }}
-      >
-        Add New User
-      </Button>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><b>Name</b></TableCell>
-              <TableCell><b>Address</b></TableCell>
-              <TableCell><b>Phone</b></TableCell>
-              <TableCell><b>Role</b></TableCell>
-              <TableCell align="center"><b>Action</b></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.length > 0 ? (
-              users.map((user) => (
-                <TableRow key={user._id}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.address}</TableCell>
-                  <TableCell>{user.phone}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell align="center">
-                    <IconButton color="primary" onClick={() => handleView(user)}>
-                      <VisibilityIcon />
-                    </IconButton>
-                    <IconButton color="secondary" onClick={() => handleEdit(user)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(user._id)}>
-                      <DeleteIcon />
-                    </IconButton>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell><b>Name</b></TableCell>
+                <TableCell><b>Email</b></TableCell>
+                <TableCell align="center"><b>Action</b></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.length > 0 ? (
+                users.map((user) => (
+                  <TableRow key={user._id}>
+                    <TableCell>{user.username}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell align="center">
+                      <IconButton color="primary" onClick={() => handleView(user)}>
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton color="error" onClick={() => handleDelete(user._id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    No Users Found
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
-                  No Users Available
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
 
       {/* View User Dialog */}
       <Dialog open={openView} onClose={() => setOpenView(false)}>
@@ -134,105 +112,13 @@ const UsersTable = () => {
         <DialogContent>
           {selectedUser && (
             <>
-              <Typography><b>Name:</b> {selectedUser.name}</Typography>
-              <Typography><b>Address:</b> {selectedUser.address}</Typography>
-              <Typography><b>Phone:</b> {selectedUser.phone}</Typography>
-              <Typography><b>Role:</b> {selectedUser.role}</Typography>
+              <Typography><b>Name:</b> {selectedUser.username}</Typography>
+              <Typography><b>Email:</b> {selectedUser.email}</Typography>
             </>
           )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenView(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Edit User Dialog */}
-      <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
-        <DialogTitle>Edit User</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Name"
-            fullWidth
-            value={selectedUser?.name || ""}
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, name: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Address"
-            fullWidth
-            value={selectedUser?.address || ""}
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, address: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Phone"
-            fullWidth
-            value={selectedUser?.phone || ""}
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, phone: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Role"
-            fullWidth
-            value={selectedUser?.role || ""}
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, role: e.target.value })
-            }
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
-          <Button onClick={handleSaveEdit} color="primary">Save</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Add User Dialog */}
-      <Dialog open={openAdd} onClose={() => setOpenAdd(false)}>
-        <DialogTitle>Add New User</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Name"
-            fullWidth
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, name: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Address"
-            fullWidth
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, address: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Phone"
-            fullWidth
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, phone: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Role"
-            fullWidth
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, role: e.target.value })
-            }
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenAdd(false)}>Cancel</Button>
-          <Button onClick={handleAddUser} color="primary">Add</Button>
         </DialogActions>
       </Dialog>
     </div>
