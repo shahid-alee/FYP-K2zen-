@@ -10,7 +10,7 @@ export default function AboutUs() {
   return (
     <Box className="about-section">
       <Grid container spacing={6} alignItems="center">
-        {/* Left Content */}
+      
         <Grid item xs={12} md={6} className="about-text-section">
           <Typography variant="h3" className="about-title">
             Welcome to <span>K2Zen Adventures</span>
@@ -38,7 +38,7 @@ export default function AboutUs() {
           </Button>
         </Grid>
 
-        {/* Right Image Collage */}
+       
         <Grid item xs={12} md={6} className="about-image-section">
           <Box className="image-grid">
             <Box className="main-image">

@@ -1,47 +1,70 @@
 :root {
-  --primary: #239753;   
-  --primary-dark: #1C7942;
-  --primary-light: #2DB564;
+  --primary: #239753;
+  --primary-dark: #1c7942;
+  --primary-light: #2db564;
   --white: #ffffff;
-  --primary-xlight: #4BBF7B;
-  --primary-xxlight: #91E7AD;
 }
 
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #f5f5f5;
   min-height: 100vh;
   margin-top: 60px;
 }
 
 .register-box {
-  width: 500px;
-  padding: 30px;
-  margin: 50px;
-  background: #fff;
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--white);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px 35px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .register-title {
   text-align: center;
-  margin-bottom: 20px !important;
-  font-weight: bold !important;
+  font-weight: 600 !important;
   color: #333;
+  margin-bottom: 20px !important;
 }
-.textfield:hover{
- outline: 1px var();
+
+.MuiTextField-root {
+  margin-top: 10px !important;
+}
+
+.MuiOutlinedInput-root:hover fieldset {
+  border-color: var(--primary) !important;
 }
 
 .register-btn {
   margin-top: 20px !important;
   padding: 12px !important;
-  font-size: 16px !important;
-  font-weight: bold !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+
+  &:hover {
+    background-color: var(--primary-dark) !important;
+  }
 }
 
 .register-footer {
-  margin-top: 15px !important;
+  margin-top: 20px !important;
+  text-align: center;
   color: #555;
+}
+
+.login-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--primary-dark);
+  }
 }

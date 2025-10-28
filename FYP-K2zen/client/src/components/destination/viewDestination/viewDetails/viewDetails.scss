@@ -1,63 +1,86 @@
-.view-details-container {
-  padding: 40px;
-  background-color: #f9fafc;
+/* src/components/destination/viewDetails/viewDetails.scss */
+.view-details {
+  background-color: #f6f9f7;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 
-  .image-section {
+  .hero-section {
     position: relative;
-    width: 90%;
-    max-width: 900px;
-    text-align: center;
+    height: 380px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    img {
+    .overlay {
       width: 100%;
-      height: 400px;
-      object-fit: cover;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 60%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
 
-    h1 {
-      margin-top: 20px;
-      color: #1c7942;
-      font-size: 28px;
-      font-weight: bold;
+      .hero-title { font-weight: 700; font-size: 2.4rem; }
+      .hero-subtitle { margin-top: 8px; font-size: 1.05rem; opacity: 0.95; }
     }
   }
 
-  .details-section {
-    width: 90%;
-    max-width: 900px;
-    margin-top: 30px;
+  .content-section {
+    max-width: 1200px;
+    margin: -40px auto 60px;
+    padding: 20px;
+  }
+
+  .content-tabs { margin-bottom: 8px; }
+
+  .tab-panel {
     background: #fff;
-    padding: 25px 30px;
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 18px rgba(17, 24, 39, 0.06);
+  }
+
+  .section-title { color: #1c7942; font-weight: 700; margin-bottom: 10px; }
+
+  .description { color: #444; line-height: 1.7; }
+
+  .itinerary-list { margin-left: 20px; line-height: 1.6; }
+  .services-list { margin-left: 20px; line-height: 1.6; }
+
+  .booking-card {
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+    background: #fff;
 
-    h2 {
-      color: #239753;
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+    .booking-content {
+      padding: 18px;
+      text-align: center;
 
-    p {
-      color: #555;
-      line-height: 1.6;
-      font-size: 16px;
-    }
+      .price { color: #1c7942; font-weight: 800; margin-bottom: 6px; }
+      .duration { color: #666; margin-bottom: 12px; }
 
-    ul {
-      margin-top: 10px;
-      list-style-type: disc;
-      padding-left: 20px;
-      color: #444;
+      .book-btn {
+        background-color: #239753;
+        color: white;
+        width: 100%;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+        &:hover { background-color: #1c7942; }
+      }
 
-      li {
-        margin-bottom: 6px;
+      .back-btn {
+        width: 100%;
+        border-radius: 8px;
+        color: #1c7942;
+        border-color: #1c7942;
+        &:hover { background-color: #1c7942; color: #fff; }
       }
     }
   }
