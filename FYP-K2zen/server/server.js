@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import rentCarRoutes from "./routes/rentCarRoute.js";
 import packageRoutes from "./routes/packageRoutes.js";
+import packageBookingRoutes from "./routes/packageBookingRoutes.js"
 import destinationRoutes from "./routes/destinationRoutes.js";
 import hotelRoutes from "./routes/hotelRoutes.js";
 import hotelBookingRoutes from "./routes/hotelBookingRoutes.js";
@@ -49,6 +50,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/rentcar", rentCarRoutes);
 app.use("/api/destinations", destinationRoutes);
 app.use("/api/packages", packageRoutes);
+app.use("/api/packageBooking", packageBookingRoutes);
 app.use("/api/hotels", hotelRoutes);
 app.use("/api/bookings", hotelBookingRoutes);
 app.use("/api/carBooking", carBookingRoutes);

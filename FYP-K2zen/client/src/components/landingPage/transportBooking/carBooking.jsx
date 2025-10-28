@@ -111,7 +111,7 @@ export default function CarBooking() {
                 </Typography>
               )}
 
-              <Button type="submit" className="submit-btn">Confirm Booking</Button>
+              <Button variant="success"  type="submit" className="submit-btn">Confirm Booking</Button>
             </form>
           </Paper>
         </Grid>

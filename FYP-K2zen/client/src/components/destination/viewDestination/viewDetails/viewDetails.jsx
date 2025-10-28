@@ -1,153 +1,157 @@
+// src/components/destination/viewDetails/ViewDetails.jsx
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
   Typography,
-  Card,
-  CardContent,
-  CardMedia,
   Button,
   Grid,
+  Card,
+  CardMedia,
   Divider,
+  Tabs,
+  Tab,
 } from "@mui/material";
+import "./viewDetails.scss";
 
-export default function ViewDetail() {
+export default function ViewDetails() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { id } = location.state || {};
   const [pkg, setPkg] = useState(null);
-  const navigate = useNavigate();
+  const [tab, setTab] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
-      const fetchPackage = async () => {
-        try {
-          const res = await axios.get(`http://localhost:8000/api/packages/${id}`);
-          setPkg(res.data);
-        } catch (error) {
-          console.error("Error fetching package details:", error);
-        }
-      };
-      fetchPackage();
+      axios
+        .get(`http://localhost:8000/api/packages/${id}`)
+        .then((res) => setPkg(res.data))
+        .catch((err) => console.error(err));
     }
   }, [id]);
 
-  if (!pkg) {
-    return (
-      <Box
-        sx={{
-          py: 5,
-          textAlign: "center",
-          color: "text.secondary",
-        }}
-      >
-        <Typography variant="h6">Loading package details...</Typography>
-      </Box>
-    );
-  }
+  const handleBookNow = async () => {
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+
+    if (!token || !userStr) {
+      navigate("/login", {
+        state: { next: `/viewDetails/${id}`, bookingIntent: { packageId: id } },
+      });
+      return;
+    }
+
+    const user = JSON.parse(userStr);
+
+    const payload = {
+      packageId: pkg._id,
+      packageName: pkg.title,
+      packagePrice: pkg.price,
+      packageDays: pkg.days,
+      destinationName: pkg.destinationName,
+      userContact: user.phone || "",
+      bookingDate: new Date().toISOString(),
+    };
+
+    try {
+      setLoading(true);
+      await axios.post("http://localhost:8000/api/packageBookings", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setLoading(false);
+      alert("🎉 Booking successful!");
+      navigate("/dashboard/packageBookings");
+    } catch (err) {
+      setLoading(false);
+      console.error(err);
+      alert("Booking failed. Try again later.");
+    }
+  };
+
+  if (!pkg)
+    return <Typography variant="h6" align="center" sx={{ mt: 10 }}>Loading...</Typography>;
+
+  const imageUrl = pkg.image
+    ? `http://localhost:8000/${pkg.image.replace(/\\/g, "/")}`
+    : "https://via.placeholder.com/1200x600";
 
   return (
-    <Box
-      sx={{
-        py: 5,
-        px: { xs: 2, md: 6 },
-        backgroundColor: "#f9fafc",
-        minHeight: "100vh",
-      }}
-    >
-      {/* Back Button */}
-      <Button
-        variant="outlined"
-        onClick={() => navigate(-1)}
-        sx={{
-          mb: 3,
-          borderColor: "#1C7942",
-          color: "#1C7942",
-          "&:hover": { backgroundColor: "#1C7942", color: "#fff" },
-        }}
-      >
-        Back
-      </Button>
+    <Box className="view-details">
+      <Box className="hero-section" style={{ backgroundImage: `url(${imageUrl})` }}>
+        <Box className="overlay">
+          <Typography variant="h3">{pkg.title}</Typography>
+          <Typography variant="subtitle1">{pkg.destinationName}</Typography>
+        </Box>
+      </Box>
 
-      <Card
-        sx={{
-          borderRadius: 3,
-          overflow: "hidden",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-        }}
-      >
-        {/* Package Image */}
-        <CardMedia
-          component="img"
-          height="400"
-          image={
-            pkg.image
-              ? `http://localhost:8000/${pkg.image.replace(/\\/g, "/")}`
-              : "https://via.placeholder.com/600x400"
-          }
-          alt={pkg.title || "Package Image"}
-        />
+      <Box className="content-section">
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={8}>
+            <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+              <Tab label="Overview" />
+              <Tab label="Itinerary" />
+              <Tab label="Services" />
+            </Tabs>
+            <Divider sx={{ my: 2 }} />
 
-        {/* Package Content */}
-        <CardContent>
-          <Typography
-            variant="h4"
-            sx={{ fontWeight: "bold", color: "#1C7942", mb: 2 }}
-          >
-            {pkg.title}
-          </Typography>
+            {tab === 0 && (
+              <Box>
+                <Typography variant="h6">Overview</Typography>
+                <Typography>{pkg.description}</Typography>
+              </Box>
+            )}
 
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                <strong>Destination:</strong> {pkg.destination}
-              </Typography>
-              <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                <strong>Duration:</strong> {pkg.days} Days
-              </Typography>
-              <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                <strong>Price:</strong> PKR {pkg.price?.toLocaleString()}
-              </Typography>
-            </Grid>
+            {tab === 1 && (
+              <Box>
+                <Typography variant="h6">Itinerary</Typography>
+                {pkg.itinerary?.length
+                  ? pkg.itinerary.map((d, i) => <li key={i}>{d}</li>)
+                  : "No itinerary yet."}
+              </Box>
+            )}
 
-            <Grid item xs={12} md={6}>
-              {pkg.places?.length > 0 && (
-                <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                  <strong>Places Included:</strong> {pkg.places.join(", ")}
-                </Typography>
-              )}
-            </Grid>
+            {tab === 2 && (
+              <Box>
+                <Typography variant="h6">Services</Typography>
+                {pkg.services?.length
+                  ? pkg.services.map((s, i) => <li key={i}>{s}</li>)
+                  : "No services added."}
+              </Box>
+            )}
           </Grid>
 
-          <Divider sx={{ my: 3 }} />
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardMedia component="img" height="220" image={imageUrl} alt={pkg.title} />
+              <Box sx={{ p: 2 }}>
+                <Typography variant="h6">PKR {pkg.price}</Typography>
+                <Typography>Duration: {pkg.days} Days</Typography>
 
-          {/* Overview Section */}
-          <Typography
-            variant="h5"
-            sx={{ color: "#239753", fontWeight: "bold", mb: 1 }}
-          >
-            Overview
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 3, color: "text.secondary" }}>
-            {pkg.overview || "No overview available for this package."}
-          </Typography>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                  onClick={handleBookNow}
+                  disabled={loading}
+                >
+                  {loading ? "Booking..." : "Book Now"}
+                </Button>
 
-          {/* Itinerary Section */}
-          {pkg.itinerary && (
-            <>
-              <Typography
-                variant="h5"
-                sx={{ color: "#239753", fontWeight: "bold", mb: 1 }}
-              >
-                Itinerary
-              </Typography>
-              <Typography variant="body1" sx={{ color: "text.secondary" }}>
-                {pkg.itinerary}
-              </Typography>
-            </>
-          )}
-        </CardContent>
-      </Card>
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  sx={{ mt: 1 }}
+                  onClick={() => window.history.back()}
+                >
+                  Go Back
+                </Button>
+              </Box>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 }

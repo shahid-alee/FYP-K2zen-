@@ -80,14 +80,14 @@ const UpdatedMenu = {
       icon: icons.hotels,
       breadcrumbs: false
     },
-    {
-      id: 'customers',
-      title: 'Customers',
-      type: 'item',
-      url: '/customers',
-      icon: icons.customers,
-      breadcrumbs: false
-    },
+    // {
+    //   id: 'customers',
+    //   title: 'Customers',
+    //   type: 'item',
+    //   url: '/customers',
+    //   icon: icons.customers,
+    //   breadcrumbs: false
+    // },
     {
       id: 'invoices',
       title: 'Invoices',
@@ -101,6 +101,14 @@ const UpdatedMenu = {
       title: 'Users',
       type: 'item',
       url: '/users',
+      icon: icons.users,
+      breadcrumbs: false
+    },
+     {
+      id: 'packageBookings',
+      title: 'packageBookings',
+      type: 'item',
+      url: '/packagebookings',
       icon: icons.users,
       breadcrumbs: false
     },

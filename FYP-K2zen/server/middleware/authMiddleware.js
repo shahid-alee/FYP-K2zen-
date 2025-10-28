@@ -1,9 +1,10 @@
+// middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!authHeader?.startsWith("Bearer ")) {
     return res.status(401).json({ message: "No token, authorization denied" });
   }
 
@@ -11,10 +12,10 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: decoded.id, email: decoded.email };
+    req.user = { id: decoded.id, email: decoded.email, name: decoded.name };
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Token is not valid" });
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 
