@@ -38,13 +38,9 @@ const Login = () => {
 
     try {
       setLoading(true);
-<<<<<<< HEAD
-      const res = await axios.post("http://localhost:5000/api/user", formData);
-=======
       const res = await axios.post("http://localhost:8000/api/auth/login", formData, {
         headers: { "Content-Type": "application/json" },
       });
->>>>>>> origin/main
 
       if (res.data.status) {
         localStorage.setItem("token", res.data.token);
