@@ -26,7 +26,7 @@ export const addPackage = async (req, res) => {
     } = req.body;
 
     const image = req.file ? `uploads/${req.file.filename}` : null;
-    const placesArray = places ? places.split(",").map((p) => p.trim()) : [];
+    const placesArray = places ? JSON.parse(places) : [];
 
     const newPackage = await Package.create({
       title,

@@ -5,30 +5,31 @@
   --white: #ffffff;
 }
 
-/* Navbar */
+/* ✅ Navbar */
 .navbar {
   background: var(--white) !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding: 8px 20px;
+  width: 100%;
+  z-index: 100;
 }
 
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
 }
 
-/* Logo */
+/* ✅ Logo */
 .navbar-logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 
   .navbar-logo-img {
     height: 45px;
-    cursor: pointer;
   }
 
   .navbar-title {
@@ -38,7 +39,7 @@
   }
 }
 
-/* Center Menu */
+/* ✅ Desktop Center Menu */
 .navbar-menu {
   display: flex;
   align-items: center;
@@ -56,17 +57,31 @@
   color: #333;
   font-size: 15px;
   font-weight: 500;
-  transition: all 0.3s ease;
   position: relative;
   padding: 6px 8px;
+  transition: 0.3s ease;
 
   &:hover {
-    color: var(--primary-dark);
-    border-bottom: 2px solid var(--primary);
+    color: var(--primary);
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s;
+  }
+
+  &:hover:after {
+    width: 100%;
   }
 }
 
-/* Dropdown */
+/* ✅ Dropdown */
 .dropdown-wrapper {
   position: relative;
 }
@@ -79,13 +94,13 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   padding: 10px 0;
-  min-width: 200px;
+  min-width: 210px;
   z-index: 1000;
 }
 
 .dropdown-item {
   display: block;
-  padding: 10px 16px;
+  padding: 10px 18px;
   color: #333;
   font-size: 15px;
   font-weight: 500;
@@ -98,31 +113,16 @@
   }
 }
 
-/* Right Actions */
+/* ✅ Right Side Icons */
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
-}
-
-.enquire-btn {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-
-  &:hover {
-    background: var(--primary-dark);
-  }
+  gap: 12px;
 }
 
 .signup-icon {
   color: var(--primary-dark);
-  transition: 0.3s;
+  transition: 0.3s ease;
 
   &:hover {
     color: var(--primary-light);
@@ -130,51 +130,48 @@
   }
 }
 
-/* Mobile Menu Icon */
+/* ✅ Mobile Menu Icon */
 .mobile-menu-icon {
-  display: none !important; /* hide by default */
+  display: none !important;
   color: var(--primary-dark);
-  transition: 0.3s;
+  transition: 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 
   @media (max-width: 1000px) {
-    display: inline-flex !important; /* show only under 1000px */
+    display: inline-flex !important;
   }
 }
 
+/* ✅ Mobile Drawer Custom Styles */
+.MuiDrawer-paper {
+  padding: 16px;
+}
 
-/* Mobile Menu */
-.mobile-menu {
-  .MuiPaper-root {
-    padding: 10px;
+.MuiListItemButton-root {
+  padding: 14px 18px !important;
+  border-radius: 8px !important;
+  transition: 0.3s ease;
+
+  &:hover {
+    background: rgba(35, 151, 83, 0.12);
   }
 
-  a {
-    text-decoration: none;
+  .MuiTypography-root {
+    font-size: 15px;
+    font-weight: 600;
     color: #333;
-    font-weight: 500;
   }
 }
+
+/* ✅ Logged in User Menu */
 .user-info {
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: var(--primary-dark);
+  gap: 8px;
   font-weight: 600;
-
-  .tick-icon {
-    color: var(--primary);
-    font-size: 24px;
-  }
-
-  .username {
-    font-size: 15px;
-    color: var(--primary-dark);
-  }
-
-  &:hover {
-    .tick-icon {
-      transform: scale(1.1);
-      transition: 0.3s;
-    }
-  }
+  color: var(--primary-dark);
 }

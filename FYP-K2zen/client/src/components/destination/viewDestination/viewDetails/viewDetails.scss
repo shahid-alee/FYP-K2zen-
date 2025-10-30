@@ -1,86 +1,171 @@
-/* src/components/destination/viewDetails/viewDetails.scss */
+:root {
+  --primary: #239753;
+  --primary-dark: #1c7942;
+  --primary-light: #2db564;
+  --white: #ffffff;
+}
+
 .view-details {
-  background-color: #f6f9f7;
+  background-color: #f4faf6;
   min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+
 
   .hero-section {
-    position: relative;
-    height: 380px;
+    height: 420px;
     background-size: cover;
     background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    // border-bottom-left-radius: 40px;
+    // border-bottom-right-radius: 40px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 5%;
 
     .overlay {
+      background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 75%);
       width: 100%;
       height: 100%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 60%);
+      color: var(--white);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       text-align: center;
-      color: #fff;
       padding: 20px;
 
-      .hero-title { font-weight: 700; font-size: 2.4rem; }
-      .hero-subtitle { margin-top: 8px; font-size: 1.05rem; opacity: 0.95; }
+      h3 {
+        font-size: 3rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+      }
+
+      p {
+        font-size: 1.3rem;
+        opacity: 0.95;
+        margin-top: 6px;
+      }
     }
   }
 
   .content-section {
-    max-width: 1200px;
-    margin: -40px auto 60px;
+    // width: 100%;
     padding: 20px;
+    margin-top: 3%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .left-content{
+    width: 100%;
+
   }
 
-  .content-tabs { margin-bottom: 8px; }
+  /* Tabs Styling */
+  .MuiTabs-root {
+    .MuiTab-root {
+      font-weight: 600;
+      color: #444;
+
+      &.Mui-selected {
+        color: var(--primary);
+      }
+    }
+
+    .MuiTabs-indicator {
+      background-color: var(--primary);
+      height: 3px;
+      border-radius: 10px;
+    }
+  }
 
   .tab-panel {
-    background: #fff;
-    border-radius: 10px;
-    padding: 22px;
-    margin-bottom: 20px;
-    box-shadow: 0 6px 18px rgba(17, 24, 39, 0.06);
+    padding: 25px;
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(10, 52, 32, 0.12);
+    margin-bottom: 25px;
   }
 
-  .section-title { color: #1c7942; font-weight: 700; margin-bottom: 10px; }
+  /* Text Content */
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+  }
 
-  .description { color: #444; line-height: 1.7; }
+  li {
+    font-size: 0.94rem;
+    line-height: 1.7;
+    padding: 6px 0;
+    color: #3a3a3a;
+  }
+.right-content{
+    width: inherit;
+    height: auto;
 
-  .itinerary-list { margin-left: 20px; line-height: 1.6; }
-  .services-list { margin-left: 20px; line-height: 1.6; }
-
+  }
+  /* Booking Card */
   .booking-card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
-    background: #fff;
+    position: sticky;
+    top: 100px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(5, 45, 23, 0.12);
+    display: flex;
+    justify-content: space-around;
+
+
+    img {
+      height: 240px;
+      object-fit: cover;
+    }
 
     .booking-content {
-      padding: 18px;
+      padding: 20px;
       text-align: center;
 
-      .price { color: #1c7942; font-weight: 800; margin-bottom: 6px; }
-      .duration { color: #666; margin-bottom: 12px; }
+      .price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 10px;
+      }
+
+      .duration {
+        font-size: 0.95rem;
+        color: #727272;
+        margin-bottom: 18px;
+      }
 
       .book-btn {
-        background-color: #239753;
-        color: white;
+        background-color: var(--primary);
+        border-radius: 10px;
+        font-weight: 700;
+        padding: 12px 14px;
         width: 100%;
-        border-radius: 8px;
-        padding: 10px 12px;
-        margin-bottom: 10px;
-        &:hover { background-color: #1c7942; }
+        color: var(--white);
+        transition: 0.25s ease;
+
+        &:hover {
+          background-color: var(--primary-dark);
+        }
       }
 
       .back-btn {
+        margin-top: 10px;
+        border-radius: 10px;
+        font-weight: 600;
+        color: var(--primary-dark);
+        border-color: var(--primary-dark);
+        transition: 0.25s ease;
         width: 100%;
-        border-radius: 8px;
-        color: #1c7942;
-        border-color: #1c7942;
-        &:hover { background-color: #1c7942; color: #fff; }
+        padding: 10px;
+
+        &:hover {
+          background-color: var(--primary-dark);
+          color: var(--white);
+        }
       }
     }
   }
