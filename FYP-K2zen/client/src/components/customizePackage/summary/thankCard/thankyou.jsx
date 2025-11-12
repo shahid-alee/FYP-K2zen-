@@ -1,7 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./thankyou.scss";
 
-const ThankYouCard = ({ userName, onBackHome }) => {
+const ThankYouCard = ({ userName }) => {
+  const navigate = useNavigate();
+
+  const handleBackHome = () => {
+    navigate("/"); // or "/home" depending on your route
+  };
+
   return (
     <div className="thankyou-container">
       <div className="thankyou-card">
@@ -17,8 +24,8 @@ const ThankYouCard = ({ userName, onBackHome }) => {
 
         <div className="thankyou-footer">
           <p>We can’t wait to make your dream trip a reality 🌍✨</p>
-          <button className="home-btn" onClick={onBackHome}>
-            🏠 Back to Home
+          <button className="home-btn" onClick={handleBackHome}>
+            Back to Home
           </button>
         </div>
       </div>

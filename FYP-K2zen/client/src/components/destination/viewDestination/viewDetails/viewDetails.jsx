@@ -71,7 +71,11 @@ export default function ViewDetails() {
   };
 
   if (!pkg)
-    return <Typography variant="h6" align="center" sx={{ mt: 10 }}>Loading...</Typography>;
+    return (
+      <Typography variant="h6" align="center" sx={{ mt: 10 }}>
+        Loading...
+      </Typography>
+    );
 
   const imageUrl = pkg.image
     ? `http://localhost:8000/${pkg.image.replace(/\\/g, "/")}`
@@ -79,17 +83,21 @@ export default function ViewDetails() {
 
   return (
     <Box className="view-details">
+      {/* ✅ HERO SECTION */}
       <Box className="hero-section" style={{ backgroundImage: `url(${imageUrl})` }}>
         <Box className="overlay">
-          <Typography variant="h3">{pkg.title}</Typography>
-          <Typography variant="subtitle1">{pkg.destinationName}</Typography>
+          <Typography variant="h3" className="hero-title">{pkg.title}</Typography>
+          <Typography className="hero-subtitle">{pkg.destinationName}</Typography>
         </Box>
       </Box>
 
+      {/* ✅ CONTENT */}
       <Box className="content-section">
         <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
-            <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+          {/* ✅ LEFT CONTENT */}
+          <Box className="left-content">
+          <Grid item xs={12} md={8} >
+            <Tabs value={tab} onChange={(e, v) => setTab(v)} className="content-tabs">
               <Tab label="Overview" />
               <Tab label="Itinerary" />
               <Tab label="Services" />
@@ -97,42 +105,49 @@ export default function ViewDetails() {
             <Divider sx={{ my: 2 }} />
 
             {tab === 0 && (
-              <Box>
-                <Typography variant="h6">Overview</Typography>
-                <Typography>{pkg.description}</Typography>
+              <Box className="tab-panel">
+                <Typography className="section-title">Overview</Typography>
+                <Typography className="description">{pkg.description}</Typography>
               </Box>
             )}
 
             {tab === 1 && (
-              <Box>
-                <Typography variant="h6">Itinerary</Typography>
-                {pkg.itinerary?.length
-                  ? pkg.itinerary.map((d, i) => <li key={i}>{d}</li>)
-                  : "No itinerary yet."}
+              <Box className="tab-panel">
+                <Typography className="section-title">Itinerary</Typography>
+                <ul className="itinerary-list">
+                  {pkg.itinerary?.length
+                    ? pkg.itinerary.map((d, i) => <li key={i}>{d}</li>)
+                    : "No itinerary yet."}
+                </ul>
               </Box>
             )}
 
             {tab === 2 && (
-              <Box>
-                <Typography variant="h6">Services</Typography>
-                {pkg.services?.length
-                  ? pkg.services.map((s, i) => <li key={i}>{s}</li>)
-                  : "No services added."}
+              <Box className="tab-panel">
+                <Typography className="section-title">Services</Typography>
+                <ul className="services-list">
+                  {pkg.services?.length
+                    ? pkg.services.map((s, i) => <li key={i}>{s}</li>)
+                    : "No services added."}
+                </ul>
               </Box>
             )}
           </Grid>
+          </Box>
 
-          <Grid item xs={12} md={4}>
-            <Card>
-              <CardMedia component="img" height="220" image={imageUrl} alt={pkg.title} />
-              <Box sx={{ p: 2 }}>
-                <Typography variant="h6">PKR {pkg.price}</Typography>
-                <Typography>Duration: {pkg.days} Days</Typography>
+          {/* ✅ RIGHT BOOKING CARD */}
+          <Box className="right-content">
+          <Grid item xs={12} md={4} >
+            <Card className="booking-card">
+              <CardMedia component="img" image={imageUrl} alt={pkg.title} />
+
+              <Box className="booking-content">
+                <Typography className="price">PKR {pkg.price}</Typography>
+                <Typography className="duration">Duration: {pkg.days} Days</Typography>
 
                 <Button
+                  className="book-btn"
                   variant="contained"
-                  fullWidth
-                  sx={{ mt: 2 }}
                   onClick={handleBookNow}
                   disabled={loading}
                 >
@@ -140,9 +155,8 @@ export default function ViewDetails() {
                 </Button>
 
                 <Button
+                  className="back-btn"
                   variant="outlined"
-                  fullWidth
-                  sx={{ mt: 1 }}
                   onClick={() => window.history.back()}
                 >
                   Go Back
@@ -150,6 +164,7 @@ export default function ViewDetails() {
               </Box>
             </Card>
           </Grid>
+          </Box>
         </Grid>
       </Box>
     </Box>

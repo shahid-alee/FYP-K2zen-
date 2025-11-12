@@ -1,18 +1,30 @@
+// models/carBooking.js
 import mongoose from "mongoose";
 
 const carBookingSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    userName: { type: String, required: true },
     email: { type: String, required: true },
     contact: { type: String, required: true },
-    carName: { type: String, required: true },
-    modelYear: { type: String, required: true },
-    totalDays: { type: Number, required: true },
-    totalPrice: { type: Number, required: true },
-    status: { type: String, default: "Pending" },
-    image: { type: String }, // optional car image path
+    carId: { type: mongoose.Schema.Types.ObjectId, ref: "RentCar", required: true },
+    carName: { type: String },
+    modelYear: { type: String },
+    image: { type: String },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
+    totalDays: { type: Number },
+    totalPrice: { type: Number },
+    status: {
+      type: String,
+      enum: ["Pending", "Booked", "Rejected"],
+      default: "Pending",
+    },
+    rejectionReason: { type: String },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("CarBooking", carBookingSchema);
+// Prevent model overwrite in watch mode
+const CarBooking = mongoose.models?.CarBooking || mongoose.model("CarBooking", carBookingSchema);
+
+export default CarBooking;

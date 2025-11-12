@@ -124,7 +124,7 @@ const Login = () => {
 
           <Typography variant="body2" align="center" className="login-footer">
             Don’t have an account?{" "}
-            <Link component={RouterLink} to="/register" underline="hover" className="signup-link">
+            <Link component={RouterLink} to="/register" color="#2db564" underline="hover" className="signup-link">
               Sign Up
             </Link>
           </Typography>

@@ -138,10 +138,9 @@ const UsersTable = () => {
   };
 
   const handleDelete = async (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
       await axios.delete(`http://localhost:8000/api/auth/${userId}`);
       fetchUsers();
-    }
+    
   };
 
   return (
