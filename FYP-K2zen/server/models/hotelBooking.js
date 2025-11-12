@@ -11,6 +11,7 @@ const hotelBookingSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     hotelName: { type: String, required: true },
     hotelImage: { type: String },
+    status: { type: String, default: "Pending" } // ✅ NEW
   },
   { timestamps: true }
 );

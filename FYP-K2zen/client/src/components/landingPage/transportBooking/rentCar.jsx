@@ -6,7 +6,6 @@ import {
   CardContent,
   CardMedia,
   Button,
-  Grid,
   CircularProgress,
 } from "@mui/material";
 import axios from "axios";
@@ -25,13 +24,24 @@ export default function TransportBooking() {
       setLoading(true);
       try {
         const res = await axios.get(API_URL);
-        setCars(res.data);
+        console.log("Fetched Cars:", res.data);
+
+        const data =
+          res.data.cars ||
+          res.data.data ||
+          res.data.allCars ||
+          res.data ||
+          [];
+
+        setCars(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching rent cars:", error);
+        setCars([]);
       } finally {
         setLoading(false);
       }
     };
+
     fetchCars();
   }, []);
 
@@ -46,8 +56,7 @@ export default function TransportBooking() {
           Transport Booking
         </Typography>
         <Typography variant="body1" className="section-subtitle">
-          Choose from our premium vehicles with professional drivers for a
-          comfortable and safe journey across Gilgit-Baltistan.
+          Choose from our premium vehicles with professional drivers.
         </Typography>
       </Box>
 
@@ -65,15 +74,18 @@ export default function TransportBooking() {
                   image={
                     car.image
                       ? `http://localhost:8000/${car.image.replace(/\\/g, "/")}`
+                      : car.images && car.images.length > 0
+                      ? `http://localhost:8000/${car.images[0].replace(/\\/g, "/")}`
                       : "https://via.placeholder.com/300x200"
                   }
-                  alt={car.carName}
+                  alt={car.carName || car.name || "Car"}
                   className="rentcar-image"
                 />
 
                 <CardContent className="rentcar-content">
                   <Typography variant="h6" className="rentcar-name">
-                    {car.carName} ({car.modelYear})
+                    {car.carName || car.name}{" "}
+                    {car.modelYear ? `(${car.modelYear})` : ""}
                   </Typography>
 
                   <Typography variant="body2" className="rentcar-desc">
@@ -81,21 +93,22 @@ export default function TransportBooking() {
                   </Typography>
 
                   <Typography variant="body2" className="rentcar-info">
-                    Capacity: {car.seats} Persons
+                    Capacity: {car.seats || "N/A"} Persons
                   </Typography>
+
                   <Typography variant="body2" className="rentcar-info">
-                    Location: {car.location}
+                    Location: {car.location || "Not Specified"}
                   </Typography>
+
                   <Typography variant="body2" className="rentcar-info">
-                    Status: {car.status}
+                    Status: {car.status || "Available"}
                   </Typography>
 
                   <Typography variant="subtitle1" className="rentcar-price">
-                    PKR {car.pricePerDay}/day
+                    PKR {(car.pricePerDay || car.price || car.rent)}/day
                   </Typography>
 
                   <Button
-                    variant="success"
                     className="rentcar-btn"
                     onClick={() => handleBookNow(car)}
                   >
