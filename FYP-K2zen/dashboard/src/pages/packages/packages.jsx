@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  IconButton, Typography, Avatar, Button, Dialog, DialogTitle, DialogContent, TextField, Box
+  IconButton, Typography, Avatar, Button, Dialog, DialogTitle, DialogContent,
+  TextField, Box, Snackbar, Alert
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const DashboardPackages = () => {
   const [packages, setPackages] = useState([]);
   const [open, setOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const [selectedPkg, setSelectedPkg] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [snack, setSnack] = useState({ open: false, msg: "", type: "success" });
+
+  const navigate = useNavigate();
 
   const fetchPackages = async () => {
     try {
@@ -30,74 +33,86 @@ const DashboardPackages = () => {
   }, []);
 
   const validationSchema = Yup.object({
-    title: Yup.string().required("Title required"),
-    days: Yup.number().required("Days required"),
-    destinationName: Yup.string().required("Destination required"),
-    price: Yup.number().required("Price required"),
-    image: Yup.mixed().required("Image required"),
+    title: Yup.string().required("Required"),
+    days: Yup.number().required("Required"),
+    destinationName: Yup.string().required("Required"),
+    location: Yup.string().required("Required"),
+    price: Yup.number().required("Required"),
+    image: Yup.mixed().nullable(),
   });
 
   const onSubmit = async (values, { resetForm }) => {
     try {
       const formData = new FormData();
-      Object.entries(values).forEach(([key, val]) => formData.append(key, val));
+      formData.append("title", values.title);
+      formData.append("days", values.days);
+      formData.append("destinationName", values.destinationName);
+      formData.append("location", values.location);
+      formData.append("price", values.price);
+      formData.append("description", values.description);
+      formData.append("status", values.status);
+
+      // ✅ Places convert to JSON array
+      formData.append(
+        "places",
+        JSON.stringify(values.places.split(",").map((p) => p.trim()))
+      );
+
+      // ✅ Image append correctly
+      if (values.image) formData.append("image", values.image);
+
       const res = await axios.post("http://localhost:8000/api/packages", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": "multipart/form-data" }
       });
-      setPackages(prev => [res.data, ...prev]);
+
+      setPackages((prev) => [res.data, ...prev]);
       resetForm();
+      setPreview(null);
       setOpen(false);
+      setSnack({ open: true, msg: "✅ Package added successfully!", type: "success" });
     } catch (err) {
       console.error("Add package error:", err);
+      setSnack({ open: true, msg: "❌ Failed to add package", type: "error" });
     }
   };
 
   const handleDelete = async (pkg) => {
     try {
       await axios.delete(`http://localhost:8000/api/packages/${pkg._id}`);
-      setPackages(packages.filter(p => p._id !== pkg._id));
+      setPackages(packages.filter((p) => p._id !== pkg._id));
+      setSnack({ open: true, msg: "🗑 Package deleted!", type: "info" });
     } catch (err) {
       console.error("Delete package error:", err);
     }
   };
 
- const handleDetailsSave = async (values) => {
-  try {
-    const res = await axios.put(
-      `http://localhost:8000/api/packages/${selectedPkg._id}/details`,
-      values
-    );
-    setPackages(packages.map(p => (p._id === res.data._id ? res.data : p)));
-    setDetailsOpen(false);
-  } catch (err) {
-    console.error("Error saving details:", err);
-  }
-};
-
   return (
     <div style={{ padding: 20 }}>
-      <Typography variant="h5" gutterBottom>Packages</Typography>
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
+        Travel Packages Management
+      </Typography>
 
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ mb: 2 }}>
-        Add Package
+      <Button variant="contained" onClick={() => setOpen(true)} sx={{ mb: 2 }}>
+        + Add Package
       </Button>
 
+      {/* Table */}
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead sx={{ background: "#e9f5ee" }}>
             <TableRow>
               <TableCell><b>Title</b></TableCell>
               <TableCell><b>Destination</b></TableCell>
               <TableCell><b>Location</b></TableCell>
               <TableCell><b>Price</b></TableCell>
               <TableCell><b>Image</b></TableCell>
-              <TableCell><b>Add Details</b></TableCell>
-              <TableCell align="center"><b>Action</b></TableCell>
+              <TableCell align="center"><b>Actions</b></TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {packages.length > 0 ? (
-              packages.map(pkg => (
+              packages.map((pkg) => (
                 <TableRow key={pkg._id}>
                   <TableCell>{pkg.title}</TableCell>
                   <TableCell>{pkg.destinationName}</TableCell>
@@ -105,40 +120,39 @@ const DashboardPackages = () => {
                   <TableCell>PKR {pkg.price}</TableCell>
                   <TableCell>
                     <Avatar
-                      src={pkg.image?.startsWith("http") ? pkg.image : `http://localhost:8000/${pkg.image}`}
+                      src={
+                        pkg.image
+                          ? `http://localhost:8000/${pkg.image.replace(/\\/g, "/")}`
+                          : ""
+                      }
                       variant="rounded"
                       sx={{ width: 56, height: 56 }}
                     />
                   </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        setSelectedPkg(pkg);
-                        setDetailsOpen(true);
-                      }}
-                    >
-                      Add
-                    </Button>
-                  </TableCell>
+
                   <TableCell align="center">
-                    <IconButton color="primary"><VisibilityIcon /></IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(pkg)}><DeleteIcon /></IconButton>
+                    <IconButton
+                      color="primary"
+                      onClick={() => navigate(`/viewDetails`, { state: { id: pkg._id } })}
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
+                    <IconButton color="error" onClick={() => handleDelete(pkg)}>
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={7} align="center">No Packages</TableCell>
-              </TableRow>
+              <TableRow><TableCell colSpan={7} align="center">No Packages Found</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
 
       {/* Add Package Dialog */}
-      <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Add New Package</DialogTitle>
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
+        <DialogTitle>Add Package</DialogTitle>
         <DialogContent>
           <Formik
             initialValues={{
@@ -148,94 +162,43 @@ const DashboardPackages = () => {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
-            {({ setFieldValue }) => (
-              <Form style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 10 }}>
-                <Field name="title" placeholder="Title" />
-                <ErrorMessage name="title" component="div" style={{ color: "red" }} />
-                <Field name="days" type="number" placeholder="Days" />
-                <ErrorMessage name="days" component="div" style={{ color: "red" }} />
-                <Field name="destinationName" placeholder="Destination" />
-                <ErrorMessage name="destinationName" component="div" style={{ color: "red" }} />
-                <Field name="location" placeholder="Location" />
-                <Field name="price" type="number" placeholder="Price" />
-                <ErrorMessage name="price" component="div" style={{ color: "red" }} />
-                <Field name="places" placeholder="Places (comma separated)" />
-                <Field name="description" as="textarea" rows={3} placeholder="Description" />
-                <input name="image" type="file" onChange={(e) => setFieldValue("image", e.currentTarget.files[0])} />
-                <ErrorMessage name="image" component="div" style={{ color: "red" }} />
-                <Button type="submit" variant="contained">Add Package</Button>
-              </Form>
-            )}
-          </Formik>
-        </DialogContent>
-      </Dialog>
+            {({ handleChange, setFieldValue, values }) => (
+              <Form style={{ marginTop: 10 }}>
+                <TextField label="Package Title" name="title" fullWidth onChange={handleChange} sx={{ mb: 2 }} />
+                <TextField label="Days" name="days" type="number" fullWidth onChange={handleChange} sx={{ mb: 2 }} />
+                <TextField label="Destination" name="destinationName" fullWidth onChange={handleChange} sx={{ mb: 2 }} />
+                <TextField label="Location" name="location" fullWidth onChange={handleChange} sx={{ mb: 2 }} />
+                <TextField label="Price" name="price" type="number" fullWidth onChange={handleChange} sx={{ mb: 2 }} />
+                <TextField label="Places (comma separated)" name="places" fullWidth onChange={handleChange} sx={{ mb: 2 }} />
+                <TextField label="Description" name="description" fullWidth multiline rows={3} onChange={handleChange} sx={{ mb: 2 }} />
 
-      {/* Add/Edit Details Dialog */}
-      <Dialog open={detailsOpen} onClose={() => setDetailsOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Add Details</DialogTitle>
-        <DialogContent>
-          <Formik
-            initialValues={{
-              overview: selectedPkg?.overview || "",
-              itinerary: selectedPkg?.itinerary || [{ day: 1, description: "" }],
-              services: selectedPkg?.services || "",
-            }}
-            enableReinitialize
-            onSubmit={handleDetailsSave}
-          >
-            {({ values, setFieldValue, handleChange }) => (
-              <Form style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 10 }}>
-                <TextField
-                  label="Overview"
-                  name="overview"
-                  multiline
-                  rows={3}
-                  value={values.overview}
-                  onChange={handleChange}
+                {/* Image Upload */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    setFieldValue("image", file);
+                    setPreview(URL.createObjectURL(file));
+                  }}
                 />
+                {preview && (
+                  <img src={preview} alt="Preview" style={{ width: 120, height: 80, marginTop: 10, borderRadius: 8 }} />
+                )}
 
-                <Typography variant="subtitle1">Itinerary</Typography>
-                {values.itinerary.map((it, index) => (
-                  <Box key={index} sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                    <Typography>Day {it.day}</Typography>
-                    <TextField
-                      name={`itinerary.${index}.description`}
-                      value={it.description}
-                      onChange={handleChange}
-                      placeholder="Description for this day"
-                      multiline
-                      rows={2}
-                    />
-                  </Box>
-                ))}
-                <Button
-                  variant="outlined"
-                  startIcon={<AddIcon />}
-                  onClick={() =>
-                    setFieldValue("itinerary", [
-                      ...values.itinerary,
-                      { day: values.itinerary.length + 1, description: "" },
-                    ])
-                  }
-                >
-                  Add Day
+                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+                  Add Package
                 </Button>
-
-                <TextField
-                  label="Services"
-                  name="services"
-                  multiline
-                  rows={3}
-                  value={values.services}
-                  onChange={handleChange}
-                />
-
-                <Button type="submit" variant="contained">Save Details</Button>
               </Form>
             )}
           </Formik>
         </DialogContent>
       </Dialog>
+
+      {/* Snackbar */}
+      <Snackbar open={snack.open} autoHideDuration={3000} onClose={() => setSnack({ ...snack, open: false })}>
+        <Alert severity={snack.type}>{snack.msg}</Alert>
+      </Snackbar>
     </div>
   );
 };

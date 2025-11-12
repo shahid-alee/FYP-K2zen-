@@ -54,8 +54,8 @@ router.post("/", upload.single("image"), async (req, res) => {
       destinationName: data.destinationName,
       location: data.location,
       price: data.price,
-      description: data.description,
-      image: req.file ? req.file.path : null,
+      description: data.description, 
+      image: req.file ? `uploads/${req.file.filename}` : null,
       places,
       status: data.status,
     });

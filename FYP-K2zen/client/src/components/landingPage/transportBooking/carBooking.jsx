@@ -10,9 +10,9 @@ export default function CarBooking() {
   const car = location.state?.car;
 
   const [formData, setFormData] = useState({
-    name: "",
+    userName: "",
     email: "",
-    phone: "",
+    contact: "",
     startDate: "",
     endDate: "",
   });
@@ -52,26 +52,31 @@ export default function CarBooking() {
     const totalPrice = totalDays * car.pricePerDay;
 
     const bookingData = {
-      name: formData.name,
+      userName: formData.userName,
       email: formData.email,
-      contact: formData.phone,
+      contact: formData.contact,
+      carId: car._id,
       carName: car.carName,
-      modelYear: String(car.modelYear), // ✅ matches schema
+      modelYear: String(car.modelYear),
+      image: car.image,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
       totalDays,
       totalPrice,
       status: "Pending",
-      image: car.image,
     };
 
-    console.log("Sending booking:", bookingData);
-
     try {
-      await axios.post("http://localhost:8000/api/carbooking", bookingData);
-      alert("✅ Car booking confirmed!");
+      const res = await axios.post("http://localhost:8000/api/carbooking", bookingData);
+      alert("✅ Booking request sent! Please wait for confirmation email.");
       navigate("/thankCard");
     } catch (error) {
-      console.error("❌ Booking failed:", error.response || error);
-      alert("❌ Booking failed. Please try again.");
+      console.error(error);
+      if (error.response?.data?.msg) {
+        alert("❌ " + error.response.data.msg);
+      } else {
+        alert("❌ Booking failed. Please try again.");
+      }
     }
   };
 
@@ -99,11 +104,44 @@ export default function CarBooking() {
           <Paper elevation={3} className="booking-form">
             <Typography variant="h5">Book This Car</Typography>
             <form onSubmit={handleSubmit}>
-              <input name="name" type="text" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
-              <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-              <input name="phone" type="tel" placeholder="Phone" value={formData.phone} onChange={handleChange} required />
-              <input name="startDate" type="date" value={formData.startDate} onChange={handleChange} required />
-              <input name="endDate" type="date" value={formData.endDate} onChange={handleChange} required />
+              <input
+                name="userName"
+                type="text"
+                placeholder="Full Name"
+                value={formData.userName}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="contact"
+                type="tel"
+                placeholder="Phone"
+                value={formData.contact}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="startDate"
+                type="date"
+                value={formData.startDate}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="endDate"
+                type="date"
+                value={formData.endDate}
+                onChange={handleChange}
+                required
+              />
 
               {formData.startDate && formData.endDate && (
                 <Typography variant="body2" sx={{ mt: 1, textAlign: "center", color: "gray" }}>
@@ -111,7 +149,7 @@ export default function CarBooking() {
                 </Typography>
               )}
 
-              <Button variant="success"  type="submit" className="submit-btn">Confirm Booking</Button>
+              <Button className="submit-btn" type="submit">Confirm Booking</Button>
             </form>
           </Paper>
         </Grid>

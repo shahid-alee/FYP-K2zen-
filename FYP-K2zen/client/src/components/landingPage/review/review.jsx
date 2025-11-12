@@ -16,24 +16,29 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./review.scss";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
   const [formData, setFormData] = useState({
-    name: "",
     message: "",
     rating: 0,
   });
 
+  const [errors, setErrors] = useState({
+    message: "",
+    rating: "",
+  });
+
+  const navigate = useNavigate();
   const API_URL = "http://localhost:8000/api/reviews";
 
-  // ✅ Fetch reviews
   const fetchReviews = async () => {
     try {
       const res = await axios.get(API_URL);
       setReviews(res.data);
     } catch (err) {
-      console.error("❌ Error fetching reviews:", err);
+      console.error("Error fetching reviews:", err);
     }
   };
 
@@ -41,82 +46,106 @@ export default function Reviews() {
     fetchReviews();
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleRatingChange = (_, newValue) => {
-    setFormData({ ...formData, rating: newValue });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.message || !formData.rating) {
-      alert("Please fill all fields");
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!loggedInUser) {
+      navigate("/login");
       return;
     }
 
+    let newErrors = {};
+    if (!formData.message) newErrors.message = "Please write something!";
+    if (!formData.rating) newErrors.rating = "Please give a rating!";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
+
+    const reviewData = {
+      name: loggedInUser.username || loggedInUser.name,
+      email: loggedInUser.email,
+      rating: formData.rating,
+      message: formData.message,
+    };
+
     try {
-      const res = await axios.post(API_URL, formData);
+      const res = await axios.post(API_URL, reviewData);
       setReviews([res.data, ...reviews]);
-      setFormData({ name: "", message: "", rating: 0 });
+      setFormData({ message: "", rating: 0 });
+      setErrors({});
     } catch (err) {
-      console.error("❌ Error submitting review:", err);
-      alert("Failed to submit review");
+      console.error("Error submitting review:", err);
     }
   };
 
   return (
     <Box className="reviews-section">
-      <Typography variant="h4" align="center" gutterBottom>
-        Traveler Reviews
-      </Typography>
+      <div className="section-header">
+        <h2 className="section-title">Traveler Reviews</h2>
+        <p className="section-subtitle">
+          Your experience matters — share your thoughts!
+        </p>
+      </div>
 
-      {/* Review Form */}
       <Paper elevation={4} className="review-form">
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" className="form-title">
           Share Your Experience
         </Typography>
+
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                label="Your Name"
-                name="name"
-                fullWidth
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 label="Your Review"
-                name="message"
                 multiline
                 rows={3}
                 fullWidth
                 value={formData.message}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({ ...formData, message: e.target.value });
+                  setErrors({ ...errors, message: "" });
+                }}
+                error={Boolean(errors.message)}
               />
+              {errors.message && (
+                <p className="error-text">{errors.message}</p>
+              )}
             </Grid>
+
+            {/* ✅ Rating Field */}
             <Grid item xs={12}>
               <Typography>Rating</Typography>
               <Rating
-                name="rating"
                 value={formData.rating}
-                onChange={handleRatingChange}
+                onChange={(_, value) => {
+                  setFormData({ ...formData, rating: value });
+                  setErrors({ ...errors, rating: "" });
+                }}
               />
+              {errors.rating && (
+                <p className="error-text">{errors.rating}</p>
+              )}
             </Grid>
+
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="success" fullWidth>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                className="review-button"
+              >
                 Submit Review
               </Button>
             </Grid>
+
           </Grid>
         </form>
       </Paper>
 
-      {/* Reviews Slider */}
+      {/* Slider */}
       <Box className="reviews-slider">
         {reviews.length > 0 ? (
           <Swiper

@@ -7,29 +7,34 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LOGO from "../../../assets/logo/k2zenLogo.png";
 import "./navBar.scss";
 
 export default function NavBar() {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [logoutMenu, setLogoutMenu] = useState(null);
+  const [profileMenu, setProfileMenu] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const navigate = useNavigate();
 
-  // ✅ Load user when component mounts
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  // ✅ Listen for login/signup/logout change
   useEffect(() => {
     const handleUserChange = () => {
       const storedUser = localStorage.getItem("user");
@@ -49,17 +54,16 @@ export default function NavBar() {
     localStorage.removeItem("token");
     setUser(null);
     window.dispatchEvent(new Event("userChanged"));
-    setLogoutMenu(null);
+    setProfileMenu(null);
+    setDrawerOpen(false);
     navigate("/");
   };
-
-  const handleMenuOpen = (e) => setAnchorEl(e.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
 
   return (
     <AppBar position="fixed" className="navbar" elevation={0}>
       <Toolbar className="toolbar">
-        {/* Logo */}
+
+        {/* ✅ Logo */}
         <Box className="navbar-logo" onClick={() => navigate("/")}>
           <img src={LOGO} alt="Logo" className="navbar-logo-img" />
           <Typography variant="h6" className="navbar-title">
@@ -67,7 +71,7 @@ export default function NavBar() {
           </Typography>
         </Box>
 
-        {/* Navigation Links */}
+        {/* ✅ Desktop Menu */}
         <Box className="navbar-menu">
           <Link to="/" className="navbar-link">Home</Link>
           <Link to="/destination" className="navbar-link">Destination</Link>
@@ -80,12 +84,8 @@ export default function NavBar() {
             <span className="navbar-link">Customize</span>
             {dropdownOpen && (
               <Box className="dropdown-menu">
-                <Link to="/customizePackage" className="dropdown-item">
-                  Customize Your Package
-                </Link>
-                <Link to="/PackageByBudget" className="dropdown-item">
-                  Package By Budget
-                </Link>
+                <Link to="/customizePackage" className="dropdown-item">Customize Your Package</Link>
+                <Link to="/PackageByBudget" className="dropdown-item">Package By Budget</Link>
               </Box>
             )}
           </Box>
@@ -97,79 +97,101 @@ export default function NavBar() {
           <Link to="/contactUs" className="navbar-link">Contact</Link>
         </Box>
 
-        {/* Actions */}
+        {/* ✅ Login / Profile + Mobile Menu Icon */}
         <Box className="navbar-actions">
-          {/* <Link to="/enquire">
-            <button className="enquire-btn">Enquire Now</button>
-          </Link> */}
-
-          {/* ✅ Show tick & username when logged in */}
-          {user ? (
+          {!user ? (
+            <Link to="/register" className="signup-icon">
+              <IconButton>
+                <PersonAddAltIcon />
+              </IconButton>
+            </Link>
+          ) : (
             <>
-              <Box
-                className="user-info"
-                onClick={(e) => setLogoutMenu(e.currentTarget)}
-                sx={{
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}
-              >
-                <CheckCircleIcon className="tick-icon" color="success" />
-                <Typography className="username" sx={{ color: "#fff" }}>
-                  {user.username}
-                </Typography>
-              </Box>
+              <IconButton onClick={(e) => setProfileMenu(e.currentTarget)}>
+                <AccountCircleIcon sx={{ fontSize: 32, color: "#239753" }} />
+              </IconButton>
 
               <Menu
-                anchorEl={logoutMenu}
-                open={Boolean(logoutMenu)}
-                onClose={() => setLogoutMenu(null)}
+                anchorEl={profileMenu}
+                open={Boolean(profileMenu)}
+                onClose={() => setProfileMenu(null)}
               >
+                <MenuItem>
+                  <AccountCircleIcon sx={{ mr: 1 }} /> {user.username}
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <LogoutIcon sx={{ mr: 1 }} /> Logout
                 </MenuItem>
               </Menu>
             </>
-          ) : (
-            <Link to="/register" className="signup-icon">
-              <IconButton color="inherit">
-                <PersonAddAltIcon />
-              </IconButton>
-            </Link>
           )}
 
-          {/* Mobile Menu Icon */}
-          <IconButton
-            className="mobile-menu-icon"
-            onClick={handleMenuOpen}
-            size="large"
-          >
+          {/* ✅ Mobile Menu Icon */}
+          <IconButton className="mobile-menu-icon" onClick={() => setDrawerOpen(true)}>
             <MenuIcon />
           </IconButton>
         </Box>
 
-        {/* Mobile Menu */}
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          className="mobile-menu"
+        {/* ✅ Mobile Drawer Full-Width */}
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          PaperProps={{
+            sx: { width: "80%", background: "#fff" } // Full-width mobile style
+          }}
         >
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/" className="mobile-link">Home</Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/destination" className="mobile-link">Destination</Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/gallery" className="mobile-link">Gallery</Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/aboutUs" className="mobile-link">About Us</Link>
-          </MenuItem>
-        </Menu>
+          <Box sx={{ p: 2 }}>
+            <Typography sx={{ fontWeight: "700", color: "#239753", mb: 2 }}>
+              Menu
+            </Typography>
+
+            <Divider sx={{ mb: 2 }} />
+
+            <List>
+
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => setDrawerOpen(false)} component={Link} to="/">
+                  <ListItemText primary="Home" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => setDrawerOpen(false)} component={Link} to="/destination">
+                  <ListItemText primary="Destination" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => setDrawerOpen(false)} component={Link} to="/customizePackage">
+                  <ListItemText primary="Customize" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => setDrawerOpen(false)} component={Link} to="/gallery">
+                  <ListItemText primary="Gallery" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => setDrawerOpen(false)} component={Link} to="/aboutUs">
+                  <ListItemText primary="About Us" />
+                </ListItemButton>
+              </ListItem>
+
+              {user && (
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleLogout}>
+                    <ListItemText primary="Logout" />
+                  </ListItemButton>
+                </ListItem>
+              )}
+
+            </List>
+          </Box>
+        </Drawer>
+
       </Toolbar>
     </AppBar>
   );
